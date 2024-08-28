@@ -16,7 +16,17 @@ const Index = () => {
   ];
 
   const handleAddExpense = (expense) => {
-    setExpenses([...expenses, expense]);
+    setExpenses([...expenses, { ...expense, id: Date.now() }]);
+  };
+
+  const handleEditExpense = (editedExpense) => {
+    setExpenses(expenses.map(expense => 
+      expense.id === editedExpense.id ? editedExpense : expense
+    ));
+  };
+
+  const handleDeleteExpense = (expenseToDelete) => {
+    setExpenses(expenses.filter(expense => expense.id !== expenseToDelete.id));
   };
 
   const filteredExpenses = expenses.filter(expense =>
@@ -28,12 +38,18 @@ const Index = () => {
       <Header />
       <IncomeCard />
       <div className="flex justify-between my-4">
-        <ExpandableCard title="Savings" onAdd={handleAddExpense} />
-        <ExpandableCard title="Expense" onAdd={handleAddExpense} />
+        <ExpandableCard title="Savings" onAdd={handleAddExpense} categories={categories} />
+        <ExpandableCard title="Expense" onAdd={handleAddExpense} categories={categories} />
       </div>
       <div className="grid grid-cols-2 gap-4 my-4">
         {categories.map((category, index) => (
-          <CategoryCard key={index} title={category} />
+          <CategoryCard 
+            key={index} 
+            title={category} 
+            expenses={expenses.filter(e => e.category === category)}
+            onEdit={handleEditExpense}
+            onDelete={handleDeleteExpense}
+          />
         ))}
       </div>
       <ExpensePieChart expenses={expenses} />
@@ -42,7 +58,8 @@ const Index = () => {
         {filteredExpenses.map((expense, index) => (
           <div key={index} className="bg-white p-2 mb-2 rounded">
             <p>{expense.details}</p>
-            <a href={`/expense/${index}`} target="_blank" rel="noopener noreferrer" className="text-blue-500">Read more</a>
+            <p>Category: {expense.category}</p>
+            <a href={`/expense/${expense.id}`} target="_blank" rel="noopener noreferrer" className="text-blue-500">Read more</a>
           </div>
         ))}
       </div>
