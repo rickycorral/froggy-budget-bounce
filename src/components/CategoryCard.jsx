@@ -2,8 +2,10 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-export const CategoryCard = ({ title, expenses, onEdit, onDelete }) => {
-  const totalExpense = expenses.reduce((sum, expense) => sum + parseFloat(expense.amount), 0);
+export const CategoryCard = ({ title, expenses = [], onEdit, onDelete }) => {
+  const totalExpense = expenses.length > 0
+    ? expenses.reduce((sum, expense) => sum + parseFloat(expense.amount), 0)
+    : 0;
 
   return (
     <Card>
