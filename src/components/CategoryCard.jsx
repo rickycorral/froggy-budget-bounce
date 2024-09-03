@@ -41,15 +41,15 @@ export const CategoryCard = ({ title, expenses = [], onEdit, onDelete, budget, o
   return (
     <Card className="bg-white bg-opacity-80 border-green-300 shadow-lg">
       <CardHeader>
-        <CardTitle className="text-green-700 flex justify-between items-center">
+        <CardTitle className="text-green-700 flex justify-between items-center text-sm">
           <span>{title}</span>
           {budget ? (
-            <Button onClick={() => setIsSettingBudget(true)} className="bg-green-500 hover:bg-green-600 text-white">
-              Edit Budget: ${budget}
+            <Button onClick={() => setIsSettingBudget(true)} className="bg-green-500 hover:bg-green-600 text-white text-xs">
+              Editar Presupuesto: ${budget}
             </Button>
           ) : (
-            <Button onClick={() => setIsSettingBudget(true)} className="bg-green-500 hover:bg-green-600 text-white">
-              Set Budget
+            <Button onClick={() => setIsSettingBudget(true)} className="bg-green-500 hover:bg-green-600 text-white text-xs">
+              Establecer Presupuesto
             </Button>
           )}
         </CardTitle>
@@ -61,49 +61,49 @@ export const CategoryCard = ({ title, expenses = [], onEdit, onDelete, budget, o
               type="number"
               value={newBudget}
               onChange={(e) => setNewBudget(e.target.value)}
-              placeholder="Enter budget"
-              className="border-green-300 focus:border-green-500"
+              placeholder="Ingresar presupuesto"
+              className="border-green-300 focus:border-green-500 text-sm"
             />
-            <Button onClick={handleSetBudget} className="bg-green-500 hover:bg-green-600 text-white">Save</Button>
+            <Button onClick={handleSetBudget} className="bg-green-500 hover:bg-green-600 text-white text-xs">Guardar</Button>
           </div>
         ) : null}
-        <p className="font-bold text-green-600">Total: ${totalExpense.toFixed(2)}</p>
+        <p className="font-bold text-green-600 text-sm">Total: ${totalExpense.toFixed(2)}</p>
         <Progress value={progressPercentage} className="my-2 gradient-progress" />
         {expenses.map((expense, index) => (
-          <div key={index} className="mt-2 p-2 bg-green-50 rounded border border-green-200 relative">
+          <div key={index} className="mt-2 p-2 bg-green-50 rounded border border-green-200 relative text-sm">
             {editingExpense === expense ? (
               <>
                 <Input
                   type="number"
                   value={editedAmount}
                   onChange={(e) => setEditedAmount(e.target.value)}
-                  className="mb-2 border-green-300 focus:border-green-500"
+                  className="mb-2 border-green-300 focus:border-green-500 text-xs"
                 />
                 <Input
                   type="date"
                   value={editedDate}
                   onChange={(e) => setEditedDate(e.target.value)}
-                  className="mb-2 border-green-300 focus:border-green-500"
+                  className="mb-2 border-green-300 focus:border-green-500 text-xs"
                 />
                 <Input
                   value={editedDetails}
                   onChange={(e) => setEditedDetails(e.target.value)}
-                  className="mb-2 border-green-300 focus:border-green-500"
+                  className="mb-2 border-green-300 focus:border-green-500 text-xs"
                 />
-                <Button onClick={handleSave} className="mr-2 bg-green-500 hover:bg-green-600 text-white">Save</Button>
-                <Button onClick={() => setEditingExpense(null)} variant="secondary" className="bg-green-200 hover:bg-green-300 text-green-800">Cancel</Button>
+                <Button onClick={handleSave} className="mr-2 bg-green-500 hover:bg-green-600 text-white text-xs">Guardar</Button>
+                <Button onClick={() => setEditingExpense(null)} variant="secondary" className="bg-green-200 hover:bg-green-300 text-green-800 text-xs">Cancelar</Button>
               </>
             ) : (
               <>
-                <p>Amount: ${expense.amount}</p>
-                <p>Date: {expense.date}</p>
-                <p>Details: {expense.details}</p>
-                <div className="absolute top-2 right-2 flex space-x-2">
-                  <Button onClick={() => handleEdit(expense)} size="icon" variant="ghost" className="h-8 w-8 p-0">
-                    <Pencil className="h-4 w-4" />
+                <p>Monto: ${expense.amount}</p>
+                <p>Fecha: {expense.date}</p>
+                <p>Detalles: {expense.details}</p>
+                <div className="absolute top-1 right-1 flex space-x-1">
+                  <Button onClick={() => handleEdit(expense)} size="icon" variant="ghost" className="h-6 w-6 p-0">
+                    <Pencil className="h-3 w-3" />
                   </Button>
-                  <Button onClick={() => onDelete(expense)} size="icon" variant="ghost" className="h-8 w-8 p-0 text-red-500 hover:text-red-700">
-                    <Trash2 className="h-4 w-4" />
+                  <Button onClick={() => onDelete(expense)} size="icon" variant="ghost" className="h-6 w-6 p-0 text-red-500 hover:text-red-700">
+                    <Trash2 className="h-3 w-3" />
                   </Button>
                 </div>
               </>

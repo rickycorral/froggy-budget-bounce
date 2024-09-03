@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Header } from '../components/Header';
 import { IncomeCard } from '../components/IncomeCard';
 import { ExpandableCard } from '../components/ExpandableCard';
@@ -7,10 +7,25 @@ import { ExpensePieChart } from '../components/ExpensePieChart';
 import { Search } from '../components/Search';
 
 const Index = () => {
-  const [expenses, setExpenses] = useState([]);
+  const [expenses, setExpenses] = useState(() => {
+    const savedExpenses = localStorage.getItem('expenses');
+    return savedExpenses ? JSON.parse(savedExpenses) : [];
+  });
   const [searchTerm, setSearchTerm] = useState('');
-  const [income, setIncome] = useState('');
-  const [categoryBudgets, setCategoryBudgets] = useState({});
+  const [income, setIncome] = useState(() => {
+    const savedIncome = localStorage.getItem('income');
+    return savedIncome ? JSON.parse(savedIncome) : '';
+  });
+  const [categoryBudgets, setCategoryBudgets] = useState(() => {
+    const savedBudgets = localStorage.getItem('categoryBudgets');
+    return savedBudgets ? JSON.parse(savedBudgets) : {};
+  });
+
+  useEffect(() => {
+    localStorage.setItem('expenses', JSON.stringify(expenses));
+    localStorage.setItem('income', JSON.stringify(income));
+    localStorage.setItem('categoryBudgets', JSON.stringify(categoryBudgets));
+  }, [expenses, income, categoryBudgets]);
 
   const categories = [
     'Escuela', 'Renta', 'Servicios', 'Transporte',
@@ -55,11 +70,11 @@ const Index = () => {
     <div className="min-h-screen p-4 bg-green-50 bg-opacity-90">
       <Header />
       <IncomeCard onSave={handleSaveIncome} currentIncome={income} />
-      <div className="flex flex-col md:flex-row justify-between my-4 space-y-4 md:space-y-0 md:space-x-4">
-        <ExpandableCard title="Savings" onAdd={handleAddExpense} categories={categories} totalAmount={totalSavings} />
-        <ExpandableCard title="Expense" onAdd={handleAddExpense} categories={categories} totalAmount={totalExpenses} />
+      <div className="flex flex-col sm:flex-row justify-between my-4 space-y-4 sm:space-y-0 sm:space-x-4">
+        <ExpandableCard title="Ahorros" onAdd={handleAddExpense} categories={categories} totalAmount={totalSavings} />
+        <ExpandableCard title="Gastos" onAdd={handleAddExpense} categories={categories} totalAmount={totalExpenses} />
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 my-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-4">
         {categories.map((category, index) => (
           <CategoryCard 
             key={index} 
@@ -78,9 +93,9 @@ const Index = () => {
         {filteredExpenses.map((expense, index) => (
           <div key={index} className="bg-white bg-opacity-80 p-2 mb-2 rounded border border-green-200">
             <p>{expense.details}</p>
-            <p>Category: {expense.category || 'Savings'}</p>
-            <p>Amount: ${expense.amount}</p>
-            <p>Date: {expense.date}</p>
+            <p>Categoría: {expense.category || 'Ahorros'}</p>
+            <p>Monto: ${expense.amount}</p>
+            <p>Fecha: {expense.date}</p>
           </div>
         ))}
       </div>

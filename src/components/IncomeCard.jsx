@@ -14,8 +14,8 @@ export const IncomeCard = ({ onSave, currentIncome }) => {
   return (
     <Card className="w-full bg-white bg-opacity-80 border-green-300 shadow-lg">
       <CardHeader>
-        <CardTitle className="flex justify-between items-center">
-          <span>Income</span>
+        <CardTitle className="flex justify-between items-center text-sm">
+          <span>Ingresos</span>
           <span className="text-green-600">${currentIncome}</span>
         </CardTitle>
       </CardHeader>
@@ -23,12 +23,12 @@ export const IncomeCard = ({ onSave, currentIncome }) => {
         <div className="flex space-x-2">
           <Input
             type="number"
-            placeholder="Enter income"
+            placeholder="Ingresar ingresos"
             value={income}
             onChange={(e) => setIncome(e.target.value)}
-            className="border-green-300 focus:border-green-500"
+            className="border-green-300 focus:border-green-500 text-sm"
           />
-          <Button onClick={handleSave} className="bg-green-500 hover:bg-green-600 text-white">Save</Button>
+          <Button onClick={handleSave} className="bg-green-500 hover:bg-green-600 text-white text-sm">Guardar</Button>
         </div>
       </CardContent>
     </Card>

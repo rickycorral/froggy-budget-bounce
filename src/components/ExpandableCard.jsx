@@ -13,10 +13,10 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (title.toLowerCase() === 'savings') {
+    if (title.toLowerCase() === 'ahorros') {
       onAdd({ date, amount, details, type: 'savings' });
     } else {
-      onAdd({ date, amount, details, category, type: title.toLowerCase() });
+      onAdd({ date, amount, details, category, type: 'expense' });
     }
     setDate('');
     setAmount('');
@@ -25,16 +25,16 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount }) => {
   };
 
   return (
-    <Card className="w-full md:w-1/3 bg-white bg-opacity-80 border-green-300 shadow-lg">
+    <Card className="w-full sm:w-1/2 bg-white bg-opacity-80 border-green-300 shadow-lg">
       <CardHeader>
         <CardTitle className="flex justify-between items-center">
           <Button
-            className="w-full rounded-full bg-green-500 hover:bg-green-600 text-white"
+            className="w-full rounded-full bg-green-500 hover:bg-green-600 text-white text-sm"
             onClick={() => setIsExpanded(!isExpanded)}
           >
             {title}
           </Button>
-          <span className="text-green-700 font-bold ml-2">${totalAmount.toFixed(2)}</span>
+          <span className="text-green-700 font-bold ml-2 text-sm">${totalAmount.toFixed(2)}</span>
         </CardTitle>
       </CardHeader>
       {isExpanded && (
@@ -45,27 +45,27 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount }) => {
               value={date}
               onChange={(e) => setDate(e.target.value)}
               required
-              className="border-green-300 focus:border-green-500"
+              className="border-green-300 focus:border-green-500 text-sm"
             />
             <Input
               type="number"
-              placeholder="Amount"
+              placeholder="Monto"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               required
-              className="border-green-300 focus:border-green-500"
+              className="border-green-300 focus:border-green-500 text-sm"
             />
             <Input
-              placeholder="Details"
+              placeholder="Detalles"
               value={details}
               onChange={(e) => setDetails(e.target.value)}
               required
-              className="border-green-300 focus:border-green-500"
+              className="border-green-300 focus:border-green-500 text-sm"
             />
-            {title.toLowerCase() !== 'savings' && (
+            {title.toLowerCase() !== 'ahorros' && (
               <Select value={category} onValueChange={setCategory} required>
-                <SelectTrigger className="border-green-300 focus:border-green-500">
-                  <SelectValue placeholder="Select category" />
+                <SelectTrigger className="border-green-300 focus:border-green-500 text-sm">
+                  <SelectValue placeholder="Seleccionar categoría" />
                 </SelectTrigger>
                 <SelectContent>
                   {categories.map((cat) => (
@@ -74,7 +74,7 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount }) => {
                 </SelectContent>
               </Select>
             )}
-            <Button type="submit" className="bg-green-500 hover:bg-green-600 text-white">Add</Button>
+            <Button type="submit" className="bg-green-500 hover:bg-green-600 text-white text-sm">Agregar</Button>
           </form>
         </CardContent>
       )}

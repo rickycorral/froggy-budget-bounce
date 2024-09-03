@@ -5,9 +5,9 @@ export const Search = ({ onSearch }) => {
   return (
     <Input
       type="text"
-      placeholder="Search expenses..."
+      placeholder="Buscar gastos..."
       onChange={(e) => onSearch(e.target.value)}
-      className="w-full"
+      className="w-full text-sm"
     />
   );
 };
