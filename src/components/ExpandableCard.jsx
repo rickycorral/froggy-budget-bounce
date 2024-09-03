@@ -13,7 +13,11 @@ export const ExpandableCard = ({ title, onAdd, categories }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onAdd({ date, amount, details, category, type: title.toLowerCase() });
+    if (title.toLowerCase() === 'savings') {
+      onAdd({ date, amount, details, type: 'savings' });
+    } else {
+      onAdd({ date, amount, details, category, type: title.toLowerCase() });
+    }
     setDate('');
     setAmount('');
     setDetails('');
@@ -21,11 +25,11 @@ export const ExpandableCard = ({ title, onAdd, categories }) => {
   };
 
   return (
-    <Card className="w-1/3">
+    <Card className="w-full md:w-1/3 bg-green-100 border-green-300">
       <CardHeader>
         <CardTitle>
           <Button
-            className="w-full rounded-full"
+            className="w-full rounded-full bg-green-500 hover:bg-green-600 text-white"
             onClick={() => setIsExpanded(!isExpanded)}
           >
             {title}
@@ -40,6 +44,7 @@ export const ExpandableCard = ({ title, onAdd, categories }) => {
               value={date}
               onChange={(e) => setDate(e.target.value)}
               required
+              className="border-green-300 focus:border-green-500"
             />
             <Input
               type="number"
@@ -47,24 +52,28 @@ export const ExpandableCard = ({ title, onAdd, categories }) => {
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               required
+              className="border-green-300 focus:border-green-500"
             />
             <Input
               placeholder="Details"
               value={details}
               onChange={(e) => setDetails(e.target.value)}
               required
+              className="border-green-300 focus:border-green-500"
             />
-            <Select value={category} onValueChange={setCategory} required>
-              <SelectTrigger>
-                <SelectValue placeholder="Select category" />
-              </SelectTrigger>
-              <SelectContent>
-                {categories.map((cat) => (
-                  <SelectItem key={cat} value={cat}>{cat}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <Button type="submit">Add</Button>
+            {title.toLowerCase() !== 'savings' && (
+              <Select value={category} onValueChange={setCategory} required>
+                <SelectTrigger className="border-green-300 focus:border-green-500">
+                  <SelectValue placeholder="Select category" />
+                </SelectTrigger>
+                <SelectContent>
+                  {categories.map((cat) => (
+                    <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+            <Button type="submit" className="bg-green-500 hover:bg-green-600 text-white">Add</Button>
           </form>
         </CardContent>
       )}

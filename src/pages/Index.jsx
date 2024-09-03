@@ -9,6 +9,7 @@ import { Search } from '../components/Search';
 const Index = () => {
   const [expenses, setExpenses] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [income, setIncome] = useState('');
 
   const categories = [
     'Escuela', 'Renta', 'Servicios', 'Transporte',
@@ -29,19 +30,23 @@ const Index = () => {
     setExpenses(expenses.filter(expense => expense.id !== expenseToDelete.id));
   };
 
+  const handleSaveIncome = (newIncome) => {
+    setIncome(newIncome);
+  };
+
   const filteredExpenses = expenses.filter(expense =>
     expense.details.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
-    <div className="min-h-screen bg-green-100 p-4">
+    <div className="min-h-screen bg-green-50 p-4">
       <Header />
-      <IncomeCard />
-      <div className="flex justify-between my-4">
+      <IncomeCard onSave={handleSaveIncome} />
+      <div className="flex flex-col md:flex-row justify-between my-4 space-y-4 md:space-y-0 md:space-x-4">
         <ExpandableCard title="Savings" onAdd={handleAddExpense} categories={categories} />
         <ExpandableCard title="Expense" onAdd={handleAddExpense} categories={categories} />
       </div>
-      <div className="grid grid-cols-2 gap-4 my-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 my-4">
         {categories.map((category, index) => (
           <CategoryCard 
             key={index} 
@@ -49,6 +54,7 @@ const Index = () => {
             expenses={expenses.filter(e => e.category === category)}
             onEdit={handleEditExpense}
             onDelete={handleDeleteExpense}
+            budget={1000} // Example budget, you might want to make this dynamic
           />
         ))}
       </div>
@@ -56,10 +62,11 @@ const Index = () => {
       <Search onSearch={setSearchTerm} />
       <div className="mt-4">
         {filteredExpenses.map((expense, index) => (
-          <div key={index} className="bg-white p-2 mb-2 rounded">
+          <div key={index} className="bg-white p-2 mb-2 rounded border border-green-200">
             <p>{expense.details}</p>
             <p>Category: {expense.category}</p>
-            <a href={`/expense/${expense.id}`} target="_blank" rel="noopener noreferrer" className="text-blue-500">Read more</a>
+            <p>Amount: ${expense.amount}</p>
+            <p>Date: {expense.date}</p>
           </div>
         ))}
       </div>

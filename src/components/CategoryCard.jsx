@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Progress } from "@/components/ui/progress";
 
-export const CategoryCard = ({ title, expenses = [], onEdit, onDelete }) => {
+export const CategoryCard = ({ title, expenses = [], onEdit, onDelete, budget }) => {
   const [editingExpense, setEditingExpense] = useState(null);
   const [editedAmount, setEditedAmount] = useState('');
   const [editedDate, setEditedDate] = useState('');
   const [editedDetails, setEditedDetails] = useState('');
 
-  const totalExpense = expenses.length > 0
-    ? expenses.reduce((sum, expense) => sum + parseFloat(expense.amount), 0)
-    : 0;
+  const totalExpense = expenses.reduce((sum, expense) => sum + parseFloat(expense.amount), 0);
+  const progressPercentage = budget ? (totalExpense / budget) * 100 : 0;
 
   const handleEdit = (expense) => {
     setEditingExpense(expense);
@@ -31,35 +31,36 @@ export const CategoryCard = ({ title, expenses = [], onEdit, onDelete }) => {
   };
 
   return (
-    <Card>
+    <Card className="bg-green-100 border-green-300">
       <CardHeader>
-        <CardTitle>{title}</CardTitle>
+        <CardTitle className="text-green-700">{title}</CardTitle>
       </CardHeader>
       <CardContent>
-        <p className="font-bold">Total: ${totalExpense.toFixed(2)}</p>
+        <p className="font-bold text-green-600">Total: ${totalExpense.toFixed(2)}</p>
+        <Progress value={progressPercentage} className="my-2" />
         {expenses.map((expense, index) => (
-          <div key={index} className="mt-2 p-2 bg-gray-100 rounded">
+          <div key={index} className="mt-2 p-2 bg-green-50 rounded border border-green-200">
             {editingExpense === expense ? (
               <>
                 <Input
                   type="number"
                   value={editedAmount}
                   onChange={(e) => setEditedAmount(e.target.value)}
-                  className="mb-2"
+                  className="mb-2 border-green-300 focus:border-green-500"
                 />
                 <Input
                   type="date"
                   value={editedDate}
                   onChange={(e) => setEditedDate(e.target.value)}
-                  className="mb-2"
+                  className="mb-2 border-green-300 focus:border-green-500"
                 />
                 <Input
                   value={editedDetails}
                   onChange={(e) => setEditedDetails(e.target.value)}
-                  className="mb-2"
+                  className="mb-2 border-green-300 focus:border-green-500"
                 />
-                <Button onClick={handleSave} className="mr-2">Save</Button>
-                <Button onClick={() => setEditingExpense(null)} variant="secondary">Cancel</Button>
+                <Button onClick={handleSave} className="mr-2 bg-green-500 hover:bg-green-600 text-white">Save</Button>
+                <Button onClick={() => setEditingExpense(null)} variant="secondary" className="bg-green-200 hover:bg-green-300 text-green-800">Cancel</Button>
               </>
             ) : (
               <>
@@ -67,8 +68,8 @@ export const CategoryCard = ({ title, expenses = [], onEdit, onDelete }) => {
                 <p>Date: {expense.date}</p>
                 <p>Details: {expense.details}</p>
                 <div className="mt-2">
-                  <Button onClick={() => handleEdit(expense)} className="mr-2">Edit</Button>
-                  <Button onClick={() => onDelete(expense)} variant="destructive">Delete</Button>
+                  <Button onClick={() => handleEdit(expense)} className="mr-2 bg-green-500 hover:bg-green-600 text-white">Edit</Button>
+                  <Button onClick={() => onDelete(expense)} variant="destructive" className="bg-red-500 hover:bg-red-600 text-white">Delete</Button>
                 </div>
               </>
             )}
