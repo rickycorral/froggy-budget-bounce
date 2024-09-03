@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
-import { Pencil, Trash2 } from 'lucide-react';
+import { Pencil, Trash2, DollarSign } from 'lucide-react';
 
 export const CategoryCard = ({ title, expenses = [], onEdit, onDelete, budget, onSetBudget }) => {
   const [editingExpense, setEditingExpense] = useState(null);
@@ -44,12 +44,12 @@ export const CategoryCard = ({ title, expenses = [], onEdit, onDelete, budget, o
         <CardTitle className="text-green-700 flex justify-between items-center text-sm">
           <span>{title}</span>
           {budget ? (
-            <Button onClick={() => setIsSettingBudget(true)} className="bg-green-500 hover:bg-green-600 text-white text-xs">
-              Editar Presupuesto: ${budget}
+            <Button onClick={() => setIsSettingBudget(true)} className="bg-green-500 hover:bg-green-600 text-white p-2">
+              <DollarSign className="h-4 w-4" />
             </Button>
           ) : (
-            <Button onClick={() => setIsSettingBudget(true)} className="bg-green-500 hover:bg-green-600 text-white text-xs">
-              Establecer Presupuesto
+            <Button onClick={() => setIsSettingBudget(true)} className="bg-green-500 hover:bg-green-600 text-white p-2">
+              <DollarSign className="h-4 w-4" />
             </Button>
           )}
         </CardTitle>
