@@ -75,9 +75,16 @@
     background-image: url('/frog-background.png');
     background-size: cover;
     background-attachment: fixed;
+    background-repeat: repeat;
   }
 }
 
 .gradient-progress {
   background: linear-gradient(to right, #34d399 0%, #10b981 50%, #059669 100%);
+}
+
+@media (max-width: 640px) {
+  .sm\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
