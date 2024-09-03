@@ -12,7 +12,7 @@ export const IncomeCard = ({ onSave, currentIncome }) => {
   };
 
   return (
-    <Card className="w-full bg-green-100 border-green-300">
+    <Card className="w-full bg-white bg-opacity-80 border-green-300 shadow-lg">
       <CardHeader>
         <CardTitle className="flex justify-between items-center">
           <span>Income</span>

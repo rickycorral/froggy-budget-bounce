@@ -25,7 +25,7 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount }) => {
   };
 
   return (
-    <Card className="w-full md:w-1/3 bg-green-100 border-green-300">
+    <Card className="w-full md:w-1/3 bg-white bg-opacity-80 border-green-300 shadow-lg">
       <CardHeader>
         <CardTitle className="flex justify-between items-center">
           <Button

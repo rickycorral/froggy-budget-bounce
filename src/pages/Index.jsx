@@ -52,7 +52,7 @@ const Index = () => {
     .reduce((sum, expense) => sum + parseFloat(expense.amount), 0);
 
   return (
-    <div className="min-h-screen bg-green-50 p-4">
+    <div className="min-h-screen p-4 bg-green-50 bg-opacity-90">
       <Header />
       <IncomeCard onSave={handleSaveIncome} currentIncome={income} />
       <div className="flex flex-col md:flex-row justify-between my-4 space-y-4 md:space-y-0 md:space-x-4">
@@ -76,7 +76,7 @@ const Index = () => {
       <Search onSearch={setSearchTerm} />
       <div className="mt-4">
         {filteredExpenses.map((expense, index) => (
-          <div key={index} className="bg-white p-2 mb-2 rounded border border-green-200">
+          <div key={index} className="bg-white bg-opacity-80 p-2 mb-2 rounded border border-green-200">
             <p>{expense.details}</p>
             <p>Category: {expense.category || 'Savings'}</p>
             <p>Amount: ${expense.amount}</p>

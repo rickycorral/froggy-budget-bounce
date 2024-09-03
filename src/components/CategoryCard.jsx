@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
+import { Pencil, Trash2 } from 'lucide-react';
 
 export const CategoryCard = ({ title, expenses = [], onEdit, onDelete, budget, onSetBudget }) => {
   const [editingExpense, setEditingExpense] = useState(null);
@@ -38,7 +39,7 @@ export const CategoryCard = ({ title, expenses = [], onEdit, onDelete, budget, o
   };
 
   return (
-    <Card className="bg-green-100 border-green-300">
+    <Card className="bg-white bg-opacity-80 border-green-300 shadow-lg">
       <CardHeader>
         <CardTitle className="text-green-700 flex justify-between items-center">
           <span>{title}</span>
@@ -67,9 +68,9 @@ export const CategoryCard = ({ title, expenses = [], onEdit, onDelete, budget, o
           </div>
         ) : null}
         <p className="font-bold text-green-600">Total: ${totalExpense.toFixed(2)}</p>
-        <Progress value={progressPercentage} className="my-2" />
+        <Progress value={progressPercentage} className="my-2 gradient-progress" />
         {expenses.map((expense, index) => (
-          <div key={index} className="mt-2 p-2 bg-green-50 rounded border border-green-200">
+          <div key={index} className="mt-2 p-2 bg-green-50 rounded border border-green-200 relative">
             {editingExpense === expense ? (
               <>
                 <Input
@@ -97,9 +98,13 @@ export const CategoryCard = ({ title, expenses = [], onEdit, onDelete, budget, o
                 <p>Amount: ${expense.amount}</p>
                 <p>Date: {expense.date}</p>
                 <p>Details: {expense.details}</p>
-                <div className="mt-2">
-                  <Button onClick={() => handleEdit(expense)} className="mr-2 bg-green-500 hover:bg-green-600 text-white">Edit</Button>
-                  <Button onClick={() => onDelete(expense)} variant="destructive" className="bg-red-500 hover:bg-red-600 text-white">Delete</Button>
+                <div className="absolute top-2 right-2 flex space-x-2">
+                  <Button onClick={() => handleEdit(expense)} size="icon" variant="ghost" className="h-8 w-8 p-0">
+                    <Pencil className="h-4 w-4" />
+                  </Button>
+                  <Button onClick={() => onDelete(expense)} size="icon" variant="ghost" className="h-8 w-8 p-0 text-red-500 hover:text-red-700">
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
                 </div>
               </>
             )}
