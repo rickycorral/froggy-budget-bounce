@@ -10,6 +10,7 @@ const Index = () => {
   const [expenses, setExpenses] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [income, setIncome] = useState('');
+  const [categoryBudgets, setCategoryBudgets] = useState({});
 
   const categories = [
     'Escuela', 'Renta', 'Servicios', 'Transporte',
@@ -34,17 +35,29 @@ const Index = () => {
     setIncome(newIncome);
   };
 
+  const handleSetBudget = (category, budget) => {
+    setCategoryBudgets({...categoryBudgets, [category]: budget});
+  };
+
   const filteredExpenses = expenses.filter(expense =>
     expense.details.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const totalSavings = expenses
+    .filter(expense => expense.type === 'savings')
+    .reduce((sum, expense) => sum + parseFloat(expense.amount), 0);
+
+  const totalExpenses = expenses
+    .filter(expense => expense.type === 'expense')
+    .reduce((sum, expense) => sum + parseFloat(expense.amount), 0);
+
   return (
     <div className="min-h-screen bg-green-50 p-4">
       <Header />
-      <IncomeCard onSave={handleSaveIncome} />
+      <IncomeCard onSave={handleSaveIncome} currentIncome={income} />
       <div className="flex flex-col md:flex-row justify-between my-4 space-y-4 md:space-y-0 md:space-x-4">
-        <ExpandableCard title="Savings" onAdd={handleAddExpense} categories={categories} />
-        <ExpandableCard title="Expense" onAdd={handleAddExpense} categories={categories} />
+        <ExpandableCard title="Savings" onAdd={handleAddExpense} categories={categories} totalAmount={totalSavings} />
+        <ExpandableCard title="Expense" onAdd={handleAddExpense} categories={categories} totalAmount={totalExpenses} />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 my-4">
         {categories.map((category, index) => (
@@ -54,7 +67,8 @@ const Index = () => {
             expenses={expenses.filter(e => e.category === category)}
             onEdit={handleEditExpense}
             onDelete={handleDeleteExpense}
-            budget={1000} // Example budget, you might want to make this dynamic
+            budget={categoryBudgets[category]}
+            onSetBudget={(budget) => handleSetBudget(category, budget)}
           />
         ))}
       </div>
@@ -64,7 +78,7 @@ const Index = () => {
         {filteredExpenses.map((expense, index) => (
           <div key={index} className="bg-white p-2 mb-2 rounded border border-green-200">
             <p>{expense.details}</p>
-            <p>Category: {expense.category}</p>
+            <p>Category: {expense.category || 'Savings'}</p>
             <p>Amount: ${expense.amount}</p>
             <p>Date: {expense.date}</p>
           </div>

@@ -4,11 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 
-export const CategoryCard = ({ title, expenses = [], onEdit, onDelete, budget }) => {
+export const CategoryCard = ({ title, expenses = [], onEdit, onDelete, budget, onSetBudget }) => {
   const [editingExpense, setEditingExpense] = useState(null);
   const [editedAmount, setEditedAmount] = useState('');
   const [editedDate, setEditedDate] = useState('');
   const [editedDetails, setEditedDetails] = useState('');
+  const [isSettingBudget, setIsSettingBudget] = useState(false);
+  const [newBudget, setNewBudget] = useState(budget || '');
 
   const totalExpense = expenses.reduce((sum, expense) => sum + parseFloat(expense.amount), 0);
   const progressPercentage = budget ? (totalExpense / budget) * 100 : 0;
@@ -30,12 +32,40 @@ export const CategoryCard = ({ title, expenses = [], onEdit, onDelete, budget })
     setEditingExpense(null);
   };
 
+  const handleSetBudget = () => {
+    onSetBudget(parseFloat(newBudget));
+    setIsSettingBudget(false);
+  };
+
   return (
     <Card className="bg-green-100 border-green-300">
       <CardHeader>
-        <CardTitle className="text-green-700">{title}</CardTitle>
+        <CardTitle className="text-green-700 flex justify-between items-center">
+          <span>{title}</span>
+          {budget ? (
+            <Button onClick={() => setIsSettingBudget(true)} className="bg-green-500 hover:bg-green-600 text-white">
+              Edit Budget: ${budget}
+            </Button>
+          ) : (
+            <Button onClick={() => setIsSettingBudget(true)} className="bg-green-500 hover:bg-green-600 text-white">
+              Set Budget
+            </Button>
+          )}
+        </CardTitle>
       </CardHeader>
       <CardContent>
+        {isSettingBudget ? (
+          <div className="flex space-x-2 mb-4">
+            <Input
+              type="number"
+              value={newBudget}
+              onChange={(e) => setNewBudget(e.target.value)}
+              placeholder="Enter budget"
+              className="border-green-300 focus:border-green-500"
+            />
+            <Button onClick={handleSetBudget} className="bg-green-500 hover:bg-green-600 text-white">Save</Button>
+          </div>
+        ) : null}
         <p className="font-bold text-green-600">Total: ${totalExpense.toFixed(2)}</p>
         <Progress value={progressPercentage} className="my-2" />
         {expenses.map((expense, index) => (

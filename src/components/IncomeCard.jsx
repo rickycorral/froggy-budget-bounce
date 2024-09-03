@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-export const IncomeCard = ({ onSave }) => {
+export const IncomeCard = ({ onSave, currentIncome }) => {
   const [income, setIncome] = useState('');
 
   const handleSave = () => {
@@ -16,7 +16,7 @@ export const IncomeCard = ({ onSave }) => {
       <CardHeader>
         <CardTitle className="flex justify-between items-center">
           <span>Income</span>
-          {income && <span className="text-green-600">${income}</span>}
+          <span className="text-green-600">${currentIncome}</span>
         </CardTitle>
       </CardHeader>
       <CardContent>

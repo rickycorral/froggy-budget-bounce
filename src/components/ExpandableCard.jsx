@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-export const ExpandableCard = ({ title, onAdd, categories }) => {
+export const ExpandableCard = ({ title, onAdd, categories, totalAmount }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [date, setDate] = useState('');
   const [amount, setAmount] = useState('');
@@ -27,13 +27,14 @@ export const ExpandableCard = ({ title, onAdd, categories }) => {
   return (
     <Card className="w-full md:w-1/3 bg-green-100 border-green-300">
       <CardHeader>
-        <CardTitle>
+        <CardTitle className="flex justify-between items-center">
           <Button
             className="w-full rounded-full bg-green-500 hover:bg-green-600 text-white"
             onClick={() => setIsExpanded(!isExpanded)}
           >
             {title}
           </Button>
+          <span className="text-green-700 font-bold ml-2">${totalAmount.toFixed(2)}</span>
         </CardTitle>
       </CardHeader>
       {isExpanded && (
