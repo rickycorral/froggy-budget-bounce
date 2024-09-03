@@ -70,7 +70,7 @@ const Index = () => {
     <div className="min-h-screen p-4 bg-green-50 bg-opacity-90">
       <Header />
       <IncomeCard onSave={handleSaveIncome} currentIncome={income} />
-      <div className="flex flex-col sm:flex-row justify-center my-4 space-y-4 sm:space-y-0 sm:space-x-4">
+      <div className="flex justify-center my-4 space-x-4">
         <ExpandableCard title="Ahorros" onAdd={handleAddExpense} categories={categories} totalAmount={totalSavings} />
         <ExpandableCard title="Gastos" onAdd={handleAddExpense} categories={categories} totalAmount={totalExpenses} />
       </div>
@@ -89,15 +89,27 @@ const Index = () => {
       </div>
       <ExpensePieChart expenses={expenses} />
       <Search onSearch={setSearchTerm} />
-      <div className="mt-4">
-        {filteredExpenses.map((expense, index) => (
-          <div key={index} className="bg-white bg-opacity-80 p-2 mb-2 rounded border border-green-200">
-            <p>{expense.details}</p>
-            <p>Categoría: {expense.category || 'Ahorros'}</p>
-            <p>Monto: ${expense.amount}</p>
-            <p>Fecha: {expense.date}</p>
-          </div>
-        ))}
+      <div className="mt-4 overflow-x-auto">
+        <table className="min-w-full bg-white border border-gray-300 shadow-sm rounded-lg overflow-hidden">
+          <thead className="bg-gray-100">
+            <tr>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Detalles</th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Categoría</th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Monto</th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-200">
+            {filteredExpenses.map((expense, index) => (
+              <tr key={index} className="hover:bg-gray-50">
+                <td className="px-4 py-2 whitespace-nowrap text-sm">{expense.details}</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm">{expense.category || 'Ahorros'}</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm">${expense.amount}</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm">{expense.date}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

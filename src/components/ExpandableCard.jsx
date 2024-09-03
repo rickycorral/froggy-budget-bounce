@@ -32,7 +32,7 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount }) => {
             className={`w-full rounded-full ${isExpanded ? 'bg-green-500 hover:bg-green-600 text-white' : 'bg-transparent text-white hover:bg-green-600'} text-sm`}
             onClick={() => setIsExpanded(!isExpanded)}
           >
-            {isExpanded ? title : title.charAt(0)}
+            {isExpanded ? title : title}
           </Button>
           {isExpanded && <span className="text-green-700 font-bold ml-2 text-sm">${totalAmount.toFixed(2)}</span>}
         </CardTitle>

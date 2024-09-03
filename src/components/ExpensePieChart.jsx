@@ -1,18 +1,20 @@
 import React from 'react';
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 
 export const ExpensePieChart = ({ expenses }) => {
-  const data = expenses.reduce((acc, expense) => {
-    const existingCategory = acc.find(item => item.name === expense.type);
-    if (existingCategory) {
-      existingCategory.value += parseFloat(expense.amount);
-    } else {
-      acc.push({ name: expense.type, value: parseFloat(expense.amount) });
-    }
-    return acc;
-  }, []);
+  const data = expenses
+    .filter(expense => expense.type === 'expense')
+    .reduce((acc, expense) => {
+      const existingCategory = acc.find(item => item.name === expense.category);
+      if (existingCategory) {
+        existingCategory.value += parseFloat(expense.amount);
+      } else {
+        acc.push({ name: expense.category, value: parseFloat(expense.amount) });
+      }
+      return acc;
+    }, []);
 
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
+  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d', '#ffc658', '#8dd1e1'];
 
   return (
     <div className="h-80 w-full">
@@ -31,6 +33,7 @@ export const ExpensePieChart = ({ expenses }) => {
               <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
             ))}
           </Pie>
+          <Tooltip />
           <Legend />
         </PieChart>
       </ResponsiveContainer>
