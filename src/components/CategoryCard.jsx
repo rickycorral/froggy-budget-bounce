@@ -38,10 +38,26 @@ export const CategoryCard = ({ title, expenses = [], onEdit, onDelete, budget, o
     setIsSettingBudget(false);
   };
 
+  const getCardColor = () => {
+    const colors = [
+      'bg-blue-100 border-blue-300',
+      'bg-green-100 border-green-300',
+      'bg-yellow-100 border-yellow-300',
+      'bg-red-100 border-red-300',
+      'bg-purple-100 border-purple-300',
+      'bg-pink-100 border-pink-300',
+      'bg-indigo-100 border-indigo-300',
+      'bg-teal-100 border-teal-300'
+    ];
+    return colors[Math.floor(Math.random() * colors.length)];
+  };
+
+  const cardColor = getCardColor();
+
   return (
-    <Card className="bg-white bg-opacity-80 border-green-300 shadow-lg">
+    <Card className={`${cardColor} shadow-lg`}>
       <CardHeader>
-        <CardTitle className="text-green-700 flex justify-between items-center text-sm">
+        <CardTitle className="text-gray-800 flex justify-between items-center text-sm">
           <span>{title}</span>
           {budget ? (
             <Button onClick={() => setIsSettingBudget(true)} className="bg-green-500 hover:bg-green-600 text-white p-2">
@@ -70,7 +86,7 @@ export const CategoryCard = ({ title, expenses = [], onEdit, onDelete, budget, o
         <p className="font-bold text-green-600 text-sm">Total: ${totalExpense.toFixed(2)}</p>
         <Progress value={progressPercentage} className="my-2 gradient-progress" />
         {expenses.map((expense, index) => (
-          <div key={index} className="mt-2 p-2 bg-green-50 rounded border border-green-200 relative text-sm">
+          <div key={index} className="mt-2 p-2 bg-white rounded border border-gray-200 relative text-sm">
             {editingExpense === expense ? (
               <>
                 <Input

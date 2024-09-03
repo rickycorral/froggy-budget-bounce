@@ -70,7 +70,7 @@ const Index = () => {
     <div className="min-h-screen p-4 bg-green-50 bg-opacity-90">
       <Header />
       <IncomeCard onSave={handleSaveIncome} currentIncome={income} />
-      <div className="flex flex-col sm:flex-row justify-between my-4 space-y-4 sm:space-y-0 sm:space-x-4">
+      <div className="flex flex-col sm:flex-row justify-center my-4 space-y-4 sm:space-y-0 sm:space-x-4">
         <ExpandableCard title="Ahorros" onAdd={handleAddExpense} categories={categories} totalAmount={totalSavings} />
         <ExpandableCard title="Gastos" onAdd={handleAddExpense} categories={categories} totalAmount={totalExpenses} />
       </div>
