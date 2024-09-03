@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { Pencil, Trash2, DollarSign } from 'lucide-react';
+import { motion } from "framer-motion";
 
 export const CategoryCard = ({ title, expenses = [], onEdit, onDelete, budget, onSetBudget }) => {
   const [editingExpense, setEditingExpense] = useState(null);
@@ -12,6 +13,7 @@ export const CategoryCard = ({ title, expenses = [], onEdit, onDelete, budget, o
   const [editedDetails, setEditedDetails] = useState('');
   const [isSettingBudget, setIsSettingBudget] = useState(false);
   const [newBudget, setNewBudget] = useState(budget || '');
+  const [isJumping, setIsJumping] = useState(false);
 
   const totalExpense = expenses.reduce((sum, expense) => sum + parseFloat(expense.amount), 0);
   const progressPercentage = budget ? (totalExpense / budget) * 100 : 0;
@@ -54,21 +56,32 @@ export const CategoryCard = ({ title, expenses = [], onEdit, onDelete, budget, o
 
   const cardColor = getCardColor();
 
+  const handleFrogClick = () => {
+    setIsJumping(true);
+    setTimeout(() => setIsJumping(false), 500);
+  };
+
   return (
     <Card className={`${cardColor} shadow-lg`}>
-      <CardHeader>
-        <CardTitle className="text-gray-800 flex justify-between items-center text-sm">
-          <span>{title}</span>
-          {budget ? (
-            <Button onClick={() => setIsSettingBudget(true)} className="bg-green-500 hover:bg-green-600 text-white p-2">
-              <DollarSign className="h-4 w-4" />
-            </Button>
-          ) : (
-            <Button onClick={() => setIsSettingBudget(true)} className="bg-green-500 hover:bg-green-600 text-white p-2">
-              <DollarSign className="h-4 w-4" />
-            </Button>
-          )}
-        </CardTitle>
+      <CardHeader className="flex flex-row items-center space-x-2">
+        <motion.div
+          animate={isJumping ? { y: [-10, 0] } : {}}
+          transition={{ duration: 0.5 }}
+          onClick={handleFrogClick}
+          className="cursor-pointer"
+        >
+          🐸
+        </motion.div>
+        <CardTitle className="text-gray-800 flex-grow text-lg font-bold">{title}</CardTitle>
+        {budget ? (
+          <Button onClick={() => setIsSettingBudget(true)} className="bg-green-500 hover:bg-green-600 text-white p-2">
+            <DollarSign className="h-4 w-4" />
+          </Button>
+        ) : (
+          <Button onClick={() => setIsSettingBudget(true)} className="bg-green-500 hover:bg-green-600 text-white p-2">
+            <DollarSign className="h-4 w-4" />
+          </Button>
+        )}
       </CardHeader>
       <CardContent>
         {isSettingBudget ? (
@@ -83,8 +96,18 @@ export const CategoryCard = ({ title, expenses = [], onEdit, onDelete, budget, o
             <Button onClick={handleSetBudget} className="bg-green-500 hover:bg-green-600 text-white text-xs">Guardar</Button>
           </div>
         ) : null}
-        <p className="font-bold text-green-600 text-sm">Total: ${totalExpense.toFixed(2)}</p>
-        <Progress value={progressPercentage} className="my-2 gradient-progress" />
+        <div className="flex justify-between items-center mb-2">
+          <p className="font-bold text-green-600 text-sm">Total: ${totalExpense.toFixed(2)}</p>
+          {budget && <p className="font-bold text-blue-600 text-sm">Presupuesto: ${parseFloat(budget).toFixed(2)}</p>}
+        </div>
+        <div className="relative pt-1">
+          <Progress value={progressPercentage} className="h-2 mb-1 gradient-progress" />
+          <div className="flex justify-end">
+            <span className="text-xs font-semibold inline-block text-blue-600">
+              {progressPercentage.toFixed(1)}%
+            </span>
+          </div>
+        </div>
         {expenses.map((expense, index) => (
           <div key={index} className="mt-2 p-2 bg-white rounded border border-gray-200 relative text-sm">
             {editingExpense === expense ? (
