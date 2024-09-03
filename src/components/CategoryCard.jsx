@@ -63,16 +63,19 @@ export const CategoryCard = ({ title, expenses = [], onEdit, onDelete, budget, o
 
   return (
     <Card className={`${cardColor} shadow-lg`}>
-      <CardHeader className="flex flex-row items-center space-x-2">
-        <motion.div
-          animate={isJumping ? { y: [-10, 0] } : {}}
-          transition={{ duration: 0.5 }}
-          onClick={handleFrogClick}
-          className="cursor-pointer"
-        >
-          🐸
-        </motion.div>
-        <CardTitle className="text-gray-800 flex-grow text-lg font-bold">{title}</CardTitle>
+      <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-2">
+        <div className="flex items-center space-x-2">
+          <motion.div
+            animate={isJumping ? { y: [-10, 0] } : {}}
+            transition={{ duration: 0.5 }}
+            onClick={handleFrogClick}
+            className="cursor-pointer"
+          >
+            🐸
+          </motion.div>
+          <CardTitle className="text-gray-800 text-lg font-bold">{title}</CardTitle>
+        </div>
+        <div className="flex-grow"></div>
         {budget ? (
           <Button onClick={() => setIsSettingBudget(true)} className="bg-green-500 hover:bg-green-600 text-white p-2">
             <DollarSign className="h-4 w-4" />
@@ -96,7 +99,7 @@ export const CategoryCard = ({ title, expenses = [], onEdit, onDelete, budget, o
             <Button onClick={handleSetBudget} className="bg-green-500 hover:bg-green-600 text-white text-xs">Guardar</Button>
           </div>
         ) : null}
-        <div className="flex justify-between items-center mb-2">
+        <div className="flex flex-col mb-2">
           <p className="font-bold text-green-600 text-sm">Total: ${totalExpense.toFixed(2)}</p>
           {budget && <p className="font-bold text-blue-600 text-sm">Presupuesto: ${parseFloat(budget).toFixed(2)}</p>}
         </div>
@@ -134,9 +137,7 @@ export const CategoryCard = ({ title, expenses = [], onEdit, onDelete, budget, o
               </>
             ) : (
               <>
-                <p>Monto: ${expense.amount}</p>
-                <p>Fecha: {expense.date}</p>
-                <p>Detalles: {expense.details}</p>
+                <p className="pr-16">Monto: ${expense.amount} | Fecha: {expense.date} | Detalles: {expense.details}</p>
                 <div className="absolute top-1 right-1 flex space-x-1">
                   <Button onClick={() => handleEdit(expense)} size="icon" variant="ghost" className="h-6 w-6 p-0">
                     <Pencil className="h-3 w-3" />
