@@ -1,4 +1,5 @@
 import React from 'react';
+import logo from '../../src/rarare1.png'; // Import the image
 
 export const Header = () => {
   const handleLogoClick = () => {
@@ -11,7 +12,7 @@ export const Header = () => {
       <h1 className="text-2xl font-bold text-center">RanaRe</h1>
       <div className="flex-grow flex justify-end">
         <img 
-          src="/ranare1.png" 
+          src={logo} // Use the imported image
           alt="RanaRe Logo" 
           className="h-8 w-auto cursor-pointer" 
           onClick={handleLogoClick}

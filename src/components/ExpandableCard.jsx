@@ -25,59 +25,61 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount }) => {
   };
 
   return (
-    <Card className={`transition-all duration-300 ease-in-out ${isExpanded ? 'w-full sm:w-1/2 bg-white bg-opacity-80' : 'w-24 h-24 rounded-full bg-green-500 flex items-center justify-center mx-auto'} border-green-300 shadow-lg`}>
-      <CardHeader>
-        <CardTitle className="flex justify-between items-center">
-          <Button
-            className={`w-full ${isExpanded ? 'rounded-lg bg-green-500 hover:bg-green-600 text-white' : 'rounded-full bg-transparent text-white hover:bg-green-600'} text-sm`}
-            onClick={() => setIsExpanded(!isExpanded)}
-          >
-            {isExpanded ? title : title}
-          </Button>
-          {isExpanded && <span className="text-green-700 font-bold ml-2 text-sm">${totalAmount.toFixed(2)}</span>}
-        </CardTitle>
-      </CardHeader>
-      {isExpanded && (
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-2">
-            <Input
-              type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              required
-              className="border-green-300 focus:border-green-500 text-sm"
-            />
-            <Input
-              type="number"
-              placeholder="Monto"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              required
-              className="border-green-300 focus:border-green-500 text-sm"
-            />
-            <Input
-              placeholder="Detalles"
-              value={details}
-              onChange={(e) => setDetails(e.target.value)}
-              required
-              className="border-green-300 focus:border-green-500 text-sm"
-            />
-            {title.toLowerCase() !== 'ahorros' && (
-              <Select value={category} onValueChange={setCategory} required>
-                <SelectTrigger className="border-green-300 focus:border-green-500 text-sm">
-                  <SelectValue placeholder="Seleccionar categoría" />
-                </SelectTrigger>
-                <SelectContent>
-                  {categories.map((cat) => (
-                    <SelectItem key={cat} value={cat}>{cat}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            )}
-            <Button type="submit" className="bg-green-500 hover:bg-green-600 text-white text-sm">Agregar</Button>
-          </form>
-        </CardContent>
-      )}
-    </Card>
+    <div className="flex justify-center w-full">
+      <Card className={`transition-all duration-300 ease-in-out ${isExpanded ? 'w-full sm:w-1/2 bg-white bg-opacity-80' : 'w-24 h-24 rounded-full bg-green-500 flex items-center justify-center'} border-green-300 shadow-lg`}>
+        <CardHeader>
+          <CardTitle className="flex justify-center items-center">
+            <Button
+              className={`w-full ${isExpanded ? 'rounded-lg bg-green-500 hover:bg-green-600 text-white' : 'rounded-full bg-transparent text-white hover:bg-green-600'} text-sm`}
+              onClick={() => setIsExpanded(!isExpanded)}
+            >
+              {isExpanded ? title : title}
+            </Button>
+            {isExpanded && <span className="text-green-700 font-bold ml-2 text-sm">${totalAmount.toFixed(2)}</span>}
+          </CardTitle>
+        </CardHeader>
+        {isExpanded && (
+          <CardContent>
+            <form onSubmit={handleSubmit} className="space-y-2">
+              <Input
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                required
+                className="border-green-300 focus:border-green-500 text-sm"
+              />
+              <Input
+                type="number"
+                placeholder="Monto"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                required
+                className="border-green-300 focus:border-green-500 text-sm"
+              />
+              <Input
+                placeholder="Detalles"
+                value={details}
+                onChange={(e) => setDetails(e.target.value)}
+                required
+                className="border-green-300 focus:border-green-500 text-sm"
+              />
+              {title.toLowerCase() !== 'ahorros' && (
+                <Select value={category} onValueChange={setCategory} required>
+                  <SelectTrigger className="border-green-300 focus:border-green-500 text-sm">
+                    <SelectValue placeholder="Seleccionar categoría" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categories.map((cat) => (
+                      <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+              <Button type="submit" className="bg-green-500 hover:bg-green-600 text-white text-sm">Agregar</Button>
+            </form>
+          </CardContent>
+        )}
+      </Card>
+    </div>
   );
 };

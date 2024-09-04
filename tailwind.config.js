@@ -1,6 +1,5 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: ["class"],
   content: [
     "./pages/**/*.{js,jsx}",
     "./components/**/*.{js,jsx}",
@@ -17,12 +16,15 @@ module.exports = {
       },
     },
     extend: {
+      backgroundImage: {
+        'frog-pattern': "url('/src/frog.png')", // Ensure the correct path to the image
+      },
       colors: {
+        background: "#ffffff", // Force background to be solid white
+        foreground: "#000000", // Force text to be solid black
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
