@@ -17,7 +17,7 @@ export const ExpensePieChart = ({ expenses }) => {
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d', '#ffc658', '#8dd1e1'];
 
   return (
-    <div className="h-80 w-full bg-white bg-opacity-50 rounded-lg p-4">
+    <div className="h-80 w-full">
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           <Pie
@@ -35,13 +35,7 @@ export const ExpensePieChart = ({ expenses }) => {
             ))}
           </Pie>
           <Tooltip />
-          <Legend
-              iconType="circle"
-              layout="horizontal"
-              align="center"
-              verticalAlign="bottom"
-              wrapperStyle={{ fontSize: '16px', fontWeight: 'bold' }}
-            />
+          <Legend />
         </PieChart>
       </ResponsiveContainer>
     </div>
