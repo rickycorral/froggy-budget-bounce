@@ -37,7 +37,7 @@
 
   /* Define the body background with a single declaration */
   body {
-    background-image: url('../../src/frog.png'); /* Ensure the correct path */
+    background-image: url('./frog.png'); /* Ensure the correct path */
     background-attachment: fixed;
     background-repeat: repeat;
     background-size: auto; /* Display the image at its natural size */
