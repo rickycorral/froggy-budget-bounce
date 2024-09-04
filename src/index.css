@@ -34,17 +34,19 @@
 
     --radius: 0.5rem;
   }
+}
 
-  /* Define the body background with a single declaration */
-  body {
-    background-image: url('./frog.png'); /* Ensure the correct path */
-    background-attachment: fixed;
-    background-repeat: repeat;
-    background-size: auto; /* Display the image at its natural size */
-    background-color: #ffffff; /* White background to avoid transparency */
-    opacity: 1; /* Ensure full opacity */
-    background-position: center; /* Center the image */
-  }
+body {
+  background-image: url('/src/frog.png');
+  background-attachment: fixed;
+  background-repeat: repeat;
+  background-size: auto;
+  background-color: #ffffff; /* Ensure a solid white background */
+  background-position: center;
+}
+
+.min-h-screen {
+  background-color: transparent !important; /* Make it transparent to ensure the background image is visible */
 }
 
 .gradient-progress {
