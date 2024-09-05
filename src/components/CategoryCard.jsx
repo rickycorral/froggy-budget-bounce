@@ -91,8 +91,8 @@ export const CategoryCard = ({
         isExpanded ? "h-auto" : "h-48"
       }`}
     >
-      <CardHeader className="flex flex-col items-start space-y-2">
-        <div className="flex items-center space-x-2 w-full">
+      <CardHeader className="flex flex-col items-center space-y-2">
+        <div className="flex items-center justify-between w-full">
           <motion.div
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
@@ -101,14 +101,9 @@ export const CategoryCard = ({
           >
             {categoryIcons[title] || "🐸"}
           </motion.div>
-          <CardTitle
-            className={`text-gray-800 font-bold flex-grow ${
-              isExpanded ? "text-md" : "text-md"
-            }`}
-          >
+          <CardTitle className="text-gray-800 font-bold text-center flex-grow text-md">
             {title}
           </CardTitle>
-          {/* Button for budget ($) */}
           <Button
             onClick={() => setIsSettingBudget(true)}
             className="bg-green-500 hover:bg-green-600 text-white p-2 w-8 h-8 flex items-center justify-center"
@@ -116,6 +111,7 @@ export const CategoryCard = ({
             <DollarSign className="h-4 w-4" />
           </Button>
         </div>
+
         <div className="flex flex-col w-full">
           <p className="font-bold text-green-600 text-md">
             Total: ${totalExpense.toFixed(2)}
