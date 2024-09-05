@@ -14,7 +14,7 @@ export const Header = () => {
         <img 
           src={logo} // Use the imported image
           alt="RanaRe Logo" 
-          className="h-8 w-auto cursor-pointer" 
+          className="h-16 w-auto cursor-pointer" 
           onClick={handleLogoClick}
         />
       </div>

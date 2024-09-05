@@ -117,7 +117,7 @@ export const CategoryCard = ({
           </Button>
         </div>
         <div className="flex flex-col w-full">
-          <p className="font-bold text-green-600 text-sm">
+          <p className="font-bold text-green-600 text-md">
             Total: ${totalExpense.toFixed(2)}
           </p>
           {budget && (
