@@ -43,18 +43,20 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount }) => {
     >
       <Card 
         className={`transition-all duration-300 ease-in-out ${
-          isExpanded ? 'w-full sm:w-80 bg-white bg-opacity-80' : 'w-48 h-48 rounded-full bg-green-500 flex items-center justify-center'
+          isExpanded ? 'w-80 bg-white bg-opacity-80' : 'w-48 h-48 rounded-full bg-green-500 flex items-center justify-center'
         } border-green-300 shadow-lg`}
       >
         <CardHeader>
           <CardTitle className="flex justify-center items-center">
             <Button
               className={`w-full ${
-                isExpanded ? 'rounded-lg bg-green-500 hover:bg-green-600 text-white' : 'rounded-full bg-transparent text-white hover:bg-green-600'
-              } text-sm`}
+                isExpanded 
+                  ? 'rounded-lg bg-green-500 hover:bg-green-600 text-white text-sm' 
+                  : 'rounded-full bg-transparent text-white hover:bg-green-600 text-lg font-bold'
+              }`}
               onClick={() => setIsExpanded(!isExpanded)}
             >
-              {isExpanded ? title : title}
+              {title}
             </Button>
             {isExpanded && <span className="text-green-700 font-bold ml-2 text-sm">${totalAmount.toFixed(2)}</span>}
           </CardTitle>
