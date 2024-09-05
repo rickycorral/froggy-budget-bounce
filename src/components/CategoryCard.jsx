@@ -1,31 +1,67 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
-import { Pencil, Trash2, DollarSign } from 'lucide-react';
+import {
+  Pencil,
+  Trash2,
+  DollarSign,
+  School,
+  Home,
+  Car,
+  Utensils,
+  Dog,
+  Package,
+  Pill,
+  Settings,
+} from "lucide-react";
 import { motion } from "framer-motion";
 
 const categoryColors = {
-  'Escuela': 'bg-blue-500',
-  'Renta': 'bg-purple-500',
-  'Servicios': 'bg-yellow-500',
-  'Transporte': 'bg-red-500',
-  'Comida': 'bg-green-500',
-  'Mascota': 'bg-pink-500',
-  'Entretenimiento': 'bg-indigo-500',
-  'Medicinas': 'bg-orange-500'
+  Escuela: "bg-blue-500",
+  Renta: "bg-purple-500",
+  Servicios: "bg-yellow-500",
+  Uber: "bg-black",
+  Comida: "bg-red-500",
+  Roma: "bg-pink-500",
+  Otros: "bg-indigo-500",
+  Medicinas: "bg-orange-500",
 };
 
-export const CategoryCard = ({ title, expenses = [], onEdit, onDelete, budget, onSetBudget, isExpanded, onExpand }) => {
-  const [editingExpense, setEditingExpense] = useState(null);
-  const [editedAmount, setEditedAmount] = useState('');
-  const [editedDate, setEditedDate] = useState('');
-  const [editedDetails, setEditedDetails] = useState('');
-  const [isSettingBudget, setIsSettingBudget] = useState(false);
-  const [newBudget, setNewBudget] = useState(budget || '');
+// Mapping categories to icons
+const categoryIcons = {
+  Escuela: <School className="w-5 h-5 text-white" />,
+  Renta: <Home className="w-5 h-5 text-white" />,
+  Servicios: <Settings className="w-5 h-5 text-white" />,
+  Uber: <Car className="w-5 h-5 text-white" />,
+  Comida: <Utensils className="w-5 h-5 text-white" />,
+  Roma: <Dog className="w-5 h-5 text-white" />,
+  Otros: <Package className="w-5 h-5 text-white" />,
+  Medicinas: <Pill className="w-5 h-5 text-white" />,
+};
 
-  const totalExpense = expenses.reduce((sum, expense) => sum + parseFloat(expense.amount), 0);
+export const CategoryCard = ({
+  title,
+  expenses = [],
+  onEdit,
+  onDelete,
+  budget,
+  onSetBudget,
+  isExpanded,
+  onExpand,
+}) => {
+  const [editingExpense, setEditingExpense] = useState(null);
+  const [editedAmount, setEditedAmount] = useState("");
+  const [editedDate, setEditedDate] = useState("");
+  const [editedDetails, setEditedDetails] = useState("");
+  const [isSettingBudget, setIsSettingBudget] = useState(false);
+  const [newBudget, setNewBudget] = useState(budget || "");
+
+  const totalExpense = expenses.reduce(
+    (sum, expense) => sum + parseFloat(expense.amount),
+    0
+  );
   const progressPercentage = budget ? (totalExpense / budget) * 100 : 0;
 
   const handleEdit = (expense) => {
@@ -40,7 +76,7 @@ export const CategoryCard = ({ title, expenses = [], onEdit, onDelete, budget, o
       ...editingExpense,
       amount: editedAmount,
       date: editedDate,
-      details: editedDetails
+      details: editedDetails,
     });
     setEditingExpense(null);
   };
@@ -51,7 +87,11 @@ export const CategoryCard = ({ title, expenses = [], onEdit, onDelete, budget, o
   };
 
   return (
-    <Card className={`w-full bg-white bg-opacity-90 border-green-300 shadow-lg ${isExpanded ? 'h-auto' : 'h-48'}`}>
+    <Card
+      className={`w-full bg-white bg-opacity-90 border-green-300 shadow-lg ${
+        isExpanded ? "h-auto" : "h-48"
+      }`}
+    >
       <CardHeader className="flex flex-col items-start space-y-2">
         <div className="flex items-center space-x-2 w-full">
           <motion.div
@@ -60,19 +100,49 @@ export const CategoryCard = ({ title, expenses = [], onEdit, onDelete, budget, o
             className={`w-8 h-8 ${categoryColors[title]} rounded-full flex items-center justify-center cursor-pointer`}
             onClick={onExpand}
           >
-            🐸
+            {categoryIcons[title] || "🐸"}
+            {/* If no icon matches, default to the frog emoji */}
           </motion.div>
-          <CardTitle className={`text-gray-800 font-bold flex-grow ${isExpanded ? 'text-lg' : 'text-xl'}`}>{title}</CardTitle>
-          <Button onClick={onExpand} className={`${categoryColors[title]} hover:opacity-80 text-white p-2 w-8 h-8 flex items-center justify-center`}>
-            {isExpanded ? '▲' : '▼'}
-          </Button>
+          <CardTitle
+            className={`text-gray-800 font-bold flex-grow ${
+              isExpanded ? "text-lg" : "text-xl"
+            }`}
+          >
+            {title}
+          </CardTitle>
+          {/* Added button for budget ($) to the left of expand button */}
+          <div className="flex space-x-2">
+            <Button
+              onClick={() => setIsSettingBudget(true)}
+              className="bg-green-500 hover:bg-green-600 text-white p-2 w-8 h-8 flex items-center justify-center"
+            >
+              <DollarSign className="h-4 w-4" />
+            </Button>
+            <Button
+              onClick={onExpand}
+              className={`${categoryColors[title]} hover:opacity-80 text-white p-2 w-8 h-8 flex items-center justify-center`}
+            >
+              {isExpanded ? "▲" : "▼"}
+            </Button>
+          </div>
         </div>
         <div className="flex flex-col w-full">
-          <p className="font-bold text-green-600 text-sm">Total: ${totalExpense.toFixed(2)}</p>
-          {budget && <p className="font-bold text-blue-600 text-sm">Presupuesto: ${parseFloat(budget).toFixed(2)}</p>}
+          <p className="font-bold text-green-600 text-sm">
+            Total: ${totalExpense.toFixed(2)}
+          </p>
+          {budget && (
+            <p className="font-bold text-blue-600 text-sm">
+              Presupuesto: ${parseFloat(budget).toFixed(2)}
+            </p>
+          )}
         </div>
-        <Progress value={progressPercentage} className="w-full h-2 bg-gray-200" />
-        <p className="text-xs text-right w-full">{progressPercentage.toFixed(1)}% del presupuesto utilizado</p>
+        <Progress
+          value={progressPercentage}
+          className="w-full h-2 bg-gray-200"
+        />
+        <p className="text-xs text-right w-full">
+          {progressPercentage.toFixed(1)}% del presupuesto utilizado
+        </p>
       </CardHeader>
       {isExpanded && (
         <CardContent>
@@ -85,16 +155,20 @@ export const CategoryCard = ({ title, expenses = [], onEdit, onDelete, budget, o
                 placeholder="Ingresar presupuesto"
                 className="border-green-300 focus:border-green-500 text-sm"
               />
-              <Button onClick={handleSetBudget} className="bg-green-500 hover:bg-green-600 text-white text-xs">Guardar</Button>
+              <Button
+                onClick={handleSetBudget}
+                className="bg-green-500 hover:bg-green-600 text-white text-xs"
+              >
+                Guardar
+              </Button>
             </div>
-          ) : (
-            <Button onClick={() => setIsSettingBudget(true)} className="bg-green-500 hover:bg-green-600 text-white p-2 mb-4">
-              <DollarSign className="h-4 w-4" />
-            </Button>
-          )}
+          ) : null}
           <div className="space-y-2">
             {expenses.map((expense, index) => (
-              <div key={index} className="bg-white bg-opacity-70 rounded border border-gray-200 p-2 text-xs">
+              <div
+                key={index}
+                className="bg-white bg-opacity-70 rounded border border-gray-200 p-2 text-xs"
+              >
                 {editingExpense === expense ? (
                   <div className="space-y-2">
                     <Input
@@ -115,8 +189,19 @@ export const CategoryCard = ({ title, expenses = [], onEdit, onDelete, budget, o
                       className="border-green-300 focus:border-green-500 text-xs"
                     />
                     <div className="flex justify-end space-x-2">
-                      <Button onClick={handleSave} className="bg-green-500 hover:bg-green-600 text-white text-xs">Guardar</Button>
-                      <Button onClick={() => setEditingExpense(null)} variant="secondary" className="bg-green-200 hover:bg-green-300 text-green-800 text-xs">Cancelar</Button>
+                      <Button
+                        onClick={handleSave}
+                        className="bg-green-500 hover:bg-green-600 text-white text-xs"
+                      >
+                        Guardar
+                      </Button>
+                      <Button
+                        onClick={() => setEditingExpense(null)}
+                        variant="secondary"
+                        className="bg-green-200 hover:bg-green-300 text-green-800 text-xs"
+                      >
+                        Cancelar
+                      </Button>
                     </div>
                   </div>
                 ) : (
@@ -127,10 +212,20 @@ export const CategoryCard = ({ title, expenses = [], onEdit, onDelete, budget, o
                       <p className="text-gray-800">{expense.details}</p>
                     </div>
                     <div className="flex space-x-1">
-                      <Button onClick={() => handleEdit(expense)} size="icon" variant="ghost" className="h-6 w-6 p-0">
+                      <Button
+                        onClick={() => handleEdit(expense)}
+                        size="icon"
+                        variant="ghost"
+                        className="h-6 w-6 p-0"
+                      >
                         <Pencil className="h-3 w-3" />
                       </Button>
-                      <Button onClick={() => onDelete(expense)} size="icon" variant="ghost" className="h-6 w-6 p-0 text-red-500 hover:text-red-700">
+                      <Button
+                        onClick={() => onDelete(expense)}
+                        size="icon"
+                        variant="ghost"
+                        className="h-6 w-6 p-0 text-red-500 hover:text-red-700"
+                      >
                         <Trash2 className="h-3 w-3" />
                       </Button>
                     </div>
