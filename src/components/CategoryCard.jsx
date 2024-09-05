@@ -194,9 +194,9 @@ export const CategoryCard = ({
                   <div className="flex justify-between items-center">
                     <div>
                       <p className="font-semibold text-sm">${expense.amount}</p>
-                      <p className="text-gray-800 text-xs">{expense.details}</p>
+                      <p className="text-gray-800 text-sm">{expense.details}</p>
                       <p className="text-gray-600 text-xs">
-                        {new Date(expense.date).toLocaleDateString('es-ES', { month: 'short', day: 'numeric' })}
+                        Fecha:&nbsp;{new Date(expense.date).toLocaleDateString('es-ES', { month: 'short', day: 'numeric' })}
                       </p>
                     </div>
 
