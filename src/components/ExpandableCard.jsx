@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -16,6 +16,27 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount }) => {
   const [amount, setAmount] = useState('');
   const [details, setDetails] = useState('');
   const [category, setCategory] = useState('');
+  const cardRef = useRef(null);
+
+  useEffect(() => {
+    const resizeObserver = new ResizeObserver(entries => {
+      for (let entry of entries) {
+        if (entry.target === cardRef.current) {
+          // Handle resize here if needed
+        }
+      }
+    });
+
+    if (cardRef.current) {
+      resizeObserver.observe(cardRef.current);
+    }
+
+    return () => {
+      if (cardRef.current) {
+        resizeObserver.unobserve(cardRef.current);
+      }
+    };
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -35,11 +56,18 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount }) => {
       className="flex justify-center w-full"
       whileTap={{ scale: 0.95 }}
     >
-      <Card className={`transition-all duration-300 ease-in-out ${isExpanded ? 'w-full sm:w-3/4 bg-white bg-opacity-80' : 'w-40 h-40 rounded-full bg-green-500 flex items-center justify-center'} border-green-300 shadow-lg`}>
+      <Card 
+        ref={cardRef}
+        className={`transition-all duration-300 ease-in-out ${
+          isExpanded ? 'w-full sm:w-96 bg-white bg-opacity-80' : 'w-48 h-48 rounded-full bg-green-500 flex items-center justify-center'
+        } border-green-300 shadow-lg`}
+      >
         <CardHeader>
           <CardTitle className="flex justify-center items-center">
             <Button
-              className={`w-full ${isExpanded ? 'rounded-lg bg-green-500 hover:bg-green-600 text-white' : 'rounded-full bg-transparent text-white hover:bg-green-600'} text-sm`}
+              className={`w-full ${
+                isExpanded ? 'rounded-lg bg-green-500 hover:bg-green-600 text-white' : 'rounded-full bg-transparent text-white hover:bg-green-600'
+              } text-sm`}
               onClick={() => setIsExpanded(!isExpanded)}
             >
               {isExpanded ? title : title}
