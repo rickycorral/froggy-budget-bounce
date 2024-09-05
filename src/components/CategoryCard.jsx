@@ -131,7 +131,7 @@ export const CategoryCard = ({
           className="w-full h-2 bg-gray-200"
         />
         <p className="text-s text-right w-full">
-          {progressPercentage.toFixed(1)}% del presupuesto
+          {progressPercentage.toFixed(1)}% gastado
         </p>
       </CardHeader>
       {isExpanded && (
