@@ -51,7 +51,7 @@ export const CategoryCard = ({ title, expenses = [], onEdit, onDelete, budget, o
   };
 
   return (
-    <Card className={`w-full bg-white bg-opacity-80 border-green-300 shadow-lg ${isExpanded ? 'h-auto' : 'h-48'}`}>
+    <Card className={`w-full bg-white bg-opacity-90 border-green-300 shadow-lg ${isExpanded ? 'h-auto' : 'h-48'}`}>
       <CardHeader className="flex flex-col items-start space-y-2">
         <div className="flex items-center space-x-2 w-full">
           <motion.div

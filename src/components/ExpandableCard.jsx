@@ -35,6 +35,8 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount, isExpand
     setIsCalendarOpen(false);
   };
 
+  const cardColor = title.toLowerCase() === 'ahorros' ? 'bg-blue-500' : 'bg-red-500';
+
   return (
     <motion.div 
       className="flex justify-center w-full"
@@ -42,7 +44,7 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount, isExpand
     >
       <Card 
         className={`transition-all duration-300 ease-in-out ${
-          isExpanded ? 'w-80 bg-white bg-opacity-80' : 'w-48 h-48 rounded-full bg-green-500 flex items-center justify-center'
+          isExpanded ? 'w-80 bg-white bg-opacity-80' : `w-48 h-48 rounded-full ${cardColor} flex items-center justify-center`
         } border-green-300 shadow-lg`}
       >
         <CardHeader>
@@ -51,7 +53,7 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount, isExpand
               className={`w-full ${
                 isExpanded 
                   ? 'rounded-lg bg-green-500 hover:bg-green-600 text-white text-sm' 
-                  : 'rounded-full bg-transparent text-white hover:bg-green-600 text-xl font-bold'
+                  : 'rounded-full bg-transparent text-white hover:bg-opacity-20 text-xl font-bold'
               }`}
               onClick={onExpand}
             >
