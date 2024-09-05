@@ -195,7 +195,7 @@ export const CategoryCard = ({
                     <div>
                       <p className="font-semibold text-sm">${expense.amount}</p>
                       <p className="text-gray-800 text-sm">{expense.details}</p>
-                      <p className="text-gray-600 text-xs">
+                      <p className="text-gray-600 text-[10px]">
                         Fecha:&nbsp;{new Date(expense.date).toLocaleDateString('es-ES', { month: 'short', day: 'numeric' })}
                       </p>
                     </div>
