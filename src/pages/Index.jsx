@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Header } from '../components/Header';
-import { BudgetCard } from '../components/BudgetCard';
+import { IncomeCard } from '../components/IncomeCard';
 import { ExpandableCard } from '../components/ExpandableCard';
 import { CategoryCard } from '../components/CategoryCard';
 import { ExpensePieChart } from '../components/ExpensePieChart';
@@ -70,16 +70,22 @@ const Index = () => {
 
   const handleExpandCard = (cardName) => {
     setExpandedCard(expandedCard === cardName ? null : cardName);
+    if (cardName !== expandedCard) {
+      setExpandedCategory(null);
+    }
   };
 
   const handleExpandCategory = (category) => {
     setExpandedCategory(expandedCategory === category ? null : category);
+    if (category !== expandedCategory) {
+      setExpandedCard(null);
+    }
   };
 
   return (
     <div className="min-h-screen p-4 bg-green-50 bg-opacity-90">
       <Header />
-      <BudgetCard 
+      <IncomeCard 
         onSave={handleSaveIncome} 
         currentIncome={income} 
         totalExpenses={totalExpenses}
@@ -103,7 +109,7 @@ const Index = () => {
           onExpand={() => handleExpandCard('Gastos')}
         />
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-4">
         {categories.map((category, index) => (
           <CategoryCard 
             key={index} 

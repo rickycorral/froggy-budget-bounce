@@ -13,7 +13,6 @@ export const CategoryCard = ({ title, expenses = [], onEdit, onDelete, budget, o
   const [editedDetails, setEditedDetails] = useState('');
   const [isSettingBudget, setIsSettingBudget] = useState(false);
   const [newBudget, setNewBudget] = useState(budget || '');
-  const [isJumping, setIsJumping] = useState(false);
 
   const totalExpense = expenses.reduce((sum, expense) => sum + parseFloat(expense.amount), 0);
   const progressPercentage = budget ? (totalExpense / budget) * 100 : 0;
@@ -40,50 +39,21 @@ export const CategoryCard = ({ title, expenses = [], onEdit, onDelete, budget, o
     setIsSettingBudget(false);
   };
 
-  const getCardColor = () => {
-    const colors = [
-      'bg-blue-100 bg-opacity-90 border-blue-300',
-      'bg-green-100 bg-opacity-90 border-green-300',
-      'bg-yellow-100 bg-opacity-90 border-yellow-300',
-      'bg-red-100 bg-opacity-90 border-red-300',
-      'bg-purple-100 bg-opacity-90 border-purple-300',
-      'bg-pink-100 bg-opacity-90 border-pink-300',
-      'bg-indigo-100 bg-opacity-90 border-indigo-300',
-      'bg-teal-100 bg-opacity-90 border-teal-300'
-    ];
-    return colors[Math.floor(Math.random() * colors.length)];
-  };
-
-  const cardColor = getCardColor();
-
-  const handleFrogClick = () => {
-    setIsJumping(true);
-    setTimeout(() => setIsJumping(false), 500);
-  };
-
   return (
-    <Card className={`${cardColor} shadow-lg ${isExpanded ? 'w-full' : 'w-48 h-48'}`}>
+    <Card className={`w-full bg-white bg-opacity-80 border-green-300 shadow-lg ${isExpanded ? 'h-auto' : 'h-48'}`}>
       <CardHeader className="flex flex-col items-start space-y-2">
         <div className="flex items-center space-x-2 w-full">
-          <motion.div
-            animate={isJumping ? { y: [-10, 0] } : {}}
-            transition={{ duration: 0.5 }}
-            onClick={handleFrogClick}
-            className="cursor-pointer"
-          >
-            🐸
-          </motion.div>
-          <CardTitle className="text-gray-800 text-lg font-bold flex-grow">{title}</CardTitle>
+          <CardTitle className={`text-gray-800 font-bold flex-grow ${isExpanded ? 'text-lg' : 'text-xl'}`}>{title}</CardTitle>
           <Button onClick={onExpand} className="bg-green-500 hover:bg-green-600 text-white p-2">
             {isExpanded ? '▲' : '▼'}
           </Button>
         </div>
-        {isExpanded && (
-          <div className="flex flex-col w-full">
-            <p className="font-bold text-green-600 text-sm">Total: ${totalExpense.toFixed(2)}</p>
-            {budget && <p className="font-bold text-blue-600 text-sm">Presupuesto: ${parseFloat(budget).toFixed(2)}</p>}
-          </div>
-        )}
+        <div className="flex flex-col w-full">
+          <p className="font-bold text-green-600 text-sm">Total: ${totalExpense.toFixed(2)}</p>
+          {budget && <p className="font-bold text-blue-600 text-sm">Presupuesto: ${parseFloat(budget).toFixed(2)}</p>}
+        </div>
+        <Progress value={progressPercentage} className="w-full h-2 bg-gray-200" />
+        <p className="text-xs text-right w-full">{progressPercentage.toFixed(1)}% del presupuesto utilizado</p>
       </CardHeader>
       {isExpanded && (
         <CardContent>
@@ -103,14 +73,6 @@ export const CategoryCard = ({ title, expenses = [], onEdit, onDelete, budget, o
               <DollarSign className="h-4 w-4" />
             </Button>
           )}
-          <div className="relative pt-1 mb-4">
-            <Progress value={progressPercentage} className="h-2 mb-1 gradient-progress" />
-            <div className="flex justify-end">
-              <span className="text-xs font-semibold inline-block text-blue-600">
-                {progressPercentage.toFixed(1)}%
-              </span>
-            </div>
-          </div>
           <div className="space-y-2">
             {expenses.map((expense, index) => (
               <div key={index} className="bg-white bg-opacity-70 rounded border border-gray-200 p-2 text-xs">
