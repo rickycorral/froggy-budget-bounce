@@ -96,14 +96,14 @@ export const CategoryCard = ({
           <motion.div
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            className={`w-10 h-10 ${categoryColors[title]} rounded-full flex items-center justify-center cursor-pointer`}
+            className={`w-9 h-9 ${categoryColors[title]} rounded-full flex items-center justify-center cursor-pointer`}
             onClick={onExpand} // Trigger expand when the icon is clicked
           >
             {categoryIcons[title] || "🐸"}
           </motion.div>
           <CardTitle
             className={`text-gray-800 font-bold flex-grow ${
-              isExpanded ? "text-lg" : "text-xl"
+              isExpanded ? "text-md" : "text-md"
             }`}
           >
             {title}
