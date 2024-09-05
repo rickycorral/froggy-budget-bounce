@@ -63,8 +63,8 @@ export const CategoryCard = ({ title, expenses = [], onEdit, onDelete, budget, o
 
   return (
     <Card className={`${cardColor} shadow-lg`}>
-      <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-2">
-        <div className="flex items-center space-x-2">
+      <CardHeader className="flex flex-col items-start space-y-2">
+        <div className="flex items-center space-x-2 w-full">
           <motion.div
             animate={isJumping ? { y: [-10, 0] } : {}}
             transition={{ duration: 0.5 }}
@@ -73,18 +73,15 @@ export const CategoryCard = ({ title, expenses = [], onEdit, onDelete, budget, o
           >
             🐸
           </motion.div>
-          <CardTitle className="text-gray-800 text-lg font-bold">{title}</CardTitle>
+          <CardTitle className="text-gray-800 text-lg font-bold flex-grow">{title}</CardTitle>
+          <Button onClick={() => setIsSettingBudget(true)} className="bg-green-500 hover:bg-green-600 text-white p-2">
+            <DollarSign className="h-4 w-4" />
+          </Button>
         </div>
-        <div className="flex-grow"></div>
-        {budget ? (
-          <Button onClick={() => setIsSettingBudget(true)} className="bg-green-500 hover:bg-green-600 text-white p-2">
-            <DollarSign className="h-4 w-4" />
-          </Button>
-        ) : (
-          <Button onClick={() => setIsSettingBudget(true)} className="bg-green-500 hover:bg-green-600 text-white p-2">
-            <DollarSign className="h-4 w-4" />
-          </Button>
-        )}
+        <div className="flex flex-col w-full">
+          <p className="font-bold text-green-600 text-sm">Total: ${totalExpense.toFixed(2)}</p>
+          {budget && <p className="font-bold text-blue-600 text-sm">Presupuesto: ${parseFloat(budget).toFixed(2)}</p>}
+        </div>
       </CardHeader>
       <CardContent>
         {isSettingBudget ? (
@@ -99,11 +96,7 @@ export const CategoryCard = ({ title, expenses = [], onEdit, onDelete, budget, o
             <Button onClick={handleSetBudget} className="bg-green-500 hover:bg-green-600 text-white text-xs">Guardar</Button>
           </div>
         ) : null}
-        <div className="flex flex-col mb-2">
-          <p className="font-bold text-green-600 text-sm">Total: ${totalExpense.toFixed(2)}</p>
-          {budget && <p className="font-bold text-blue-600 text-sm">Presupuesto: ${parseFloat(budget).toFixed(2)}</p>}
-        </div>
-        <div className="relative pt-1">
+        <div className="relative pt-1 mb-4">
           <Progress value={progressPercentage} className="h-2 mb-1 gradient-progress" />
           <div className="flex justify-end">
             <span className="text-xs font-semibold inline-block text-blue-600">
@@ -111,45 +104,53 @@ export const CategoryCard = ({ title, expenses = [], onEdit, onDelete, budget, o
             </span>
           </div>
         </div>
-        {expenses.map((expense, index) => (
-          <div key={index} className="mt-2 p-2 bg-white bg-opacity-70 rounded border border-gray-200 relative text-sm">
-            {editingExpense === expense ? (
-              <>
-                <Input
-                  type="number"
-                  value={editedAmount}
-                  onChange={(e) => setEditedAmount(e.target.value)}
-                  className="mb-2 border-green-300 focus:border-green-500 text-xs"
-                />
-                <Input
-                  type="date"
-                  value={editedDate}
-                  onChange={(e) => setEditedDate(e.target.value)}
-                  className="mb-2 border-green-300 focus:border-green-500 text-xs"
-                />
-                <Input
-                  value={editedDetails}
-                  onChange={(e) => setEditedDetails(e.target.value)}
-                  className="mb-2 border-green-300 focus:border-green-500 text-xs"
-                />
-                <Button onClick={handleSave} className="mr-2 bg-green-500 hover:bg-green-600 text-white text-xs">Guardar</Button>
-                <Button onClick={() => setEditingExpense(null)} variant="secondary" className="bg-green-200 hover:bg-green-300 text-green-800 text-xs">Cancelar</Button>
-              </>
-            ) : (
-              <>
-                <p className="pr-16">Monto: ${expense.amount} | Fecha: {expense.date} | Detalles: {expense.details}</p>
-                <div className="absolute top-1 right-1 flex space-x-1">
-                  <Button onClick={() => handleEdit(expense)} size="icon" variant="ghost" className="h-6 w-6 p-0">
-                    <Pencil className="h-3 w-3" />
-                  </Button>
-                  <Button onClick={() => onDelete(expense)} size="icon" variant="ghost" className="h-6 w-6 p-0 text-red-500 hover:text-red-700">
-                    <Trash2 className="h-3 w-3" />
-                  </Button>
+        <div className="space-y-2">
+          {expenses.map((expense, index) => (
+            <div key={index} className="bg-white bg-opacity-70 rounded border border-gray-200 p-2 text-xs">
+              {editingExpense === expense ? (
+                <div className="space-y-2">
+                  <Input
+                    type="number"
+                    value={editedAmount}
+                    onChange={(e) => setEditedAmount(e.target.value)}
+                    className="border-green-300 focus:border-green-500 text-xs"
+                  />
+                  <Input
+                    type="date"
+                    value={editedDate}
+                    onChange={(e) => setEditedDate(e.target.value)}
+                    className="border-green-300 focus:border-green-500 text-xs"
+                  />
+                  <Input
+                    value={editedDetails}
+                    onChange={(e) => setEditedDetails(e.target.value)}
+                    className="border-green-300 focus:border-green-500 text-xs"
+                  />
+                  <div className="flex justify-end space-x-2">
+                    <Button onClick={handleSave} className="bg-green-500 hover:bg-green-600 text-white text-xs">Guardar</Button>
+                    <Button onClick={() => setEditingExpense(null)} variant="secondary" className="bg-green-200 hover:bg-green-300 text-green-800 text-xs">Cancelar</Button>
+                  </div>
                 </div>
-              </>
-            )}
-          </div>
-        ))}
+              ) : (
+                <div className="flex justify-between items-center">
+                  <div>
+                    <p className="font-semibold">${expense.amount}</p>
+                    <p className="text-gray-600">{expense.date}</p>
+                    <p className="text-gray-800">{expense.details}</p>
+                  </div>
+                  <div className="flex space-x-1">
+                    <Button onClick={() => handleEdit(expense)} size="icon" variant="ghost" className="h-6 w-6 p-0">
+                      <Pencil className="h-3 w-3" />
+                    </Button>
+                    <Button onClick={() => onDelete(expense)} size="icon" variant="ghost" className="h-6 w-6 p-0 text-red-500 hover:text-red-700">
+                      <Trash2 className="h-3 w-3" />
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
       </CardContent>
     </Card>
   );
