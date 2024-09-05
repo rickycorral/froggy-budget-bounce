@@ -101,7 +101,7 @@ export const CategoryCard = ({
           >
             {categoryIcons[title] || "🐸"}
           </motion.div>
-          <CardTitle className="text-gray-800 font-bold text-center flex-grow text-md">
+          <CardTitle className="text-gray-800 font-bold text-center flex-grow text-sm">
             {title}
           </CardTitle>
           <Button
