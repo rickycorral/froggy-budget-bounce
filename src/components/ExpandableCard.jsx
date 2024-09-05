@@ -20,9 +20,9 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (title.toLowerCase() === 'ahorros') {
-      onAdd({ date, amount, details, type: 'savings' });
+      onAdd({ date: date ? format(date, 'yyyy-MM-dd') : '', amount, details, type: 'savings' });
     } else {
-      onAdd({ date, amount, details, category, type: 'expense' });
+      onAdd({ date: date ? format(date, 'yyyy-MM-dd') : '', amount, details, category, type: 'expense' });
     }
     setDate('');
     setAmount('');
@@ -35,7 +35,7 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount }) => {
       className="flex justify-center w-full"
       whileTap={{ scale: 0.95 }}
     >
-      <Card className={`transition-all duration-300 ease-in-out ${isExpanded ? 'w-full sm:w-3/4 bg-white bg-opacity-80' : 'w-32 h-32 rounded-full bg-green-500 flex items-center justify-center'} border-green-300 shadow-lg`}>
+      <Card className={`transition-all duration-300 ease-in-out ${isExpanded ? 'w-full sm:w-3/4 bg-white bg-opacity-80' : 'w-40 h-40 rounded-full bg-green-500 flex items-center justify-center'} border-green-300 shadow-lg`}>
         <CardHeader>
           <CardTitle className="flex justify-center items-center">
             <Button
