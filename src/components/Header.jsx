@@ -7,9 +7,10 @@ export const Header = () => {
   };
 
   return (
-    <header className="bg-green-500 text-white p-4 rounded-lg mb-4 flex justify-between items-center">
-      <div className="flex-grow"></div>
-      <h1 className="text-2xl font-bold text-center">RanaRe</h1>
+    <header className="relative bg-green-500 text-white p-4 rounded-lg mb-4 flex justify-between items-center">
+      <h1 className="absolute left-0 right-0 text-2xl font-bold text-center">
+        RanaRe
+      </h1>
       <div className="flex-grow flex justify-end">
         <img 
           src={logo} // Use the imported image
