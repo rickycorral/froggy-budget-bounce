@@ -16,12 +16,9 @@ module.exports = {
       },
     },
     extend: {
-      backgroundImage: {
-        'frog-pattern': "url('/src/frog.png')", // Ensure the correct path to the image
-      },
       colors: {
-        background: "#ffffff", // Force background to be solid white
-        foreground: "#000000", // Force text to be solid black
+        background: "hsl(var(--background, 0 0% 100%))", // Default to solid white
+        foreground: "hsl(var(--foreground, 0 0% 0%))", // Default to solid black
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

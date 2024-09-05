@@ -37,7 +37,7 @@
 }
 
 body {
-  background-image: url('/src/frog.png');
+  background-image: url("/src/frog.png");
   background-attachment: fixed;
   background-repeat: repeat; /* Allow the background to repeat */
   background-size: 350px 350px; /* Adjust the size of the repeated background */
@@ -50,8 +50,14 @@ body {
 }
 
 .gradient-progress {
-  background: linear-gradient(to right, rgba(52, 211, 153, 0.7), rgba(16, 185, 129, 0.7), rgba(5, 150, 105, 0.7));
+  background: linear-gradient(
+    to right,
+    rgba(52, 211, 153, 0.7),
+    rgba(16, 185, 129, 0.7),
+    rgba(5, 150, 105, 0.7)
+  );
 }
+
 
 @media (max-width: 640px) {
   .sm\:grid-cols-2 {
