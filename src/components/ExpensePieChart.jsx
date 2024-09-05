@@ -23,7 +23,7 @@ export const ExpensePieChart = ({ expenses }) => {
         backgroundColor: 'rgba(255, 255, 255, 0.8)',
         padding: '20px',
         borderRadius: '10px',
-        width: '90%', // Narrower width
+        width: '100%', // Narrower width
         margin: '0 auto', // Center the chart
         height: '350px', // Reduced height
         marginBottom: '40px', // Space below the chart
