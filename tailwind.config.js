@@ -16,6 +16,9 @@ module.exports = {
       },
     },
     extend: {
+      fontSize: {
+        'xxs': '0.625rem', // Adding a smaller text size (10px)
+      },
       colors: {
         background: "hsl(var(--background, 0 0% 100%))", // Default to solid white
         foreground: "hsl(var(--foreground, 0 0% 0%))", // Default to solid black
