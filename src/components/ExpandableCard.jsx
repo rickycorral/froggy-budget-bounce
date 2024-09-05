@@ -10,8 +10,7 @@ import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 
-export const ExpandableCard = ({ title, onAdd, categories, totalAmount }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
+export const ExpandableCard = ({ title, onAdd, categories, totalAmount, isExpanded, onExpand }) => {
   const [date, setDate] = useState('');
   const [amount, setAmount] = useState('');
   const [details, setDetails] = useState('');
@@ -52,9 +51,9 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount }) => {
               className={`w-full ${
                 isExpanded 
                   ? 'rounded-lg bg-green-500 hover:bg-green-600 text-white text-sm' 
-                  : 'rounded-full bg-transparent text-white hover:bg-green-600 text-lg font-bold'
+                  : 'rounded-full bg-transparent text-white hover:bg-green-600 text-xl font-bold'
               }`}
-              onClick={() => setIsExpanded(!isExpanded)}
+              onClick={onExpand}
             >
               {title}
             </Button>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Header } from '../components/Header';
-import { IncomeCard } from '../components/IncomeCard';
+import { BudgetCard } from '../components/BudgetCard';
 import { ExpandableCard } from '../components/ExpandableCard';
 import { CategoryCard } from '../components/CategoryCard';
 import { ExpensePieChart } from '../components/ExpensePieChart';
@@ -20,6 +20,8 @@ const Index = () => {
     const savedBudgets = localStorage.getItem('categoryBudgets');
     return savedBudgets ? JSON.parse(savedBudgets) : {};
   });
+  const [expandedCard, setExpandedCard] = useState(null);
+  const [expandedCategory, setExpandedCategory] = useState(null);
 
   useEffect(() => {
     localStorage.setItem('expenses', JSON.stringify(expenses));
@@ -66,13 +68,40 @@ const Index = () => {
     .filter(expense => expense.type === 'expense')
     .reduce((sum, expense) => sum + parseFloat(expense.amount), 0);
 
+  const handleExpandCard = (cardName) => {
+    setExpandedCard(expandedCard === cardName ? null : cardName);
+  };
+
+  const handleExpandCategory = (category) => {
+    setExpandedCategory(expandedCategory === category ? null : category);
+  };
+
   return (
     <div className="min-h-screen p-4 bg-green-50 bg-opacity-90">
       <Header />
-      <IncomeCard onSave={handleSaveIncome} currentIncome={income} />
+      <BudgetCard 
+        onSave={handleSaveIncome} 
+        currentIncome={income} 
+        totalExpenses={totalExpenses}
+        totalSavings={totalSavings}
+      />
       <div className="flex justify-center my-4 space-x-4">
-        <ExpandableCard title="Ahorros" onAdd={handleAddExpense} categories={categories} totalAmount={totalSavings} />
-        <ExpandableCard title="Gastos" onAdd={handleAddExpense} categories={categories} totalAmount={totalExpenses} />
+        <ExpandableCard 
+          title="Ahorros" 
+          onAdd={handleAddExpense} 
+          categories={categories} 
+          totalAmount={totalSavings}
+          isExpanded={expandedCard === 'Ahorros'}
+          onExpand={() => handleExpandCard('Ahorros')}
+        />
+        <ExpandableCard 
+          title="Gastos" 
+          onAdd={handleAddExpense} 
+          categories={categories} 
+          totalAmount={totalExpenses}
+          isExpanded={expandedCard === 'Gastos'}
+          onExpand={() => handleExpandCard('Gastos')}
+        />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-4">
         {categories.map((category, index) => (
@@ -84,6 +113,8 @@ const Index = () => {
             onDelete={handleDeleteExpense}
             budget={categoryBudgets[category]}
             onSetBudget={(budget) => handleSetBudget(category, budget)}
+            isExpanded={expandedCategory === category}
+            onExpand={() => handleExpandCategory(category)}
           />
         ))}
       </div>
