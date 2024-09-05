@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -16,27 +16,7 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount }) => {
   const [amount, setAmount] = useState('');
   const [details, setDetails] = useState('');
   const [category, setCategory] = useState('');
-  const cardRef = useRef(null);
-
-  useEffect(() => {
-    const resizeObserver = new ResizeObserver(entries => {
-      for (let entry of entries) {
-        if (entry.target === cardRef.current) {
-          // Handle resize here if needed
-        }
-      }
-    });
-
-    if (cardRef.current) {
-      resizeObserver.observe(cardRef.current);
-    }
-
-    return () => {
-      if (cardRef.current) {
-        resizeObserver.unobserve(cardRef.current);
-      }
-    };
-  }, []);
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -51,15 +31,19 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount }) => {
     setCategory('');
   };
 
+  const handleDateSelect = (selectedDate) => {
+    setDate(selectedDate);
+    setIsCalendarOpen(false);
+  };
+
   return (
     <motion.div 
       className="flex justify-center w-full"
       whileTap={{ scale: 0.95 }}
     >
       <Card 
-        ref={cardRef}
         className={`transition-all duration-300 ease-in-out ${
-          isExpanded ? 'w-full sm:w-96 bg-white bg-opacity-80' : 'w-48 h-48 rounded-full bg-green-500 flex items-center justify-center'
+          isExpanded ? 'w-full sm:w-80 bg-white bg-opacity-80' : 'w-48 h-48 rounded-full bg-green-500 flex items-center justify-center'
         } border-green-300 shadow-lg`}
       >
         <CardHeader>
@@ -78,7 +62,7 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount }) => {
         {isExpanded && (
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <Popover>
+              <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
                 <PopoverTrigger asChild>
                   <Button
                     variant={"outline"}
@@ -95,7 +79,7 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount }) => {
                   <Calendar
                     mode="single"
                     selected={date}
-                    onSelect={setDate}
+                    onSelect={handleDateSelect}
                     initialFocus
                   />
                 </PopoverContent>
