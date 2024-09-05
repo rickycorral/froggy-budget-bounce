@@ -29,7 +29,6 @@ const categoryColors = {
   Medicinas: "bg-orange-500",
 };
 
-// Mapping categories to icons
 const categoryIcons = {
   Escuela: <School className="w-5 h-5 text-white" />,
   Renta: <Home className="w-5 h-5 text-white" />,
@@ -98,10 +97,9 @@ export const CategoryCard = ({
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             className={`w-8 h-8 ${categoryColors[title]} rounded-full flex items-center justify-center cursor-pointer`}
-            onClick={onExpand}
+            onClick={onExpand} // Trigger expand when the icon is clicked
           >
             {categoryIcons[title] || "🐸"}
-            {/* If no icon matches, default to the frog emoji */}
           </motion.div>
           <CardTitle
             className={`text-gray-800 font-bold flex-grow ${
@@ -110,21 +108,13 @@ export const CategoryCard = ({
           >
             {title}
           </CardTitle>
-          {/* Added button for budget ($) to the left of expand button */}
-          <div className="flex space-x-2">
-            <Button
-              onClick={() => setIsSettingBudget(true)}
-              className="bg-green-500 hover:bg-green-600 text-white p-2 w-8 h-8 flex items-center justify-center"
-            >
-              <DollarSign className="h-4 w-4" />
-            </Button>
-            <Button
-              onClick={onExpand}
-              className={`${categoryColors[title]} hover:opacity-80 text-white p-2 w-8 h-8 flex items-center justify-center`}
-            >
-              {isExpanded ? "▲" : "▼"}
-            </Button>
-          </div>
+          {/* Button for budget ($) */}
+          <Button
+            onClick={() => setIsSettingBudget(true)}
+            className="bg-green-500 hover:bg-green-600 text-white p-2 w-8 h-8 flex items-center justify-center"
+          >
+            <DollarSign className="h-4 w-4" />
+          </Button>
         </div>
         <div className="flex flex-col w-full">
           <p className="font-bold text-green-600 text-sm">
@@ -140,8 +130,8 @@ export const CategoryCard = ({
           value={progressPercentage}
           className="w-full h-2 bg-gray-200"
         />
-        <p className="text-xs text-right w-full">
-          {progressPercentage.toFixed(1)}% del presupuesto utilizado
+        <p className="text-s text-right w-full">
+          {progressPercentage.toFixed(1)}% del presupuesto
         </p>
       </CardHeader>
       {isExpanded && (
