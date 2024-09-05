@@ -8,7 +8,7 @@ export const Header = () => {
 
   return (
     <header className="relative bg-green-500 text-white p-4 rounded-lg mb-4 flex justify-between items-center">
-      <h1 className="absolute left-0 right-0 text-2xl font-bold text-center">
+      <h1 className="absolute left-0 right-0 text-4xl font-bold text-center">
         RanaRe
       </h1>
       <div className="flex-grow flex justify-end">
