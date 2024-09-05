@@ -96,7 +96,7 @@ export const CategoryCard = ({
           <motion.div
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            className={`w-8 h-8 ${categoryColors[title]} rounded-full flex items-center justify-center cursor-pointer`}
+            className={`w-10 h-10 ${categoryColors[title]} rounded-full flex items-center justify-center cursor-pointer`}
             onClick={onExpand} // Trigger expand when the icon is clicked
           >
             {categoryIcons[title] || "🐸"}
@@ -197,11 +197,12 @@ export const CategoryCard = ({
                 ) : (
                   <div className="flex justify-between items-center">
                     <div>
-                      <p className="font-semibold">${expense.amount}</p>
-                      <p className="text-gray-600">{expense.date}</p>
-                      <p className="text-gray-800">{expense.details}</p>
+                      <p className="font-semibold text-sm">${expense.amount}</p>
+                      <p className="text-gray-600 text-xs">{expense.date}</p>
+                      <p className="text-gray-800 text-xs">{expense.details}</p>
                     </div>
-                    <div className="flex space-x-1">
+
+                    <div className="flex space-x">
                       <Button
                         onClick={() => handleEdit(expense)}
                         size="icon"
