@@ -3,6 +3,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
 
 export const ExpandableCard = ({ title, onAdd, categories, totalAmount }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -25,8 +31,11 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount }) => {
   };
 
   return (
-    <div className="flex justify-center w-full">
-      <Card className={`transition-all duration-300 ease-in-out ${isExpanded ? 'w-full sm:w-1/2 bg-white bg-opacity-80' : 'w-24 h-24 rounded-full bg-green-500 flex items-center justify-center'} border-green-300 shadow-lg`}>
+    <motion.div 
+      className="flex justify-center w-full"
+      whileTap={{ scale: 0.95 }}
+    >
+      <Card className={`transition-all duration-300 ease-in-out ${isExpanded ? 'w-full sm:w-3/4 bg-white bg-opacity-80' : 'w-32 h-32 rounded-full bg-green-500 flex items-center justify-center'} border-green-300 shadow-lg`}>
         <CardHeader>
           <CardTitle className="flex justify-center items-center">
             <Button
@@ -40,14 +49,29 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount }) => {
         </CardHeader>
         {isExpanded && (
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-2">
-              <Input
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                required
-                className="border-green-300 focus:border-green-500 text-sm"
-              />
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant={"outline"}
+                    className={cn(
+                      "w-full justify-start text-left font-normal",
+                      !date && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {date ? format(date, "PPP") : <span>Pick a date</span>}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={date}
+                    onSelect={setDate}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
               <Input
                 type="number"
                 placeholder="Monto"
@@ -55,6 +79,8 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount }) => {
                 onChange={(e) => setAmount(e.target.value)}
                 required
                 className="border-green-300 focus:border-green-500 text-sm"
+                inputMode="numeric"
+                pattern="[0-9]*"
               />
               <Input
                 placeholder="Detalles"
@@ -75,11 +101,11 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount }) => {
                   </SelectContent>
                 </Select>
               )}
-              <Button type="submit" className="bg-green-500 hover:bg-green-600 text-white text-sm">Agregar</Button>
+              <Button type="submit" className="bg-green-500 hover:bg-green-600 text-white text-sm w-full">Agregar</Button>
             </form>
           </CardContent>
         )}
       </Card>
-    </div>
+    </motion.div>
   );
 };
