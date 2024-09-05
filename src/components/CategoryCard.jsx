@@ -121,7 +121,7 @@ export const CategoryCard = ({
             Total: ${totalExpense.toFixed(2)}
           </p>
           {budget && (
-            <p className="font-bold text-blue-600 text-sm">
+            <p className="font-bold text-blue-600 text-xs">
               Presupuesto: ${parseFloat(budget).toFixed(2)}
             </p>
           )}
