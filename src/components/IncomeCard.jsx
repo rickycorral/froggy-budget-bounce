@@ -18,7 +18,7 @@ export const IncomeCard = ({ onSave, currentIncome, totalExpenses, totalSavings 
   const progressPercentage = totalBudget > 0 ? (totalSpent / totalBudget) * 100 : 0;
 
   return (
-    <Card className="w-full bg-gradient-to-r from-green-400 to-blue-500 text-white shadow-lg">
+    <Card className="w-auto max-w-md mx-auto bg-gradient-to-r from-green-400 to-blue-500 text-white shadow-lg">
       <CardHeader>
         <CardTitle className="text-xl font-bold">Ingresos Mensuales</CardTitle>
       </CardHeader>

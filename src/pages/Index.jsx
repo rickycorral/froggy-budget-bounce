@@ -85,12 +85,14 @@ const Index = () => {
   return (
     <div className="min-h-screen p-4 bg-green-50 bg-opacity-90">
       <Header />
-      <IncomeCard 
-        onSave={handleSaveIncome} 
-        currentIncome={income} 
-        totalExpenses={totalExpenses}
-        totalSavings={totalSavings}
-      />
+      <div className="max-w-md mx-auto">
+        <IncomeCard 
+          onSave={handleSaveIncome} 
+          currentIncome={income} 
+          totalExpenses={totalExpenses}
+          totalSavings={totalSavings}
+        />
+      </div>
       <div className="flex justify-center my-4 space-x-4">
         <ExpandableCard 
           title="Ahorros" 

@@ -6,6 +6,17 @@ import { Progress } from "@/components/ui/progress";
 import { Pencil, Trash2, DollarSign } from 'lucide-react';
 import { motion } from "framer-motion";
 
+const categoryColors = {
+  'Escuela': 'bg-blue-500',
+  'Renta': 'bg-purple-500',
+  'Servicios': 'bg-yellow-500',
+  'Transporte': 'bg-red-500',
+  'Comida': 'bg-green-500',
+  'Mascota': 'bg-pink-500',
+  'Entretenimiento': 'bg-indigo-500',
+  'Medicinas': 'bg-orange-500'
+};
+
 export const CategoryCard = ({ title, expenses = [], onEdit, onDelete, budget, onSetBudget, isExpanded, onExpand }) => {
   const [editingExpense, setEditingExpense] = useState(null);
   const [editedAmount, setEditedAmount] = useState('');
@@ -43,8 +54,16 @@ export const CategoryCard = ({ title, expenses = [], onEdit, onDelete, budget, o
     <Card className={`w-full bg-white bg-opacity-80 border-green-300 shadow-lg ${isExpanded ? 'h-auto' : 'h-48'}`}>
       <CardHeader className="flex flex-col items-start space-y-2">
         <div className="flex items-center space-x-2 w-full">
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            className={`w-8 h-8 ${categoryColors[title]} rounded-full flex items-center justify-center cursor-pointer`}
+            onClick={onExpand}
+          >
+            🐸
+          </motion.div>
           <CardTitle className={`text-gray-800 font-bold flex-grow ${isExpanded ? 'text-lg' : 'text-xl'}`}>{title}</CardTitle>
-          <Button onClick={onExpand} className="bg-green-500 hover:bg-green-600 text-white p-2">
+          <Button onClick={onExpand} className={`${categoryColors[title]} hover:opacity-80 text-white p-2 w-8 h-8 flex items-center justify-center`}>
             {isExpanded ? '▲' : '▼'}
           </Button>
         </div>
