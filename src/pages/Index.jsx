@@ -9,103 +9,108 @@ import { Footer } from "../components/Footer";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const Index = () => {
-  const [expenses, setExpenses] = useState(() => {
-    const savedExpenses = localStorage.getItem("expenses");
-    return savedExpenses ? JSON.parse(savedExpenses) : [];
+  const [monthlyData, setMonthlyData] = useState(() => {
+    const savedData = localStorage.getItem("monthlyData");
+    return savedData ? JSON.parse(savedData) : {};
+  });
+  const [selectedMonth, setSelectedMonth] = useState(() => {
+    const currentMonth = new Date().toLocaleString('default', { month: 'long' });
+    return monthlyData[currentMonth] ? currentMonth : "January";
   });
   const [searchTerm, setSearchTerm] = useState("");
-  const [income, setIncome] = useState(() => {
-    const savedIncome = localStorage.getItem("income");
-    return savedIncome ? JSON.parse(savedIncome) : "";
-  });
-  const [categoryBudgets, setCategoryBudgets] = useState(() => {
-    const savedBudgets = localStorage.getItem("categoryBudgets");
-    return savedBudgets ? JSON.parse(savedBudgets) : {};
-  });
-  const [expandedCard, setExpandedCard] = useState(null);
-  const [expandedCategory, setExpandedCategory] = useState(null);
   const [categoryFilter, setCategoryFilter] = useState("all");
-  const [monthFilter, setMonthFilter] = useState("all");
   const [sortOrder, setSortOrder] = useState("desc");
 
   useEffect(() => {
-    localStorage.setItem("expenses", JSON.stringify(expenses));
-    localStorage.setItem("income", JSON.stringify(income));
-    localStorage.setItem("categoryBudgets", JSON.stringify(categoryBudgets));
-  }, [expenses, income, categoryBudgets]);
+    localStorage.setItem("monthlyData", JSON.stringify(monthlyData));
+  }, [monthlyData]);
+
+  const currentMonthData = monthlyData[selectedMonth] || {
+    income: "",
+    expenses: [],
+    categoryBudgets: {}
+  };
 
   const categories = [
-    "Escuela",
-    "Renta",
-    "Servicios",
-    "Uber",
-    "Comida",
-    "Roma",
-    "Otros",
-    "Medicinas",
+    "Escuela", "Renta", "Servicios", "Uber", "Comida", "Roma", "Otros", "Medicinas"
   ];
 
   const handleAddExpense = (expense) => {
-    setExpenses([...expenses, { ...expense, id: Date.now() }]);
+    setMonthlyData(prevData => ({
+      ...prevData,
+      [selectedMonth]: {
+        ...prevData[selectedMonth],
+        expenses: [...(prevData[selectedMonth]?.expenses || []), { ...expense, id: Date.now() }]
+      }
+    }));
   };
 
   const handleEditExpense = (editedExpense) => {
-    setExpenses(
-      expenses.map((expense) =>
-        expense.id === editedExpense.id ? editedExpense : expense
-      )
-    );
+    setMonthlyData(prevData => ({
+      ...prevData,
+      [selectedMonth]: {
+        ...prevData[selectedMonth],
+        expenses: prevData[selectedMonth].expenses.map(expense =>
+          expense.id === editedExpense.id ? editedExpense : expense
+        )
+      }
+    }));
   };
 
   const handleDeleteExpense = (expenseToDelete) => {
-    setExpenses(
-      expenses.filter((expense) => expense.id !== expenseToDelete.id)
-    );
+    setMonthlyData(prevData => ({
+      ...prevData,
+      [selectedMonth]: {
+        ...prevData[selectedMonth],
+        expenses: prevData[selectedMonth].expenses.filter(expense => expense.id !== expenseToDelete.id)
+      }
+    }));
   };
 
   const handleSaveIncome = (newIncome) => {
-    setIncome(newIncome);
+    setMonthlyData(prevData => ({
+      ...prevData,
+      [selectedMonth]: {
+        ...prevData[selectedMonth],
+        income: newIncome
+      }
+    }));
   };
 
   const handleSetBudget = (category, budget) => {
-    setCategoryBudgets({ ...categoryBudgets, [category]: budget });
+    setMonthlyData(prevData => ({
+      ...prevData,
+      [selectedMonth]: {
+        ...prevData[selectedMonth],
+        categoryBudgets: {
+          ...(prevData[selectedMonth]?.categoryBudgets || {}),
+          [category]: budget
+        }
+      }
+    }));
   };
 
-  const filteredExpenses = expenses.filter((expense) => {
+  const handleMonthChange = (month) => {
+    setSelectedMonth(month);
+  };
+
+  const filteredExpenses = currentMonthData.expenses?.filter(expense => {
     const matchesSearch = expense.details.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = categoryFilter === "all" || expense.category === categoryFilter;
-    const expenseMonth = new Date(expense.date).getMonth();
-    const matchesMonth = monthFilter === "all" || expenseMonth === parseInt(monthFilter);
-    return matchesSearch && matchesCategory && matchesMonth;
+    return matchesSearch && matchesCategory;
   }).sort((a, b) => {
     if (sortOrder === "desc") {
       return parseFloat(b.amount) - parseFloat(a.amount);
     } else {
       return parseFloat(a.amount) - parseFloat(b.amount);
     }
-  });
+  }) || [];
 
-  const totalSavings = expenses
-    .filter((expense) => expense.type === "savings")
-    .reduce((sum, expense) => sum + parseFloat(expense.amount), 0);
+  const totalSavings = currentMonthData.expenses?.filter(expense => expense.type === "savings")
+    .reduce((sum, expense) => sum + parseFloat(expense.amount), 0) || 0;
 
-  const totalExpenses = expenses
-    .filter((expense) => expense.type === "expense")
-    .reduce((sum, expense) => sum + parseFloat(expense.amount), 0);
-
-  const handleExpandCard = (cardName) => {
-    setExpandedCard(expandedCard === cardName ? null : cardName);
-    if (cardName !== expandedCard) {
-      setExpandedCategory(null);
-    }
-  };
-
-  const handleExpandCategory = (category) => {
-    setExpandedCategory(expandedCategory === category ? null : category);
-    if (category !== expandedCategory) {
-      setExpandedCard(null);
-    }
-  };
+  const totalExpenses = currentMonthData.expenses?.filter(expense => expense.type === "expense")
+    .reduce((sum, expense) => sum + parseFloat(expense.amount), 0) || 0;
 
   return (
     <div className="min-h-screen p-4 bg-green-50 bg-opacity-90">
@@ -113,9 +118,11 @@ const Index = () => {
       <div className="max-w-md mx-auto mb-4">
         <IncomeCard
           onSave={handleSaveIncome}
-          currentIncome={income}
+          currentIncome={currentMonthData.income}
           totalExpenses={totalExpenses}
           totalSavings={totalSavings}
+          selectedMonth={selectedMonth}
+          onMonthChange={handleMonthChange}
         />
       </div>
       <div className="flex justify-center my-4 space-x-4">
@@ -124,16 +131,12 @@ const Index = () => {
           onAdd={handleAddExpense}
           categories={categories}
           totalAmount={totalSavings}
-          isExpanded={expandedCard === "Ahorros"}
-          onExpand={() => handleExpandCard("Ahorros")}
         />
         <ExpandableCard
           title="Gastos"
           onAdd={handleAddExpense}
           categories={categories}
           totalAmount={totalExpenses}
-          isExpanded={expandedCard === "Gastos"}
-          onExpand={() => handleExpandCard("Gastos")}
         />
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 my-4">
@@ -141,17 +144,15 @@ const Index = () => {
           <CategoryCard
             key={index}
             title={category}
-            expenses={expenses.filter((e) => e.category === category)}
+            expenses={currentMonthData.expenses?.filter(e => e.category === category) || []}
             onEdit={handleEditExpense}
             onDelete={handleDeleteExpense}
-            budget={categoryBudgets[category]}
+            budget={currentMonthData.categoryBudgets?.[category]}
             onSetBudget={(budget) => handleSetBudget(category, budget)}
-            isExpanded={expandedCategory === category}
-            onExpand={() => handleExpandCategory(category)}
           />
         ))}
       </div>
-      <ExpensePieChart expenses={expenses} />
+      <ExpensePieChart expenses={currentMonthData.expenses || []} />
       <div className="mb-4 space-y-2">
         <Search onSearch={setSearchTerm} />
         <div className="flex space-x-2">
@@ -163,19 +164,6 @@ const Index = () => {
               <SelectItem value="all">Todas las categorías</SelectItem>
               {categories.map((cat) => (
                 <SelectItem key={cat} value={cat}>{cat}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <Select value={monthFilter} onValueChange={setMonthFilter}>
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Filtrar por mes" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Todos los meses</SelectItem>
-              {[...Array(12)].map((_, i) => (
-                <SelectItem key={i} value={i.toString()}>
-                  {new Date(0, i).toLocaleString('default', { month: 'long' })}
-                </SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -194,35 +182,19 @@ const Index = () => {
         <table className="w-full max-w-2xl mx-auto bg-white border border-gray-300 shadow-sm rounded-lg overflow-hidden">
           <thead className="bg-gray-100">
             <tr>
-              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Detalles
-              </th>
-              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Categoría
-              </th>
-              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Monto
-              </th>
-              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Fecha
-              </th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Detalles</th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Categoría</th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Monto</th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
             {filteredExpenses.map((expense, index) => (
               <tr key={index} className="hover:bg-gray-50">
-                <td className="px-4 py-2 whitespace-nowrap text-sm">
-                  {expense.details}
-                </td>
-                <td className="px-4 py-2 whitespace-nowrap text-sm">
-                  {expense.category || "Ahorros"}
-                </td>
-                <td className="px-4 py-2 whitespace-nowrap text-sm">
-                  ${expense.amount}
-                </td>
-                <td className="px-4 py-2 whitespace-nowrap text-sm">
-                  {expense.date}
-                </td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm">{expense.details}</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm">{expense.category || "Ahorros"}</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm">${expense.amount}</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm">{expense.date}</td>
               </tr>
             ))}
           </tbody>
