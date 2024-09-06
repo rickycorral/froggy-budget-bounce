@@ -9,14 +9,14 @@ import {
 } from "recharts";
 
 const categoryColors = {
-  Escuela: "#0088FE", // Blue for "Escuela"
-  Renta: "#8884d8", // Purple for "Renta"
-  Servicios: "#FFBB28", // Yellow for "Servicios"
-  Uber: "#000000", // Black for "Uber"
-  Comida: "#FF0000", // Red for "Comida"
-  Roma: "#FF69B4", // Pink for "Roma"
-  Otros: "#8dd1e1", // Indigo for "Otros"
-  Medicinas: "#FFA500", // Orange for "Medicinas"
+  Escuela: "#0088FE",
+  Renta: "#8884d8",
+  Servicios: "#FFBB28",
+  Uber: "#000000",
+  Comida: "#FF0000",
+  Roma: "#FF69B4",
+  Otros: "#8dd1e1",
+  Medicinas: "#FFA500",
 };
 
 export const ExpensePieChart = ({ expenses }) => {
@@ -39,7 +39,7 @@ export const ExpensePieChart = ({ expenses }) => {
     <div
       className="h-64 w-full"
       style={{
-        backgroundColor: "rgba(255, 255, 255, 0.8)",
+        backgroundColor: "rgba(255, 255, 255, 0.9)",
         padding: "10px",
         borderRadius: "10px",
         width: "100%",
@@ -65,18 +65,20 @@ export const ExpensePieChart = ({ expenses }) => {
             {data.map((entry, index) => (
               <Cell
                 key={`cell-${index}`}
-                fill={categoryColors[entry.name] || "#cccccc"} // Use category color or fallback to gray
+                fill={categoryColors[entry.name] || "#cccccc"}
               />
             ))}
           </Pie>
           <Tooltip />
           <Legend
+            layout="vertical"
+            align="right"
+            verticalAlign="middle"
             wrapperStyle={{
-              fontSize: "14px",
+              fontSize: "12px",
               fontWeight: "bold",
               color: "#333",
-              textAlign: "center",
-              backgroundColor: "rgba(255, 255, 255, 0.5)",
+              backgroundColor: "rgba(255, 255, 255, 0.8)",
               padding: "10px",
               borderRadius: "5px",
             }}

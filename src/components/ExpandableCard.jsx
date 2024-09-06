@@ -28,9 +28,7 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount, isExpand
     setAmount('');
     setDetails('');
     setCategory('');
-    
-    // Collapse the card after adding
-    onExpand(); // This will toggle the card and collapse it
+    onExpand();
   };
 
   const handleDateSelect = (selectedDate) => {
@@ -38,7 +36,7 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount, isExpand
     setIsCalendarOpen(false);
   };
 
-  const cardColor = title.toLowerCase() === 'ahorros' ? 'bg-blue-500' : 'bg-red-500';
+  const cardColor = title.toLowerCase() === 'ahorros' ? 'bg-teal-500' : 'bg-orange-500';
 
   return (
     <motion.div 
@@ -47,7 +45,7 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount, isExpand
     >
       <Card 
         className={`transition-all duration-300 ease-in-out ${
-          isExpanded ? 'w-80 bg-white bg-opacity-80' : `w-30 h-30 rounded-full ${cardColor} flex items-center justify-center`
+          isExpanded ? 'w-64 bg-white bg-opacity-80' : `w-30 h-30 rounded-full ${cardColor} flex items-center justify-center`
         } border-green-300 shadow-lg`}
       >
         <CardHeader>
