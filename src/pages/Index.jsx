@@ -20,6 +20,10 @@ const Index = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [sortOrder, setSortOrder] = useState("desc");
+  const [expandedCards, setExpandedCards] = useState({
+    Ahorros: false,
+    Gastos: false,
+  });
 
   useEffect(() => {
     localStorage.setItem("monthlyData", JSON.stringify(monthlyData));
@@ -94,6 +98,13 @@ const Index = () => {
     setSelectedMonth(month);
   };
 
+  const handleExpandCard = (cardName) => {
+    setExpandedCards(prev => ({
+      ...prev,
+      [cardName]: !prev[cardName]
+    }));
+  };
+
   const filteredExpenses = currentMonthData.expenses?.filter(expense => {
     const matchesSearch = expense.details.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = categoryFilter === "all" || expense.category === categoryFilter;
@@ -131,12 +142,16 @@ const Index = () => {
           onAdd={handleAddExpense}
           categories={categories}
           totalAmount={totalSavings}
+          isExpanded={expandedCards.Ahorros}
+          onExpand={() => handleExpandCard('Ahorros')}
         />
         <ExpandableCard
           title="Gastos"
           onAdd={handleAddExpense}
           categories={categories}
           totalAmount={totalExpenses}
+          isExpanded={expandedCards.Gastos}
+          onExpand={() => handleExpandCard('Gastos')}
         />
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 my-4">
@@ -149,6 +164,8 @@ const Index = () => {
             onDelete={handleDeleteExpense}
             budget={currentMonthData.categoryBudgets?.[category]}
             onSetBudget={(budget) => handleSetBudget(category, budget)}
+            isExpanded={expandedCards[category]}
+            onExpand={() => handleExpandCard(category)}
           />
         ))}
       </div>
