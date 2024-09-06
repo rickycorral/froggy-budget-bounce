@@ -58,7 +58,7 @@ export const Footer = () => {
         </motion.span>
       </div>
       <p className="text-center text-green-800 mt-2">
-        © 2024 RanaRe - Salta hacia un futuro financiero saludable
+        © 2024 RanaRe - Todos los derechos reservados 
       </p>
     </footer>
   );
