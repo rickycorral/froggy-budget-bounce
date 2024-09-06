@@ -3,13 +3,11 @@ import { motion } from 'framer-motion';
 
 const frogVariants = {
   jump: {
-    y: [0, -20, 0],
+    y: [0, -5, 0],
     transition: {
-      y: {
-        duration: 0.6,
-        yoyo: Infinity,
-        ease: "easeOut"
-      }
+      duration: 0.6,
+      repeat: Infinity,
+      ease: "easeOut"
     }
   }
 };
@@ -19,7 +17,7 @@ const heartVariants = {
     scale: [1, 1.2, 1],
     transition: {
       duration: 0.6,
-      yoyo: Infinity,
+      repeat: Infinity,
       ease: "easeInOut"
     }
   }
@@ -28,7 +26,7 @@ const heartVariants = {
 export const Footer = () => {
   return (
     <footer className="bg-green-100 p-4 mt-8 rounded-lg shadow-inner">
-      <div className="flex justify-center items-center space-x-4">
+      <div className="flex justify-center items-center space-x-2">
         <motion.span
           role="img"
           aria-label="frog"
