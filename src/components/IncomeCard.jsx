@@ -31,7 +31,7 @@ export const IncomeCard = ({ onSave, currentIncome, totalExpenses, totalSavings,
       whileHover={{ scale: 1.02 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
     >
-      <Card className="bg-gradient-to-br from-green-400 to-blue-500 shadow-lg p-3 overflow-hidden relative rounded-xl">
+      <Card className="bg-gradient-to-br from-green-400 to-blue-500 shadow-lg p-2 overflow-hidden relative rounded-xl">
         <motion.div
           className="absolute inset-0 opacity-20"
           animate={{
@@ -44,7 +44,7 @@ export const IncomeCard = ({ onSave, currentIncome, totalExpenses, totalSavings,
           transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
         />
         <CardHeader className="p-1 relative z-10">
-          <CardTitle className="text-xl font-bold flex items-center justify-between text-white">
+          <CardTitle className="text-sm font-bold flex items-center justify-between text-white">
             <motion.span
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -56,24 +56,24 @@ export const IncomeCard = ({ onSave, currentIncome, totalExpenses, totalSavings,
                 animate={{ rotate: [0, 15, -15, 0] }}
                 transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 5 }}
               >
-                <Sparkles className="w-6 h-6 text-yellow-300" />
+                <Sparkles className="w-5 h-5 text-yellow-300" />
               </motion.span>
             </motion.span>
             <Select value={selectedMonth || ""} onValueChange={onMonthChange}>
-              <SelectTrigger className="w-[140px] bg-white bg-opacity-20 border-none text-white text-sm">
+              <SelectTrigger className="w-[120px] bg-white bg-opacity-20 border-none text-white text-xxs">
                 <SelectValue>
                   {selectedMonth ? selectedMonth : "Seleccionar Mes"}
                 </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 {months.map((month) => (
-                  <SelectItem key={month} value={month}>{month}</SelectItem>
+                  <SelectItem key={month} value={month} className="text-xs">{month}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3 relative z-10">
+        <CardContent className="space-y-2 relative z-10">
           <AnimatePresence mode="wait">
             <motion.div
               key={selectedMonth}
@@ -82,7 +82,7 @@ export const IncomeCard = ({ onSave, currentIncome, totalExpenses, totalSavings,
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
             >
-              <div className="grid grid-cols-2 gap-2 text-xs text-white">
+              <div className="grid grid-cols-2 gap-1 text-xxs text-white">
                 {[
                   { icon: DollarSign, label: "Ingresos", value: totalBudget },
                   { icon: TrendingDown, label: "Gastos", value: totalExpenses },
@@ -91,13 +91,13 @@ export const IncomeCard = ({ onSave, currentIncome, totalExpenses, totalSavings,
                 ].map(({ icon: Icon, label, value }, index) => (
                   <motion.div
                     key={label}
-                    className="flex items-center justify-between bg-white bg-opacity-20 p-1.5 rounded-lg"
+                    className="flex items-center justify-between bg-white bg-opacity-20 p-1 rounded-lg"
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
                   >
                     <div className="flex items-center">
-                      <Icon className="mr-1 w-4 h-4" />
+                      <Icon className="mr-0.5 w-3 h-3" />
                       <span className="font-semibold">{label}:</span>
                     </div>
                     <span className="font-bold">${value.toFixed(2)}</span>
@@ -111,8 +111,8 @@ export const IncomeCard = ({ onSave, currentIncome, totalExpenses, totalSavings,
             animate={{ scaleX: 1 }}
             transition={{ delay: 0.5 }}
           >
-            <Progress value={progressPercentage} className="h-2 bg-white bg-opacity-30" />
-            <p className="text-2xs text-right text-white mt-0.5">{progressPercentage.toFixed(1)}% del presupuesto utilizado</p>
+            <Progress value={progressPercentage} className="h-1.5 bg-white bg-opacity-30" />
+            <p className="text-[10px] text-right text-white mt-0.5">{progressPercentage.toFixed(1)}% del presupuesto utilizado</p>
           </motion.div>
           <motion.div
             className="flex space-x-1 items-center"
@@ -125,13 +125,13 @@ export const IncomeCard = ({ onSave, currentIncome, totalExpenses, totalSavings,
               placeholder="Actualizar ingresos"
               value={income}
               onChange={(e) => setIncome(e.target.value)}
-              className="border-white border-opacity-50 bg-white bg-opacity-20 text-white placeholder-white placeholder-opacity-70 focus:border-white text-sm py-1"
+              className="border-white border-opacity-50 bg-white bg-opacity-20 text-white placeholder-white placeholder-opacity-70 focus:border-white text-xxs py-0.5"
               inputMode="numeric"
               pattern="[0-9]*"
             />
             <Button
               onClick={handleSave}
-              className="bg-white text-green-600 hover:bg-green-100 font-bold text-xs py-1 transition-all duration-300 ease-in-out transform hover:scale-105"
+              className="bg-white text-green-600 hover:bg-green-100 font-bold text-xxs py-0.5 px-2 transition-all duration-300 ease-in-out transform hover:scale-105"
             >
               Actualizar
             </Button>
@@ -143,9 +143,9 @@ export const IncomeCard = ({ onSave, currentIncome, totalExpenses, totalSavings,
           transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
         >
           {new Date().getHours() >= 6 && new Date().getHours() < 18 ? (
-            <Sun className="w-5 h-5" />
+            <Sun className="w-4 h-4" />
           ) : (
-            <Moon className="w-5 h-5" />
+            <Moon className="w-4 h-4" />
           )}
         </motion.div>
       </Card>
