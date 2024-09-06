@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -41,14 +41,14 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount, isExpand
     <motion.div 
       className="flex justify-center w-full"
       layout
-      transition={{ duration: 0.3 }}
+      transition={{ duration: 0.3, type: "spring", stiffness: 100 }}
     >
-      <AnimatePresence>
+      <AnimatePresence initial={false}>
         {isExpanded ? (
           <motion.div
             key="expanded"
             initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
+            animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
           >
