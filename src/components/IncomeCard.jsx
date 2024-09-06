@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { motion, AnimatePresence } from "framer-motion";
 import { DollarSign, TrendingUp, TrendingDown, Wallet, Sparkles, Sun, Moon } from 'lucide-react';
+import { FaFrog } from 'react-icons/fa';  // Import the frog icon from Font Awesome
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const months = [
@@ -138,15 +139,19 @@ export const IncomeCard = ({ onSave, currentIncome, totalExpenses, totalSavings,
           </motion.div>
         </CardContent>
         <motion.div
-          className="absolute bottom-1 right-1 text-white opacity-50"
-          animate={{ rotate: 360 }}
-          transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+          className="absolute bottom-2 right-3.5 text-white opacity-50"
+          animate={{
+            y: [0, -5, 0],
+            rotate: [0, 5, -5, 0],
+          }}
+          transition={{
+            duration: 0.5,
+            repeat: Infinity,
+            repeatType: "loop",
+            ease: "easeInOut",
+          }}
         >
-          {new Date().getHours() >= 6 && new Date().getHours() < 18 ? (
-            <Sun className="w-4 h-4" />
-          ) : (
-            <Moon className="w-4 h-4" />
-          )}
+          <FaFrog className="w-4 h-4" />
         </motion.div>
       </Card>
     </motion.div>

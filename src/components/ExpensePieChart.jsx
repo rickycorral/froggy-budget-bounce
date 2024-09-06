@@ -49,7 +49,7 @@ export const ExpensePieChart = ({ expenses }) => {
             <Tooltip />
           </PieChart>
         </ResponsiveContainer>
-        <div className="mt-1 text-[8px] flex flex-wrap justify-center">
+        <div className="mt-1 text-[12px] flex flex-wrap justify-center">
           {data.map((entry, index) => (
             <span key={`legend-${index}`} className="inline-flex items-center mr-1 mb-1">
               <span className="w-2 h-2 inline-block mr-1" style={{ backgroundColor: categoryColors[entry.name] || "#cccccc" }}></span>
