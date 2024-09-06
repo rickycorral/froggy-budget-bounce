@@ -95,7 +95,7 @@ const Index = () => {
   return (
     <div className="min-h-screen p-4 bg-green-50 bg-opacity-90">
       <Header />
-      <div className="max-w-md mx-auto">
+      <div className="max-w-md mx-auto mb-6">
         <IncomeCard
           onSave={handleSaveIncome}
           currentIncome={income}
@@ -103,7 +103,7 @@ const Index = () => {
           totalSavings={totalSavings}
         />
       </div>
-      <div className="flex justify-center my-4 space-x-4">
+      <div className="flex justify-center my-6 space-x-4">
         <ExpandableCard
           title="Ahorros"
           onAdd={handleAddExpense}
@@ -121,7 +121,7 @@ const Index = () => {
           onExpand={() => handleExpandCard("Gastos")}
         />
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-6">
         {categories.map((category, index) => (
           <CategoryCard
             key={index}
@@ -138,7 +138,7 @@ const Index = () => {
       </div>
       <ExpensePieChart expenses={expenses} />
       <Search onSearch={setSearchTerm} />
-      <div className="mt-4 overflow-x-auto">
+      <div className="mt-6 overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-300 shadow-sm rounded-lg overflow-hidden">
           <thead className="bg-gray-100">
             <tr>

@@ -37,17 +37,13 @@ export const ExpensePieChart = ({ expenses }) => {
 
   return (
     <div
-      className="h-64 w-full"
+      className="h-96 w-full bg-white bg-opacity-95 rounded-lg shadow-lg p-4"
       style={{
-        backgroundColor: "rgba(255, 255, 255, 0.9)",
-        padding: "10px",
-        borderRadius: "10px",
-        width: "100%",
         margin: "0 auto",
-        height: "350px",
         marginBottom: "20px",
       }}
     >
+      <h2 className="text-2xl font-bold text-center mb-4 text-gray-800">Distribución de Gastos</h2>
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           <Pie
@@ -55,7 +51,7 @@ export const ExpensePieChart = ({ expenses }) => {
             cx="50%"
             cy="50%"
             labelLine={false}
-            outerRadius={80}
+            outerRadius={120}
             fill="#8884d8"
             dataKey="value"
             label={({ name, percent }) =>
@@ -75,7 +71,7 @@ export const ExpensePieChart = ({ expenses }) => {
             align="right"
             verticalAlign="middle"
             wrapperStyle={{
-              fontSize: "12px",
+              fontSize: "14px",
               fontWeight: "bold",
               color: "#333",
               backgroundColor: "rgba(255, 255, 255, 0.8)",

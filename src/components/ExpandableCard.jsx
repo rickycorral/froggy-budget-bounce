@@ -6,9 +6,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, PlusCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import confetti from 'canvas-confetti';
 
 export const ExpandableCard = ({ title, onAdd, categories, totalAmount, isExpanded, onExpand }) => {
   const [date, setDate] = useState('');
@@ -21,6 +22,11 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount, isExpand
     e.preventDefault();
     if (title.toLowerCase() === 'ahorros') {
       onAdd({ date: date ? format(date, 'yyyy-MM-dd') : '', amount, details, type: 'savings' });
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
     } else {
       onAdd({ date: date ? format(date, 'yyyy-MM-dd') : '', amount, details, category, type: 'expense' });
     }
@@ -43,85 +49,103 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount, isExpand
       className="flex justify-center w-full"
       whileTap={{ scale: 0.95 }}
     >
-      <Card 
-        className={`transition-all duration-300 ease-in-out ${
-          isExpanded ? 'w-64 bg-white bg-opacity-80' : `w-30 h-30 rounded-full ${cardColor} flex items-center justify-center`
-        } border-green-300 shadow-lg`}
-      >
-        <CardHeader>
-          <CardTitle className="flex justify-center items-center">
+      <AnimatePresence>
+        {isExpanded ? (
+          <motion.div
+            key="expanded"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.3 }}
+          >
+            <Card className="w-64 bg-white bg-opacity-90 border-green-300 shadow-lg">
+              <CardHeader>
+                <CardTitle className="flex justify-center items-center">
+                  <Button
+                    className="w-full rounded-lg bg-green-500 hover:bg-green-600 text-white text-sm"
+                    onClick={onExpand}
+                  >
+                    {title}
+                  </Button>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant={"outline"}
+                        className={cn(
+                          "w-full justify-start text-left font-normal",
+                          !date && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {date ? format(date, "PPP") : <span>Pick a date</span>}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={date}
+                        onSelect={handleDateSelect}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <Input
+                    type="number"
+                    placeholder="Monto"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    required
+                    className="border-green-300 focus:border-green-500 text-sm"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                  />
+                  <Input
+                    placeholder="Detalles"
+                    value={details}
+                    onChange={(e) => setDetails(e.target.value)}
+                    required
+                    className="border-green-300 focus:border-green-500 text-sm"
+                  />
+                  {title.toLowerCase() !== 'ahorros' && (
+                    <Select value={category} onValueChange={setCategory} required>
+                      <SelectTrigger className="border-green-300 focus:border-green-500 text-sm">
+                        <SelectValue placeholder="Seleccionar categoría" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {categories.map((cat) => (
+                          <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  )}
+                  <Button type="submit" className="bg-green-500 hover:bg-green-600 text-white text-sm w-full">Agregar</Button>
+                </form>
+              </CardContent>
+            </Card>
+          </motion.div>
+        ) : (
+          <motion.div
+            key="collapsed"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.3 }}
+          >
             <Button
-              className={`w-full ${
-                isExpanded 
-                  ? 'rounded-lg bg-green-500 hover:bg-green-600 text-white text-sm' 
-                  : 'rounded-full bg-transparent text-white hover:bg-opacity-20 text-xl font-bold'
-              }`}
+              className={`w-24 h-24 ${cardColor} rounded-full flex flex-col items-center justify-center text-white hover:bg-opacity-90`}
               onClick={onExpand}
             >
-              {title}
+              <PlusCircle className="h-8 w-8 mb-1" />
+              <span className="text-sm font-bold">{title}</span>
+              <span className="text-xs font-semibold">${totalAmount.toFixed(2)}</span>
             </Button>
-            {isExpanded && <span className="text-green-700 font-bold ml-2 text-sm">${totalAmount.toFixed(2)}</span>}
-          </CardTitle>
-        </CardHeader>
-        {isExpanded && (
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant={"outline"}
-                    className={cn(
-                      "w-full justify-start text-left font-normal",
-                      !date && "text-muted-foreground"
-                    )}
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {date ? format(date, "PPP") : <span>Pick a date</span>}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={date}
-                    onSelect={handleDateSelect}
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-              <Input
-                type="number"
-                placeholder="Monto"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                required
-                className="border-green-300 focus:border-green-500 text-sm"
-                inputMode="numeric"
-                pattern="[0-9]*"
-              />
-              <Input
-                placeholder="Detalles"
-                value={details}
-                onChange={(e) => setDetails(e.target.value)}
-                required
-                className="border-green-300 focus:border-green-500 text-sm"
-              />
-              {title.toLowerCase() !== 'ahorros' && (
-                <Select value={category} onValueChange={setCategory} required>
-                  <SelectTrigger className="border-green-300 focus:border-green-500 text-sm">
-                    <SelectValue placeholder="Seleccionar categoría" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {categories.map((cat) => (
-                      <SelectItem key={cat} value={cat}>{cat}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              )}
-              <Button type="submit" className="bg-green-500 hover:bg-green-600 text-white text-sm w-full">Agregar</Button>
-            </form>
-          </CardContent>
+          </motion.div>
         )}
-      </Card>
+      </AnimatePresence>
     </motion.div>
   );
 };

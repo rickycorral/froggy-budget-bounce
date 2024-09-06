@@ -14,7 +14,7 @@ import {
   Dog,
   Package,
   Pill,
-  Settings,
+  Zap,
   Check,
   X,
 } from "lucide-react";
@@ -34,7 +34,7 @@ const categoryColors = {
 const categoryIcons = {
   Escuela: <School className="w-5 h-5 text-white" />,
   Renta: <Home className="w-5 h-5 text-white" />,
-  Servicios: <Settings className="w-5 h-5 text-white" />,
+  Servicios: <Zap className="w-5 h-5 text-white" />,
   Uber: <Car className="w-5 h-5 text-white" />,
   Comida: <Utensils className="w-5 h-5 text-white" />,
   Roma: <Dog className="w-5 h-5 text-white" />,
@@ -43,7 +43,12 @@ const categoryIcons = {
 };
 
 const ExpenseItem = ({ expense, onEdit, onDelete, color }) => (
-  <div className={`${color} bg-opacity-20 rounded border border-gray-200 p-2 text-xs mb-2`}>
+  <motion.div
+    initial={{ opacity: 0, y: -10 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: 10 }}
+    className={`${color} bg-opacity-20 rounded border border-gray-200 p-2 text-xs mb-2`}
+  >
     <div className="flex justify-between items-center">
       <div>
         <p className="font-semibold text-sm">${expense.amount}</p>
@@ -71,7 +76,7 @@ const ExpenseItem = ({ expense, onEdit, onDelete, color }) => (
         </Button>
       </div>
     </div>
-  </div>
+  </motion.div>
 );
 
 export const CategoryCard = ({
@@ -120,88 +125,93 @@ export const CategoryCard = ({
   };
 
   return (
-    <Card
-      className={`w-full bg-white bg-opacity-90 border-green-300 shadow-lg ${
-        isExpanded ? "h-auto" : "h-48"
-      }`}
+    <motion.div
+      layout
+      transition={{ duration: 0.3 }}
+      className={`w-full ${isExpanded ? 'h-auto' : 'h-24'}`}
     >
-      <CardHeader className="flex flex-col items-center space-y-2 p-3">
-        <div className="flex items-center justify-between w-full">
-          <motion.div
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            className={`w-9 h-9 ${categoryColors[title]} rounded-full flex items-center justify-center cursor-pointer`}
-            onClick={onExpand}
-          >
-            {categoryIcons[title] || "🐸"}
-          </motion.div>
-          <CardTitle className="text-gray-800 font-bold text-center flex-grow text-sm">
-            {title}
-          </CardTitle>
-          <Button
-            onClick={() => setIsSettingBudget(true)}
-            className="bg-green-500 hover:bg-green-600 text-white p-2 w-9 h-9 flex items-center justify-center"
-          >
-            <DollarSign className="h-4 w-4" />
-          </Button>
-        </div>
-
-        <div className="flex flex-col w-full">
-          <p className="font-bold text-green-600 text-md">
-            Total: ${totalExpense.toFixed(2)}
-          </p>
-          {budget && (
-            <p className="font-bold text-blue-600 text-xxs">
-              Presupuesto: ${parseFloat(budget).toFixed(2)}
-            </p>
-          )}
-        </div>
-        <Progress
-          value={progressPercentage}
-          className="w-full h-2 bg-gray-200"
-        />
-        <p className="text-s text-right w-full">
-          {progressPercentage.toFixed(1)}% gastado
-        </p>
-      </CardHeader>
-      {isExpanded && (
-        <CardContent className="p-2">
-          {isSettingBudget ? (
-            <div className="flex space-x-2 mb-4">
-              <Input
-                type="number"
-                value={newBudget}
-                onChange={(e) => setNewBudget(e.target.value)}
-                placeholder="Ingresar presupuesto"
-                className="border-green-300 focus:border-green-500 text-sm"
-              />
-              <Button
-                onClick={handleSetBudget}
-                className="bg-green-500 hover:bg-green-600 text-white"
-              >
-                <Check className="h-4 w-4" />
-              </Button>
-              <Button
-                onClick={() => setIsSettingBudget(false)}
-                className="bg-red-500 hover:bg-red-600 text-white"
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            </div>
-          ) : null}
-          <div className="space-y-2">
-            {expenses.map((expense, index) => (
-              <ExpenseItem
-                key={index}
-                expense={expense}
-                onEdit={handleEdit}
-                onDelete={onDelete}
-                color={categoryColors[title]}
-              />
-            ))}
+      <Card className={`w-full bg-white bg-opacity-90 border-green-300 shadow-lg overflow-hidden ${isExpanded ? 'h-auto' : 'h-24'}`}>
+        <CardHeader className="flex flex-col items-center space-y-2 p-3">
+          <div className="flex items-center justify-between w-full">
+            <motion.div
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className={`w-12 h-12 ${categoryColors[title]} rounded-full flex items-center justify-center cursor-pointer`}
+              onClick={onExpand}
+            >
+              {categoryIcons[title] || "🐸"}
+            </motion.div>
+            <CardTitle className="text-gray-800 font-bold text-center flex-grow text-sm">
+              {title}
+            </CardTitle>
+            <Button
+              onClick={() => setIsSettingBudget(true)}
+              className="bg-green-500 hover:bg-green-600 text-white p-2 w-12 h-12 flex items-center justify-center"
+            >
+              <DollarSign className="h-6 w-6" />
+            </Button>
           </div>
-        </CardContent>
-      )}
-    </Card>
+          {isExpanded && (
+            <>
+              <div className="flex flex-col w-full">
+                <p className="font-bold text-green-600 text-md">
+                  Total: ${totalExpense.toFixed(2)}
+                </p>
+                {budget && (
+                  <p className="font-bold text-blue-600 text-xxs">
+                    Presupuesto: ${parseFloat(budget).toFixed(2)}
+                  </p>
+                )}
+              </div>
+              <Progress
+                value={progressPercentage}
+                className="w-full h-2 bg-gray-200"
+              />
+              <p className="text-s text-right w-full">
+                {progressPercentage.toFixed(1)}% gastado
+              </p>
+            </>
+          )}
+        </CardHeader>
+        {isExpanded && (
+          <CardContent className="p-2">
+            {isSettingBudget ? (
+              <div className="flex space-x-2 mb-4">
+                <Input
+                  type="number"
+                  value={newBudget}
+                  onChange={(e) => setNewBudget(e.target.value)}
+                  placeholder="Ingresar presupuesto"
+                  className="border-green-300 focus:border-green-500 text-sm"
+                />
+                <Button
+                  onClick={handleSetBudget}
+                  className="bg-green-500 hover:bg-green-600 text-white w-10 h-10 p-0"
+                >
+                  <Check className="h-5 w-5" />
+                </Button>
+                <Button
+                  onClick={() => setIsSettingBudget(false)}
+                  className="bg-red-500 hover:bg-red-600 text-white w-10 h-10 p-0"
+                >
+                  <X className="h-5 w-5" />
+                </Button>
+              </div>
+            ) : null}
+            <div className="space-y-2">
+              {expenses.map((expense, index) => (
+                <ExpenseItem
+                  key={index}
+                  expense={expense}
+                  onEdit={handleEdit}
+                  onDelete={onDelete}
+                  color={categoryColors[title]}
+                />
+              ))}
+            </div>
+          </CardContent>
+        )}
+      </Card>
+    </motion.div>
   );
 };

@@ -1,5 +1,6 @@
 import React from 'react';
-import logo from '../../src/rarare1.png'; // Import the image
+import logo from '../../src/rarare1.png';
+import { motion } from 'framer-motion';
 
 export const Header = () => {
   const handleLogoClick = () => {
@@ -7,18 +8,30 @@ export const Header = () => {
   };
 
   return (
-    <header className="relative bg-green-500 text-white p-4 rounded-lg mb-4 flex justify-between items-center">
-      <h1 className="absolute left-0 right-0 text-4xl font-bold text-center">
+    <motion.header 
+      className="relative bg-gradient-to-r from-green-400 to-blue-500 text-white p-6 rounded-lg mb-6 flex justify-between items-center shadow-lg"
+      initial={{ y: -50, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <motion.h1 
+        className="text-4xl font-bold text-center flex-grow"
+        whileHover={{ scale: 1.1 }}
+      >
         RanaRe
-      </h1>
-      <div className="flex-grow flex justify-end">
+      </motion.h1>
+      <motion.div 
+        className="flex-shrink-0"
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+      >
         <img 
-          src={logo} // Use the imported image
+          src={logo}
           alt="RanaRe Logo" 
           className="h-16 w-auto cursor-pointer" 
           onClick={handleLogoClick}
         />
-      </div>
-    </header>
+      </motion.div>
+    </motion.header>
   );
 };
