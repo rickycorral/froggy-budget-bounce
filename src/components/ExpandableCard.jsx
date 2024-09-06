@@ -10,7 +10,7 @@ import { CalendarIcon, PlusCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 
-export const ExpandableCard = ({ title, onAdd, categories, totalAmount, isExpanded, onExpand }) => {
+const ExpenseForm = ({ onSubmit, categories, title }) => {
   const [date, setDate] = useState('');
   const [amount, setAmount] = useState('');
   const [details, setDetails] = useState('');
@@ -19,29 +19,88 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount, isExpand
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (title.toLowerCase() === 'ahorros') {
-      onAdd({ date: date ? format(date, 'yyyy-MM-dd') : '', amount, details, type: 'savings' });
-    } else {
-      onAdd({ date: date ? format(date, 'yyyy-MM-dd') : '', amount, details, category, type: 'expense' });
-    }
+    onSubmit({
+      date: date ? format(date, 'yyyy-MM-dd') : '',
+      amount,
+      details,
+      category: title.toLowerCase() === 'ahorros' ? 'Ahorros' : category,
+      type: title.toLowerCase() === 'ahorros' ? 'savings' : 'expense'
+    });
     setDate('');
     setAmount('');
     setDetails('');
     setCategory('');
   };
 
-  const handleDateSelect = (selectedDate) => {
-    setDate(selectedDate);
-    setIsCalendarOpen(false);
-  };
+  return (
+    <form onSubmit={handleSubmit} className="space-y-3">
+      <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            variant={"outline"}
+            className={cn(
+              "w-full justify-start text-left font-normal text-xs",
+              !date && "text-muted-foreground"
+            )}
+          >
+            <CalendarIcon className="mr-2 h-3 w-3" />
+            {date ? format(date, "PPP") : <span>Pick a date</span>}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0" align="start">
+          <Calendar
+            mode="single"
+            selected={date}
+            onSelect={(selectedDate) => {
+              setDate(selectedDate);
+              setIsCalendarOpen(false);
+            }}
+            initialFocus
+          />
+        </PopoverContent>
+      </Popover>
+      <Input
+        type="number"
+        placeholder="Monto"
+        value={amount}
+        onChange={(e) => setAmount(e.target.value)}
+        required
+        className="border-green-300 focus:border-green-500 text-xs"
+        inputMode="numeric"
+        pattern="[0-9]*"
+      />
+      <Input
+        placeholder="Detalles"
+        value={details}
+        onChange={(e) => setDetails(e.target.value)}
+        required
+        className="border-green-300 focus:border-green-500 text-xs"
+      />
+      {title.toLowerCase() !== 'ahorros' && (
+        <Select value={category} onValueChange={setCategory} required>
+          <SelectTrigger className="border-green-300 focus:border-green-500 text-xs">
+            <SelectValue placeholder="Seleccionar categoría" />
+          </SelectTrigger>
+          <SelectContent>
+            {categories.map((cat) => (
+              <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      )}
+      <Button type="submit" className="bg-green-500 hover:bg-green-600 text-white text-xs w-full">Agregar</Button>
+    </form>
+  );
+};
 
+export const ExpandableCard = ({ title, onAdd, categories, totalAmount, isExpanded, onExpand }) => {
   const cardColor = title.toLowerCase() === 'ahorros' ? 'bg-teal-400' : 'bg-orange-400';
 
   return (
     <motion.div 
       className="flex justify-center w-full"
       layout
-      transition={{ duration: 0.3, type: "spring", stiffness: 100 }}
+      transition={{ duration: 0.3, type: "spring", stiffness: 100, damping: 20 }}
     >
       <AnimatePresence initial={false}>
         {isExpanded ? (
@@ -64,60 +123,7 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount, isExpand
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-3">
-                  <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant={"outline"}
-                        className={cn(
-                          "w-full justify-start text-left font-normal text-xs",
-                          !date && "text-muted-foreground"
-                        )}
-                      >
-                        <CalendarIcon className="mr-2 h-3 w-3" />
-                        {date ? format(date, "PPP") : <span>Pick a date</span>}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={date}
-                        onSelect={handleDateSelect}
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
-                  <Input
-                    type="number"
-                    placeholder="Monto"
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                    required
-                    className="border-green-300 focus:border-green-500 text-xs"
-                    inputMode="numeric"
-                    pattern="[0-9]*"
-                  />
-                  <Input
-                    placeholder="Detalles"
-                    value={details}
-                    onChange={(e) => setDetails(e.target.value)}
-                    required
-                    className="border-green-300 focus:border-green-500 text-xs"
-                  />
-                  {title.toLowerCase() !== 'ahorros' && (
-                    <Select value={category} onValueChange={setCategory} required>
-                      <SelectTrigger className="border-green-300 focus:border-green-500 text-xs">
-                        <SelectValue placeholder="Seleccionar categoría" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {categories.map((cat) => (
-                          <SelectItem key={cat} value={cat}>{cat}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  )}
-                  <Button type="submit" className="bg-green-500 hover:bg-green-600 text-white text-xs w-full">Agregar</Button>
-                </form>
+                <ExpenseForm onSubmit={onAdd} categories={categories} title={title} />
               </CardContent>
             </Card>
           </motion.div>
