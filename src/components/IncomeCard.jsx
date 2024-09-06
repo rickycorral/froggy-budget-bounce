@@ -8,8 +8,8 @@ import { DollarSign, TrendingUp, TrendingDown, Wallet } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const months = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December"
+  "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+  "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
 ];
 
 export const IncomeCard = ({ onSave, currentIncome, totalExpenses, totalSavings, selectedMonth, onMonthChange }) => {
@@ -36,7 +36,7 @@ export const IncomeCard = ({ onSave, currentIncome, totalExpenses, totalSavings,
             <span>Ingresos Mensuales</span>
             <Select value={selectedMonth} onValueChange={onMonthChange}>
               <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select month" />
+                <SelectValue placeholder="Seleccionar mes" />
               </SelectTrigger>
               <SelectContent>
                 {months.map((month) => (
