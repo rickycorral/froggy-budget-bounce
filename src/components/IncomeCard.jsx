@@ -139,7 +139,7 @@ export const IncomeCard = ({ onSave, currentIncome, totalExpenses, totalSavings,
           </motion.div>
         </CardContent>
         <motion.div
-          className="absolute bottom-2 right-3.5 text-white opacity-50"
+          className="absolute bottom-2 right-3 text-white opacity-50"
           animate={{
             y: [0, -5, 0],
             rotate: [0, 5, -5, 0],
@@ -149,6 +149,8 @@ export const IncomeCard = ({ onSave, currentIncome, totalExpenses, totalSavings,
             repeat: Infinity,
             repeatType: "loop",
             ease: "easeInOut",
+            times: [0, 0.4, 1],  // Distribute the animation over 40% of the total duration
+            repeatDelay: 3,  // Add a 3-second delay before repeating
           }}
         >
           <FaFrog className="w-4 h-4" />
