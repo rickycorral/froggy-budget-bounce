@@ -36,7 +36,6 @@ export const ExpensePieChart = ({ expenses }) => {
               data={data}
               cx="50%"
               cy="50%"
-              innerRadius={25}
               outerRadius={50}
               fill="#8884d8"
               dataKey="value"
