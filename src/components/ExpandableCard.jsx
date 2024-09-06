@@ -9,7 +9,6 @@ import { format } from "date-fns";
 import { CalendarIcon, PlusCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
-import confetti from 'canvas-confetti';
 
 export const ExpandableCard = ({ title, onAdd, categories, totalAmount, isExpanded, onExpand }) => {
   const [date, setDate] = useState('');
@@ -22,11 +21,6 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount, isExpand
     e.preventDefault();
     if (title.toLowerCase() === 'ahorros') {
       onAdd({ date: date ? format(date, 'yyyy-MM-dd') : '', amount, details, type: 'savings' });
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 }
-      });
     } else {
       onAdd({ date: date ? format(date, 'yyyy-MM-dd') : '', amount, details, category, type: 'expense' });
     }

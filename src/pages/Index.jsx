@@ -6,6 +6,7 @@ import { CategoryCard } from "../components/CategoryCard";
 import { ExpensePieChart } from "../components/ExpensePieChart";
 import { Search } from "../components/Search";
 import { Footer } from "../components/Footer";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const Index = () => {
   const [expenses, setExpenses] = useState(() => {
@@ -23,7 +24,9 @@ const Index = () => {
   });
   const [expandedCard, setExpandedCard] = useState(null);
   const [expandedCategory, setExpandedCategory] = useState(null);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [categoryFilter, setCategoryFilter] = useState("all");
+  const [monthFilter, setMonthFilter] = useState("all");
+  const [sortOrder, setSortOrder] = useState("desc");
 
   useEffect(() => {
     localStorage.setItem("expenses", JSON.stringify(expenses));
@@ -68,9 +71,19 @@ const Index = () => {
     setCategoryBudgets({ ...categoryBudgets, [category]: budget });
   };
 
-  const filteredExpenses = expenses.filter((expense) =>
-    expense.details.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredExpenses = expenses.filter((expense) => {
+    const matchesSearch = expense.details.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = categoryFilter === "all" || expense.category === categoryFilter;
+    const expenseMonth = new Date(expense.date).getMonth();
+    const matchesMonth = monthFilter === "all" || expenseMonth === parseInt(monthFilter);
+    return matchesSearch && matchesCategory && matchesMonth;
+  }).sort((a, b) => {
+    if (sortOrder === "desc") {
+      return parseFloat(b.amount) - parseFloat(a.amount);
+    } else {
+      return parseFloat(a.amount) - parseFloat(b.amount);
+    }
+  });
 
   const totalSavings = expenses
     .filter((expense) => expense.type === "savings")
@@ -94,13 +107,9 @@ const Index = () => {
     }
   };
 
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-  };
-
   return (
-    <div className={`min-h-screen p-4 ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-green-50'} bg-opacity-90`}>
-      <Header toggleTheme={toggleTheme} isDarkMode={isDarkMode} />
+    <div className="min-h-screen p-4 bg-green-50 bg-opacity-90">
+      <Header />
       <div className="max-w-md mx-auto mb-4">
         <IncomeCard
           onSave={handleSaveIncome}
@@ -143,9 +152,46 @@ const Index = () => {
         ))}
       </div>
       <ExpensePieChart expenses={expenses} />
-      <Search onSearch={setSearchTerm} />
+      <div className="mb-4 space-y-2">
+        <Search onSearch={setSearchTerm} />
+        <div className="flex space-x-2">
+          <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Filtrar por categoría" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Todas las categorías</SelectItem>
+              {categories.map((cat) => (
+                <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <Select value={monthFilter} onValueChange={setMonthFilter}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Filtrar por mes" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Todos los meses</SelectItem>
+              {[...Array(12)].map((_, i) => (
+                <SelectItem key={i} value={i.toString()}>
+                  {new Date(0, i).toLocaleString('default', { month: 'long' })}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <Select value={sortOrder} onValueChange={setSortOrder}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Ordenar por monto" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="desc">Mayor a menor</SelectItem>
+              <SelectItem value="asc">Menor a mayor</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
       <div className="mt-4 overflow-x-auto">
-        <table className="min-w-full bg-white border border-gray-300 shadow-sm rounded-lg overflow-hidden">
+        <table className="w-full max-w-2xl mx-auto bg-white border border-gray-300 shadow-sm rounded-lg overflow-hidden">
           <thead className="bg-gray-100">
             <tr>
               <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
