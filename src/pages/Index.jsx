@@ -23,6 +23,7 @@ const Index = () => {
   });
   const [expandedCard, setExpandedCard] = useState(null);
   const [expandedCategory, setExpandedCategory] = useState(null);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
     localStorage.setItem("expenses", JSON.stringify(expenses));
@@ -93,9 +94,13 @@ const Index = () => {
     }
   };
 
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+  };
+
   return (
-    <div className="min-h-screen p-4 bg-green-50 bg-opacity-90">
-      <Header />
+    <div className={`min-h-screen p-4 ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-green-50'} bg-opacity-90`}>
+      <Header toggleTheme={toggleTheme} isDarkMode={isDarkMode} />
       <div className="max-w-md mx-auto mb-4">
         <IncomeCard
           onSave={handleSaveIncome}
@@ -107,7 +112,7 @@ const Index = () => {
       <div className="flex justify-center my-4 space-x-4">
         <ExpandableCard
           title="Ahorros"
-          on Add={handleAddExpense}
+          onAdd={handleAddExpense}
           categories={categories}
           totalAmount={totalSavings}
           isExpanded={expandedCard === "Ahorros"}

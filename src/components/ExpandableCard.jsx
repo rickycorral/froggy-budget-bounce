@@ -34,7 +34,6 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount, isExpand
     setAmount('');
     setDetails('');
     setCategory('');
-    onExpand();
   };
 
   const handleDateSelect = (selectedDate) => {

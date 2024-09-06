@@ -27,17 +27,17 @@ export const ExpensePieChart = ({ expenses }) => {
     }, []);
 
   return (
-    <div className="h-64 w-full bg-white bg-opacity-95 rounded-lg shadow-lg p-4 mb-4">
+    <div className="h-56 w-full bg-white bg-opacity-95 rounded-lg shadow-lg p-4 mb-4">
       <h2 className="text-xl font-bold text-center mb-2 text-gray-800">Distribución de Gastos</h2>
       <div className="flex flex-col items-center">
-        <ResponsiveContainer width="100%" height={180}>
+        <ResponsiveContainer width="100%" height={140}>
           <PieChart>
             <Pie
               data={data}
               cx="50%"
               cy="50%"
-              innerRadius={40}
-              outerRadius={80}
+              innerRadius={30}
+              outerRadius={60}
               fill="#8884d8"
               dataKey="value"
               label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
@@ -50,10 +50,10 @@ export const ExpensePieChart = ({ expenses }) => {
             <Tooltip />
           </PieChart>
         </ResponsiveContainer>
-        <div className="mt-2 text-xs">
+        <div className="mt-2 text-xxs flex flex-wrap justify-center">
           {data.map((entry, index) => (
-            <span key={`legend-${index}`} className="inline-flex items-center mr-2">
-              <span className="w-3 h-3 inline-block mr-1" style={{ backgroundColor: categoryColors[entry.name] || "#cccccc" }}></span>
+            <span key={`legend-${index}`} className="inline-flex items-center mr-2 mb-1">
+              <span className="w-2 h-2 inline-block mr-1" style={{ backgroundColor: categoryColors[entry.name] || "#cccccc" }}></span>
               {entry.name}
             </span>
           ))}

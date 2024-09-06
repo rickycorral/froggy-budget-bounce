@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
-import { Pencil, Trash2, DollarSign, Check, X } from "lucide-react";
+import { Pencil, Trash2, Check, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const categoryColors = {
@@ -87,6 +87,8 @@ const EditExpenseForm = ({ expense, onSave, onCancel }) => {
         onChange={(e) => setEditedAmount(e.target.value)}
         placeholder="Monto"
         className="text-xs"
+        inputMode="numeric"
+        pattern="[0-9]*"
       />
       <Input
         type="date"
@@ -158,7 +160,7 @@ export const CategoryCard = ({
             <motion.div
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
-              className={`w-8 h-8 ${categoryColors[title]} rounded-full flex items-center justify-center cursor-pointer`}
+              className={`w-6 h-6 ${categoryColors[title]} rounded-full flex items-center justify-center cursor-pointer`}
               onClick={onExpand}
             >
               {categoryIcons[title]}
@@ -168,9 +170,9 @@ export const CategoryCard = ({
             </CardTitle>
             <Button
               onClick={() => setIsSettingBudget(true)}
-              className="bg-green-500 hover:bg-green-600 text-white p-1 w-8 h-8 flex items-center justify-center"
+              className="bg-green-500 hover:bg-green-600 text-white p-1 w-6 h-6 flex items-center justify-center"
             >
-              <DollarSign className="h-4 w-4" />
+              $
             </Button>
           </div>
           <div className="flex flex-col w-full">
@@ -201,6 +203,8 @@ export const CategoryCard = ({
                   onChange={(e) => setNewBudget(e.target.value)}
                   placeholder="Ingresar presupuesto"
                   className="border-green-300 focus:border-green-500 text-xs"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                 />
                 <Button
                   onClick={handleSetBudget}
@@ -218,7 +222,7 @@ export const CategoryCard = ({
             ) : null}
             <div className="space-y-1">
               <AnimatePresence>
-                {expenses.map((expense, index) => (
+                {expenses.map((expense) => (
                   editingExpense && editingExpense.id === expense.id ? (
                     <EditExpenseForm
                       key={expense.id}

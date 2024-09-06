@@ -29,34 +29,49 @@ export const IncomeCard = ({ onSave, currentIncome, totalExpenses, totalSavings 
   const remainingBudget = totalBudget - totalExpenses;
   const progressPercentage = totalBudget > 0 ? (totalExpenses / totalBudget) * 100 : 0;
 
+  const handleCardClick = () => {
+    const randomColor = lightColors[Math.floor(Math.random() * lightColors.length)];
+    setBgColor(randomColor);
+  };
+
   return (
     <motion.div
       className="w-full max-w-sm mx-auto"
       whileHover={{ scale: 1.02 }}
       transition={{ type: "spring", stiffness: 300 }}
+      onClick={handleCardClick}
     >
-      <Card className={`${bgColor} shadow-lg p-4 overflow-hidden relative`}>
+      <Card className={`${bgColor} shadow-lg p-4 overflow-hidden relative cursor-pointer`}>
         <CardHeader className="p-2 relative z-10">
           <CardTitle className="text-xl font-bold flex items-center text-gray-800">
             <Wallet className="mr-2" /> Ingresos Mensuales
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-2 relative z-10">
-          <div className="flex justify-between items-center text-sm text-gray-700">
-            <span className="font-semibold flex items-center"><DollarSign className="mr-1 w-4 h-4" /> Ingresos:</span>
-            <span className="font-bold">${totalBudget.toFixed(2)}</span>
-          </div>
-          <div className="flex justify-between items-center text-sm text-gray-700">
-            <span className="font-semibold flex items-center"><TrendingDown className="mr-1 w-4 h-4" /> Gastos:</span>
-            <span className="font-bold">${totalExpenses.toFixed(2)}</span>
-          </div>
-          <div className="flex justify-between items-center text-sm text-gray-700">
-            <span className="font-semibold flex items-center"><TrendingUp className="mr-1 w-4 h-4" /> Ahorros:</span>
-            <span className="font-bold">${totalSavings.toFixed(2)}</span>
-          </div>
-          <div className="flex justify-between items-center text-sm text-gray-700">
-            <span className="font-semibold flex items-center"><Wallet className="mr-1 w-4 h-4" /> Restante:</span>
-            <span className="font-bold">${remainingBudget.toFixed(2)}</span>
+          <div className="grid grid-cols-2 gap-2 text-sm text-gray-700">
+            <motion.div className="flex items-center" whileHover={{ scale: 1.05 }} whileTap={{ rotate: 360 }} transition={{ duration: 0.5 }}>
+              <DollarSign className="mr-1 w-4 h-4" />
+              <span className="font-semibold">Ingresos:</span>
+            </motion.div>
+            <span className="font-bold text-right">${totalBudget.toFixed(2)}</span>
+            
+            <motion.div className="flex items-center" whileHover={{ scale: 1.05 }} whileTap={{ rotate: 360 }} transition={{ duration: 0.5 }}>
+              <TrendingDown className="mr-1 w-4 h-4" />
+              <span className="font-semibold">Gastos:</span>
+            </motion.div>
+            <span className="font-bold text-right">${totalExpenses.toFixed(2)}</span>
+            
+            <motion.div className="flex items-center" whileHover={{ scale: 1.05 }} whileTap={{ rotate: 360 }} transition={{ duration: 0.5 }}>
+              <TrendingUp className="mr-1 w-4 h-4" />
+              <span className="font-semibold">Ahorros:</span>
+            </motion.div>
+            <span className="font-bold text-right">${totalSavings.toFixed(2)}</span>
+            
+            <motion.div className="flex items-center" whileHover={{ scale: 1.05 }} whileTap={{ rotate: 360 }} transition={{ duration: 0.5 }}>
+              <Wallet className="mr-1 w-4 h-4" />
+              <span className="font-semibold">Restante:</span>
+            </motion.div>
+            <span className="font-bold text-right">${remainingBudget.toFixed(2)}</span>
           </div>
           <Progress value={progressPercentage} className="h-2 bg-white bg-opacity-30" />
           <p className="text-xs text-right text-gray-600">{progressPercentage.toFixed(1)}% del presupuesto gastado</p>
@@ -67,6 +82,8 @@ export const IncomeCard = ({ onSave, currentIncome, totalExpenses, totalSavings 
               value={income}
               onChange={(e) => setIncome(e.target.value)}
               className="border-gray-300 focus:border-green-300 text-gray-700 text-sm"
+              inputMode="numeric"
+              pattern="[0-9]*"
             />
             <Button onClick={handleSave} className="bg-green-500 hover:bg-green-600 text-white font-bold text-sm">Actualizar</Button>
           </div>
