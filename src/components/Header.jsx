@@ -9,13 +9,13 @@ export const Header = () => {
 
   return (
     <motion.header 
-      className="relative bg-gradient-to-r from-green-400 to-blue-500 text-white p-6 rounded-lg mb-6 flex justify-between items-center shadow-lg"
+      className="relative bg-gradient-to-r from-green-400 via-teal-500 to-blue-500 text-white p-4 rounded-lg mb-4 flex justify-between items-center shadow-lg"
       initial={{ y: -50, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
       <motion.h1 
-        className="text-4xl font-bold text-center flex-grow"
+        className="text-3xl font-bold text-center flex-grow"
         whileHover={{ scale: 1.1 }}
       >
         RanaRe
@@ -28,7 +28,7 @@ export const Header = () => {
         <img 
           src={logo}
           alt="RanaRe Logo" 
-          className="h-16 w-auto cursor-pointer" 
+          className="h-12 w-auto cursor-pointer" 
           onClick={handleLogoClick}
         />
       </motion.div>

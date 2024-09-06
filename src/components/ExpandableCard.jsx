@@ -42,7 +42,7 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount, isExpand
     setIsCalendarOpen(false);
   };
 
-  const cardColor = title.toLowerCase() === 'ahorros' ? 'bg-teal-500' : 'bg-orange-500';
+  const cardColor = title.toLowerCase() === 'ahorros' ? 'bg-teal-400' : 'bg-orange-400';
 
   return (
     <motion.div 
@@ -58,7 +58,7 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount, isExpand
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.3 }}
           >
-            <Card className="w-64 bg-white bg-opacity-90 border-green-300 shadow-lg">
+            <Card className="w-60 bg-white bg-opacity-90 border-green-300 shadow-lg">
               <CardHeader>
                 <CardTitle className="flex justify-center items-center">
                   <Button
@@ -70,17 +70,17 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount, isExpand
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-3">
                   <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
                     <PopoverTrigger asChild>
                       <Button
                         variant={"outline"}
                         className={cn(
-                          "w-full justify-start text-left font-normal",
+                          "w-full justify-start text-left font-normal text-xs",
                           !date && "text-muted-foreground"
                         )}
                       >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        <CalendarIcon className="mr-2 h-3 w-3" />
                         {date ? format(date, "PPP") : <span>Pick a date</span>}
                       </Button>
                     </PopoverTrigger>
@@ -99,7 +99,7 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount, isExpand
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
                     required
-                    className="border-green-300 focus:border-green-500 text-sm"
+                    className="border-green-300 focus:border-green-500 text-xs"
                     inputMode="numeric"
                     pattern="[0-9]*"
                   />
@@ -108,11 +108,11 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount, isExpand
                     value={details}
                     onChange={(e) => setDetails(e.target.value)}
                     required
-                    className="border-green-300 focus:border-green-500 text-sm"
+                    className="border-green-300 focus:border-green-500 text-xs"
                   />
                   {title.toLowerCase() !== 'ahorros' && (
                     <Select value={category} onValueChange={setCategory} required>
-                      <SelectTrigger className="border-green-300 focus:border-green-500 text-sm">
+                      <SelectTrigger className="border-green-300 focus:border-green-500 text-xs">
                         <SelectValue placeholder="Seleccionar categoría" />
                       </SelectTrigger>
                       <SelectContent>
@@ -122,7 +122,7 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount, isExpand
                       </SelectContent>
                     </Select>
                   )}
-                  <Button type="submit" className="bg-green-500 hover:bg-green-600 text-white text-sm w-full">Agregar</Button>
+                  <Button type="submit" className="bg-green-500 hover:bg-green-600 text-white text-xs w-full">Agregar</Button>
                 </form>
               </CardContent>
             </Card>
@@ -136,12 +136,12 @@ export const ExpandableCard = ({ title, onAdd, categories, totalAmount, isExpand
             transition={{ duration: 0.3 }}
           >
             <Button
-              className={`w-24 h-24 ${cardColor} rounded-full flex flex-col items-center justify-center text-white hover:bg-opacity-90`}
+              className={`w-20 h-20 ${cardColor} rounded-full flex flex-col items-center justify-center text-white hover:bg-opacity-90`}
               onClick={onExpand}
             >
-              <PlusCircle className="h-8 w-8 mb-1" />
-              <span className="text-sm font-bold">{title}</span>
-              <span className="text-xs font-semibold">${totalAmount.toFixed(2)}</span>
+              <PlusCircle className="h-6 w-6 mb-1" />
+              <span className="text-xs font-bold">{title}</span>
+              <span className="text-xxs font-semibold">${totalAmount.toFixed(2)}</span>
             </Button>
           </motion.div>
         )}

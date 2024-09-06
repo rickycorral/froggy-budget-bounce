@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  PieChart,
-  Pie,
-  Cell,
-  ResponsiveContainer,
-  Legend,
-  Tooltip,
-} from "recharts";
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts";
 
 const categoryColors = {
   Escuela: "#0088FE",
@@ -23,9 +16,7 @@ export const ExpensePieChart = ({ expenses }) => {
   const data = expenses
     .filter((expense) => expense.type === "expense")
     .reduce((acc, expense) => {
-      const category =
-        expense.category === "Transporte" ? "Uber" : expense.category;
-
+      const category = expense.category === "Transporte" ? "Uber" : expense.category;
       const existingCategory = acc.find((item) => item.name === category);
       if (existingCategory) {
         existingCategory.value += parseFloat(expense.amount);
@@ -36,51 +27,38 @@ export const ExpensePieChart = ({ expenses }) => {
     }, []);
 
   return (
-    <div
-      className="h-96 w-full bg-white bg-opacity-95 rounded-lg shadow-lg p-4"
-      style={{
-        margin: "0 auto",
-        marginBottom: "20px",
-      }}
-    >
-      <h2 className="text-2xl font-bold text-center mb-4 text-gray-800">Distribución de Gastos</h2>
-      <ResponsiveContainer width="100%" height="100%">
-        <PieChart>
-          <Pie
-            data={data}
-            cx="50%"
-            cy="50%"
-            labelLine={false}
-            outerRadius={120}
-            fill="#8884d8"
-            dataKey="value"
-            label={({ name, percent }) =>
-              `${name}: ${(percent * 100).toFixed(0)}%`
-            }
-          >
-            {data.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={categoryColors[entry.name] || "#cccccc"}
-              />
-            ))}
-          </Pie>
-          <Tooltip />
-          <Legend
-            layout="vertical"
-            align="right"
-            verticalAlign="middle"
-            wrapperStyle={{
-              fontSize: "14px",
-              fontWeight: "bold",
-              color: "#333",
-              backgroundColor: "rgba(255, 255, 255, 0.8)",
-              padding: "10px",
-              borderRadius: "5px",
-            }}
-          />
-        </PieChart>
-      </ResponsiveContainer>
+    <div className="h-64 w-full bg-white bg-opacity-95 rounded-lg shadow-lg p-4 mb-4">
+      <h2 className="text-xl font-bold text-center mb-2 text-gray-800">Distribución de Gastos</h2>
+      <div className="flex flex-col items-center">
+        <ResponsiveContainer width="100%" height={180}>
+          <PieChart>
+            <Pie
+              data={data}
+              cx="50%"
+              cy="50%"
+              innerRadius={40}
+              outerRadius={80}
+              fill="#8884d8"
+              dataKey="value"
+              label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+              labelLine={false}
+            >
+              {data.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={categoryColors[entry.name] || "#cccccc"} />
+              ))}
+            </Pie>
+            <Tooltip />
+          </PieChart>
+        </ResponsiveContainer>
+        <div className="mt-2 text-xs">
+          {data.map((entry, index) => (
+            <span key={`legend-${index}`} className="inline-flex items-center mr-2">
+              <span className="w-3 h-3 inline-block mr-1" style={{ backgroundColor: categoryColors[entry.name] || "#cccccc" }}></span>
+              {entry.name}
+            </span>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
