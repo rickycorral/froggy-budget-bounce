@@ -34,9 +34,11 @@ export const IncomeCard = ({ onSave, currentIncome, totalExpenses, totalSavings,
         <CardHeader className="p-2 relative z-10">
           <CardTitle className="text-xl font-bold flex items-center justify-between text-gray-800">
             <span>Ingresos Mensuales</span>
-            <Select value={selectedMonth} onValueChange={onMonthChange}>
+            <Select value={selectedMonth || ""} onValueChange={onMonthChange}>
               <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Seleccionar mes" />
+                <SelectValue>
+                  {selectedMonth ? selectedMonth : "Seleccionar Mes"}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 {months.map((month) => (

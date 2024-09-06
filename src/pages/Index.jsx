@@ -15,7 +15,7 @@ const Index = () => {
   });
   const [selectedMonth, setSelectedMonth] = useState(() => {
     const currentMonth = new Date().toLocaleString('default', { month: 'long' });
-    return monthlyData[currentMonth] ? currentMonth : "January";
+    return monthlyData[currentMonth] ? currentMonth : "Seleccionar Mes";
   });
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
