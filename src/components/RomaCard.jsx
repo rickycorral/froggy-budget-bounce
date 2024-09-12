@@ -46,7 +46,6 @@ export const RomaCard = ({ isExpanded, onExpand }) => {
           backgroundRepeat: "no-repeat",
         }}
       >
-        {/* Removed bg-blue-100 to make the header transparent */}
         <CardHeader className="flex flex-col items-center space-y-2 p-2">
           <div className="flex items-center justify-between w-full">
             <motion.div
@@ -57,11 +56,11 @@ export const RomaCard = ({ isExpanded, onExpand }) => {
             >
               {categoryIcons.Roma}
             </motion.div>
-            <CardTitle className="text-gray-800 font-bold text-center flex-grow text-sm">
+            <CardTitle className="text-2xl font-extrabold text-center flex-grow gradient-text">
               Roma
             </CardTitle>
           </div>
-          <p className="text-xs font-semibold text-blue-600">
+          <p className="text-lg font-extrabold gradient-text">
             Te amamos Romina!
           </p>
         </CardHeader>
@@ -81,3 +80,4 @@ export const RomaCard = ({ isExpanded, onExpand }) => {
     </motion.div>
   );
 };
+

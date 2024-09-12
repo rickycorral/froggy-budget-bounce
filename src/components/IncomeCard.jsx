@@ -53,7 +53,7 @@ export const IncomeCard = ({ onSave, currentIncome, totalExpenses, totalSavings,
           transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
         />
         <CardHeader className="p-1 relative z-10">
-          <CardTitle className="text-base font-bold flex items-center justify-between text-white">
+          <CardTitle className="text-[14px] font-bold flex items-center justify-between text-white">
             <motion.span
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -69,14 +69,14 @@ export const IncomeCard = ({ onSave, currentIncome, totalExpenses, totalSavings,
               </motion.span>
             </motion.span>
             <Select value={selectedMonth || ""} onValueChange={onMonthChange}>
-              <SelectTrigger className="w-[120px] bg-white bg-opacity-20 border-none text-white text-sm">
+              <SelectTrigger className="w-[120px] bg-white bg-opacity-20 border-none text-white text-[12px]">
                 <SelectValue>
                   {selectedMonth ? selectedMonth : "Seleccionar Mes"}
                 </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 {months.map((month) => (
-                  <SelectItem key={month} value={month} className="text-sm">{month}</SelectItem>
+                  <SelectItem key={month} value={month} className="text-[12px]">{month}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -91,7 +91,7 @@ export const IncomeCard = ({ onSave, currentIncome, totalExpenses, totalSavings,
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
             >
-              <div className="grid grid-cols-2 gap-1 text-xs text-white">
+              <div className="grid grid-cols-2 gap-1 text-[10px] text-white">
                 {[
                   { icon: DollarSign, label: "Ingresos", value: totalBudget, onClick: () => setIsEditing(true) },
                   { icon: TrendingDown, label: "Gastos", value: totalExpenses },
@@ -122,7 +122,7 @@ export const IncomeCard = ({ onSave, currentIncome, totalExpenses, totalSavings,
             transition={{ delay: 0.5 }}
           >
             <Progress value={progressPercentage} className="h-2 bg-white bg-opacity-30" />
-            <p className="text-xxs text-right text-white mt-1">{progressPercentage.toFixed(1)}% del presupuesto utilizado</p>
+            <p className="text-[8px] text-right text-white mt-1">{progressPercentage.toFixed(1)}% del presupuesto utilizado</p>
           </motion.div>
           {isEditing ? (
             <motion.div
@@ -136,13 +136,13 @@ export const IncomeCard = ({ onSave, currentIncome, totalExpenses, totalSavings,
                 placeholder="Actualizar ingresos"
                 value={income}
                 onChange={(e) => setIncome(e.target.value)}
-                className="border-white border-opacity-50 bg-white bg-opacity-20 text-white placeholder-white placeholder-opacity-70 focus:border-white text-xs py-1"
+                className="border-white border-opacity-50 bg-white bg-opacity-20 text-white placeholder-white placeholder-opacity-70 focus:border-white text-[10px] py-1"
                 inputMode="numeric"
                 pattern="[0-9]*"
               />
               <Button
                 onClick={handleSave}
-                className="bg-white text-green-600 hover:bg-green-100 font-bold text-xs py-1 px-2 transition-all duration-300 ease-in-out transform hover:scale-105"
+                className="bg-white text-green-600 hover:bg-green-100 font-bold text-[10px] py-1 px-2 transition-all duration-300 ease-in-out transform hover:scale-105"
               >
                 Actualizar
               </Button>
@@ -150,7 +150,7 @@ export const IncomeCard = ({ onSave, currentIncome, totalExpenses, totalSavings,
           ) : (
             <Button
               onClick={() => setIsEditing(true)}
-              className="bg-white text-green-600 hover:bg-green-100 font-bold text-xs py-1 px-2 transition-all duration-300 ease-in-out transform hover:scale-105"
+              className="bg-white text-green-600 hover:bg-green-100 font-bold text-[10px] py-1 px-2 transition-all duration-300 ease-in-out transform hover:scale-105"
             >
               <Edit2 className="w-3 h-3 mr-1" />
               Editar Ingresos
@@ -176,7 +176,7 @@ export const IncomeCard = ({ onSave, currentIncome, totalExpenses, totalSavings,
         </motion.div>
       </Card>
       {incomeHistory && incomeHistory.length > 0 && (
-        <div className="mt-2 bg-white bg-opacity-80 rounded-lg p-2 text-xs">
+        <div className="mt-2 bg-white bg-opacity-80 rounded-lg p-2 text-[10px]">
           <h3 className="font-bold mb-1">Historial de Ingresos de este Mes:</h3>
           {incomeHistory.map((entry, index) => (
             <p key={index} className="text-gray-600">

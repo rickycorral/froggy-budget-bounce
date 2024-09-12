@@ -64,3 +64,27 @@ body {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+@keyframes wave-effect {
+  0% {
+    background-position: 0% 50%;
+    color: black;
+  }
+  50% {
+    background-position: 100% 50%;
+    color: red;
+  }
+  100% {
+    background-position: 0% 50%;
+    color: white;
+  }
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, black, red, white);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: wave-effect 2s ease-in-out infinite;
+  background-size: 200% 200%;
+  text-shadow: 2px 2px 4px rgba(195, 142, 142, 0.7); /* Adding shadow for better visibility */
+}
