@@ -25,8 +25,10 @@ export const ExpensePieChart = ({ expenses }) => {
     return acc;
   }, []);
 
+  const formatLabel = (entry) => `${entry.name}: $${entry.value.toFixed(2)}`;
+
   return (
-    <div className="h-48 w-full bg-white bg-opacity-95 rounded-lg shadow-lg p-2 mb-4">
+    <div className="h-48 w-full bg-white bg-opacity-80 rounded-lg shadow-lg p-2 mb-4">
       <div className="flex flex-col items-center">
         <ResponsiveContainer width="100%" height={120}>
           <PieChart>
@@ -37,14 +39,14 @@ export const ExpensePieChart = ({ expenses }) => {
               outerRadius={50}
               fill="#8884d8"
               dataKey="value"
-              label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+              label={formatLabel}
               labelLine={false}
             >
               {data.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={categoryColors[entry.name] || "#cccccc"} />
               ))}
             </Pie>
-            <Tooltip />
+            <Tooltip formatter={(value) => `$${value.toFixed(2)}`} />
           </PieChart>
         </ResponsiveContainer>
         <div className="mt-1 text-[12px] flex flex-wrap justify-center">

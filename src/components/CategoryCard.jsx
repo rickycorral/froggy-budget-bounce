@@ -150,14 +150,17 @@ export const CategoryCard = ({
     setIsSettingBudget(false);
   };
 
+  const cardStyle = title === "Roma" ? "bg-blue-100 border-blue-300" : "bg-green-50 bg-opacity-80 border-green-300";
+  const headerStyle = title === "Roma" ? "bg-blue-200" : "bg-green-200";
+
   return (
     <motion.div
       layout
       transition={{ duration: 0.3 }}
       className={`w-full ${isExpanded ? 'h-auto' : 'h-24'}`}
     >
-      <Card className={`w-full bg-white bg-opacity-90 border-green-300 shadow-lg overflow-hidden ${isExpanded ? 'h-auto' : 'h-24'}`}>
-        <CardHeader className="flex flex-col items-center space-y-2 p-2">
+      <Card className={`w-full ${cardStyle} shadow-lg overflow-hidden ${isExpanded ? 'h-auto' : 'h-24'}`}>
+        <CardHeader className={`flex flex-col items-center space-y-2 p-2 ${headerStyle}`}>
           <div className="flex items-center justify-between w-full">
             <motion.div
               whileHover={{ scale: 1.1 }}
@@ -180,6 +183,9 @@ export const CategoryCard = ({
               <DollarSign className="w-4 h-4" />
             </Button>
           </div>
+          {title === "Roma" && (
+            <p className="text-xs font-semibold text-blue-600">Te amamos Romina</p>
+          )}
           <div className="flex flex-col w-full">
             <p className="font-bold text-green-600 text-xs">
               Total: ${totalExpense.toFixed(2)}
