@@ -21,3 +21,8 @@ export const categoryIcons = {
   Medicinas: "💊",
   Ahorros: "💰",
 };
+
+export const getCategoryLightColor = (category) => {
+  const baseColor = categoryColors[category].split('-')[1];
+  return `bg-${baseColor}-100 bg-opacity-50`;
+};

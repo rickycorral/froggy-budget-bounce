@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Pencil, Trash2, Check, X } from "lucide-react";
+import { format } from 'date-fns';
+import { es } from 'date-fns/locale';
 
 export const ExpenseItem = ({ expense, onEdit, onDelete, color }) => (
   <motion.div
@@ -16,7 +18,7 @@ export const ExpenseItem = ({ expense, onEdit, onDelete, color }) => (
         <p className="font-semibold text-xs">${expense.amount}</p>
         <p className="text-gray-800 text-xs">{expense.details}</p>
         <p className="text-gray-600 text-[8px]">
-          {new Date(expense.date).toLocaleDateString('es-ES', { month: 'short', day: 'numeric' })}
+          {format(new Date(expense.date), 'dd/MM/yyyy', { locale: es })}
         </p>
       </div>
       <div className="flex space-x-1">

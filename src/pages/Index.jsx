@@ -8,18 +8,7 @@ import { Search } from "../components/Search";
 import { Footer } from "../components/Footer";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Filter, ArrowUpDown, Calendar } from "lucide-react";
-
-const categoryColors = {
-  Escuela: "bg-blue-500",
-  Renta: "bg-purple-500",
-  Servicios: "bg-yellow-500",
-  Uber: "bg-black",
-  Comida: "bg-red-500",
-  Roma: "bg-pink-500",
-  Otros: "bg-indigo-500",
-  Medicinas: "bg-orange-500",
-  Ahorros: "bg-green-500",
-};
+import { categoryColors } from "../utils/categoryUtils";
 
 const Index = () => {
   const [monthlyData, setMonthlyData] = useState(() => {

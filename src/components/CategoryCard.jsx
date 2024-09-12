@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { Pencil, Trash2, Check, X, DollarSign } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { categoryColors, categoryIcons } from "../utils/categoryUtils";
+import { categoryColors, categoryIcons, getCategoryLightColor } from "../utils/categoryUtils";
 import { ExpenseItem, EditExpenseForm } from "./ExpenseComponents";
 import { RomaCard } from "./RomaCard";
 
@@ -53,16 +53,17 @@ export const CategoryCard = ({
     return <RomaCard isExpanded={isExpanded} onExpand={onExpand} />;
   }
 
-  const cardStyle = "bg-green-50 bg-opacity-80 border-green-300";
-  const headerStyle = "bg-green-200";
+  const cardStyle = `${getCategoryLightColor(title)} border-${categoryColors[title]}`;
+  const headerStyle = `bg-${categoryColors[title]} bg-opacity-20`;
+  const progressPercentage = totalBudget > 0 ? (totalExpense / totalBudget) * 100 : 0;
 
   return (
     <motion.div
       layout
       transition={{ duration: 0.3 }}
-      className={`w-full ${isExpanded ? 'h-auto' : 'h-24'}`}
+      className={`w-full ${isExpanded ? 'h-auto' : 'h-28'}`}
     >
-      <Card className={`w-full ${cardStyle} shadow-lg overflow-hidden ${isExpanded ? 'h-auto' : 'h-24'}`}>
+      <Card className={`w-full ${cardStyle} shadow-lg overflow-hidden ${isExpanded ? 'h-auto' : 'h-28'}`}>
         <CardHeader className={`flex flex-col items-center space-y-2 p-2 ${headerStyle}`}>
           <div className="flex items-center justify-between w-full">
             <motion.div
@@ -89,7 +90,6 @@ export const CategoryCard = ({
             <p className="font-bold text-green-600 text-xs">
               Total: ${totalExpense.toFixed(2)} / ${totalBudget}
             </p>
-            <Progress value={(totalExpense / totalBudget) * 100} className="h-1 bg-green-200" />
           </div>
         </CardHeader>
         {isExpanded && (
@@ -134,6 +134,10 @@ export const CategoryCard = ({
             </div>
           </CardContent>
         )}
+        <div className="px-2 pb-2">
+          <Progress value={progressPercentage} className="h-1 bg-gray-200" />
+          <p className="text-right text-xs mt-1">{progressPercentage.toFixed(1)}% del presupuesto utilizado</p>
+        </div>
       </Card>
     </motion.div>
   );
