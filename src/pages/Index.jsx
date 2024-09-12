@@ -27,7 +27,7 @@ const Index = () => {
     return savedData ? JSON.parse(savedData) : {};
   });
   const [selectedMonth, setSelectedMonth] = useState(() => {
-    const currentMonth = new Date().toLocaleString('default', { month: 'long' });
+    const currentMonth = new Date().toLocaleString('es-ES', { month: 'long' });
     return monthlyData[currentMonth] ? currentMonth : "Seleccionar Mes";
   });
   const [searchTerm, setSearchTerm] = useState("");
@@ -160,7 +160,8 @@ const Index = () => {
           categories={categories}
           totalAmount={totalExpenses}
           isExpanded={expandedCards.Gastos}
-          onExpand={() => handleExpandCard('Gastos')}
+          onExpand={() => handleExpandCard('Gas
+tos')}
         />
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 my-4">

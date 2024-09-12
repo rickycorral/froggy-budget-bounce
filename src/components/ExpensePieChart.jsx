@@ -43,9 +43,14 @@ export const ExpensePieChart = ({ expenses }) => {
 
     return (
       <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
-        {data[index].name}
+        {`${(percent * 100).toFixed(0)}%`}
       </text>
     );
+  };
+
+  const renderColorfulLegendText = (value, entry) => {
+    const { color } = entry;
+    return <span style={{ color }}>{value}</span>;
   };
 
   return (
@@ -76,6 +81,12 @@ export const ExpensePieChart = ({ expenses }) => {
             <Tooltip 
               formatter={(value, name) => [`$${value.toFixed(2)}`, name]}
               contentStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.8)', borderRadius: '8px' }}
+            />
+            <Legend 
+              formatter={renderColorfulLegendText}
+              layout="vertical"
+              align="right"
+              verticalAlign="middle"
             />
           </PieChart>
         </ResponsiveContainer>

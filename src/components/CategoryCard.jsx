@@ -6,6 +6,10 @@ import { Progress } from "@/components/ui/progress";
 import { Pencil, Trash2, Check, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import rominaImage from '../romina.jpg';
+import romina2 from '../romina2.jpg';
+import romina3 from '../romina3.jpg';
+import romina4 from '../romina4.jpg';
+import romina5 from '../romina5.jpg';
 
 const categoryColors = {
   Escuela: "bg-blue-500",
@@ -126,6 +130,7 @@ export const CategoryCard = ({
   onExpand,
 }) => {
   const [editingExpense, setEditingExpense] = useState(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const totalExpense = expenses.reduce(
     (sum, expense) => sum + parseFloat(expense.amount),
@@ -146,10 +151,16 @@ export const CategoryCard = ({
     : "bg-green-50 bg-opacity-80 border-green-300";
   const headerStyle = title === "Roma" ? "bg-blue-100" : "bg-green-200";
 
+  const romaImages = [rominaImage, romina2, romina3, romina4, romina5];
+
   const romaBackground = `
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cpath d='M12.5 10c-2.65 0-5.05.99-6.9 2.6L3 14.5 1.5 17c-1.65 2.88-2.17 6.79-1.37 10.9 1.5 7.8 5.37 16.54 12.03 22.67C19.9 57.1 29.7 60 40.5 60c2.65 0 5.2-.2 7.5-.6-2.69 1.06-5.55 1.62-8.5 1.62-8.68 0-16.22-3.68-22.09-9.86C11.1 44.55 7.03 35.56 6.93 26c-.07-7.44 2.52-14.28 7.57-19.7 2.71-2.89 5.97-5.28 9.7-7.1C19.5 1.5 14.74 4.5 12.5 10z' fill='%23ADD8E6' fill-opacity='0.4'/%3E%3C/svg%3E"),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cpath d='M54.627 13.87l-5.909-5.909c-1.17-1.17-3.073-1.17-4.243 0l-4.242 4.242 10.152 10.152 4.242-4.242c1.17-1.17 1.17-3.073 0-4.243zM12.97 43.273l-3.182 9.546 9.546-3.182 29.09-29.09-6.364-6.364-29.09 29.09zm41.818-14.545L41.455 15.39l3.182-3.182 13.333 13.333-3.182 3.182z' fill='%23FFB6C1' fill-opacity='0.4'/%3E%3C/svg%3E")
   `;
+
+  const handleImageClick = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % romaImages.length);
+  };
 
   return (
     <motion.div
@@ -176,17 +187,25 @@ export const CategoryCard = ({
           {title === "Roma" && (
             <p className="text-xs font-semibold text-blue-600">Te amamos Romina</p>
           )}
-          <div className="flex flex-col w-full">
-            <p className="font-bold text-green-600 text-xs">
-              Total: ${totalExpense.toFixed(2)}
-            </p>
-          </div>
+          {title !== "Roma" && (
+            <div className="flex flex-col w-full">
+              <p className="font-bold text-green-600 text-xs">
+                Total: ${totalExpense.toFixed(2)}
+              </p>
+              <Progress value={(totalExpense / 1000) * 100} className="h-1 bg-green-200" />
+            </div>
+          )}
         </CardHeader>
         {isExpanded && (
           <CardContent className="p-1">
             {title === "Roma" && (
               <div className="mb-2">
-                <img src={rominaImage} alt="Romina" className="w-full h-auto rounded-lg" />
+                <img 
+                  src={romaImages[currentImageIndex]} 
+                  alt="Romina" 
+                  className="w-full h-auto rounded-lg cursor-pointer" 
+                  onClick={handleImageClick}
+                />
               </div>
             )}
             <div className="space-y-1">
