@@ -43,7 +43,7 @@ export const ExpensePieChart = ({ expenses }) => {
 
     return (
       <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
-        {`${(percent * 100).toFixed(0)}%`}
+        {data[index].name}
       </text>
     );
   };
@@ -79,14 +79,6 @@ export const ExpensePieChart = ({ expenses }) => {
             />
           </PieChart>
         </ResponsiveContainer>
-        <div className="mt-1 text-[12px] flex flex-wrap justify-center">
-          {data.map((entry, index) => (
-            <span key={`legend-${index}`} className="inline-flex items-center mr-1 mb-1">
-              <span className="w-2 h-2 inline-block mr-1" style={{ backgroundColor: categoryColors[entry.name] || "#cccccc" }}></span>
-              {entry.name}
-            </span>
-          ))}
-        </div>
       </div>
     </div>
   );

@@ -46,7 +46,7 @@ const Index = () => {
   const currentMonthData = monthlyData[selectedMonth] || {
     income: "",
     expenses: [],
-    categoryBudgets: {}
+    incomeHistory: []
   };
 
   const categories = [
@@ -95,19 +95,6 @@ const Index = () => {
           ...(prevData[selectedMonth]?.incomeHistory || []),
           { amount: newIncome, date: new Date().toISOString() }
         ]
-      }
-    }));
-  };
-
-  const handleSetBudget = (category, budget) => {
-    setMonthlyData(prevData => ({
-      ...prevData,
-      [selectedMonth]: {
-        ...prevData[selectedMonth],
-        categoryBudgets: {
-          ...(prevData[selectedMonth]?.categoryBudgets || {}),
-          [category]: budget
-        }
       }
     }));
   };
@@ -184,8 +171,6 @@ const Index = () => {
             expenses={currentMonthData.expenses?.filter(e => e.category === category) || []}
             onEdit={handleEditExpense}
             onDelete={handleDeleteExpense}
-            budget={currentMonthData.categoryBudgets?.[category]}
-            onSetBudget={(budget) => handleSetBudget(category, budget)}
             isExpanded={expandedCards[category]}
             onExpand={() => handleExpandCard(category)}
           />

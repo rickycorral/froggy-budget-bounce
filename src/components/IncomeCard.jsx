@@ -8,6 +8,7 @@ import { DollarSign, TrendingUp, TrendingDown, Wallet, Sparkles, Edit2 } from 'l
 import { FaFrog } from 'react-icons/fa';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { format } from 'date-fns';
+import { es } from 'date-fns/locale';
 
 const months = [
   "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
@@ -145,9 +146,9 @@ export const IncomeCard = ({ onSave, currentIncome, totalExpenses, totalSavings,
           ) : (
             <Button
               onClick={() => setIsEditing(true)}
-              className="bg-white text-green-600 hover:bg-green-100 font-bold text-xxs py-0.5 px-2 transition-all duration-300 ease-in-out transform hover:scale-105 w-full"
+              className="bg-white text-green-600 hover:bg-green-100 font-bold text-xxs py-1 px-2 transition-all duration-300 ease-in-out transform hover:scale-105"
             >
-              <Edit2 className="w-3 h-3 mr-1" /> Editar Ingresos
+              <Edit2 className="w-3 h-3" />
             </Button>
           )}
         </CardContent>
@@ -171,10 +172,10 @@ export const IncomeCard = ({ onSave, currentIncome, totalExpenses, totalSavings,
       </Card>
       {incomeHistory && incomeHistory.length > 0 && (
         <div className="mt-2 bg-white bg-opacity-80 rounded-lg p-2 text-xs">
-          <h3 className="font-bold mb-1">Historial de Ingresos:</h3>
+          <h3 className="font-bold mb-1">Historial de Ingresos de este Mes:</h3>
           {incomeHistory.map((entry, index) => (
             <p key={index} className="text-gray-600">
-              {format(new Date(entry.date), 'dd/MM/yyyy')}: ${entry.amount}
+              {format(new Date(entry.date), 'dd/MM/yyyy', { locale: es })}: ${entry.amount}
             </p>
           ))}
         </div>
