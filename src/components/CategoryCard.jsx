@@ -61,7 +61,7 @@ export const CategoryCard = ({
       transition={{ duration: 0.3 }}
       className={`w-full ${isExpanded ? 'h-auto' : 'h-28'}`}
     >
-      <Card className={`w-full bg-green-100 bg-opacity-50 shadow-lg overflow-hidden ${isExpanded ? 'h-auto' : 'h-28'}`}>
+      <Card className={`w-full bg-green-100 bg-opacity-80 shadow-lg overflow-hidden ${isExpanded ? 'h-auto' : 'h-28'}`}>
         <CardHeader className={`flex flex-col items-center space-y-2 p-2`}>
           <div className="flex items-center justify-between w-full">
             <motion.div

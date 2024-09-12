@@ -40,7 +40,7 @@ export const RomaCard = ({ isExpanded, onExpand }) => {
       className={`w-full ${isExpanded ? 'h-auto' : 'h-28'}`}
     >
       <Card className={`w-full bg-white border-blue-300 bg-opacity-90 shadow-lg overflow-hidden ${isExpanded ? 'h-auto' : 'h-28'}`}
-           style={{ backgroundImage: romaBackground }}>
+           style={{ backgroundImage: romaBackground, backgroundSize: 'cover', backgroundRepeat: 'repeat' }}>
         <CardHeader className="flex flex-col items-center space-y-2 p-2 bg-blue-100">
           <div className="flex items-center justify-between w-full">
             <motion.div
