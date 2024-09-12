@@ -50,7 +50,7 @@ export const ExpensePieChart = ({ expenses }) => {
 
   const renderColorfulLegendText = (value, entry) => {
     const { color } = entry;
-    return <span style={{ color, fontWeight: 'bold' }}>{value}</span>;
+    return <span style={{ color, fontWeight: 'bold', fontSize: value === 'Ahorros' ? '0.75rem' : '0.875rem' }}>{value}</span>;
   };
 
   return (

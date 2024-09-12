@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { Pencil, Trash2, Check, X, DollarSign } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { categoryColors, categoryIcons, getCategoryLightColor } from "../utils/categoryUtils";
+import { categoryColors, categoryIcons } from "../utils/categoryUtils";
 import { ExpenseItem, EditExpenseForm } from "./ExpenseComponents";
 import { RomaCard } from "./RomaCard";
 
@@ -53,8 +53,6 @@ export const CategoryCard = ({
     return <RomaCard isExpanded={isExpanded} onExpand={onExpand} />;
   }
 
-  const cardStyle = `${getCategoryLightColor(title)} border-${categoryColors[title]}`;
-  const headerStyle = `bg-${categoryColors[title]} bg-opacity-20`;
   const progressPercentage = totalBudget > 0 ? (totalExpense / totalBudget) * 100 : 0;
 
   return (
@@ -63,8 +61,8 @@ export const CategoryCard = ({
       transition={{ duration: 0.3 }}
       className={`w-full ${isExpanded ? 'h-auto' : 'h-28'}`}
     >
-      <Card className={`w-full ${cardStyle} shadow-lg overflow-hidden ${isExpanded ? 'h-auto' : 'h-28'}`}>
-        <CardHeader className={`flex flex-col items-center space-y-2 p-2 ${headerStyle}`}>
+      <Card className={`w-full bg-green-100 bg-opacity-50 shadow-lg overflow-hidden ${isExpanded ? 'h-auto' : 'h-28'}`}>
+        <CardHeader className={`flex flex-col items-center space-y-2 p-2`}>
           <div className="flex items-center justify-between w-full">
             <motion.div
               whileHover={{ scale: 1.1 }}
