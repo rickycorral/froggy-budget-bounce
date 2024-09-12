@@ -4,21 +4,21 @@ import { motion } from "framer-motion";
 import { categoryColors, categoryIcons } from "../utils/categoryUtils";
 
 const romaImages = [
-  '/src/romina.jpg',
-  '/src/romina2.jpg',
-  '/src/romina3.jpg',
-  '/src/romina4.jpg',
-  '/src/romina5.jpg',
-  '/src/romina6.jpg',
-  '/src/romina7.jpg',
-  '/src/romina8.jpg',
-  '/src/romina9.jpg',
-  '/src/romina10.jpg',
-  '/src/romina11.jpg',
-  '/src/romina12.jpg',
-  '/src/romina13.jpg',
-  '/src/romina14.jpg',
-  '/src/romina15.jpg',
+  '/romina.jpg',
+  '/romina2.jpg',
+  '/romina3.jpg',
+  '/romina4.jpg',
+  '/romina5.jpg',
+  '/romina6.jpg',
+  '/romina7.jpg',
+  '/romina8.jpg',
+  '/romina9.jpg',
+  '/romina10.jpg',
+  '/romina11.jpg',
+  '/romina12.jpg',
+  '/romina13.jpg',
+  '/romina14.jpg',
+  '/romina15.jpg',
 ];
 
 const romaBackground = `
@@ -37,10 +37,10 @@ export const RomaCard = ({ isExpanded, onExpand }) => {
     <motion.div
       layout
       transition={{ duration: 0.3 }}
-      className={`w-full ${isExpanded ? 'h-auto' : 'h-28'}`}
+      className={`w-full ${isExpanded ? 'h-auto' : 'h-24'}`}
     >
-      <Card className={`w-full bg-white border-blue-300 bg-opacity-90 shadow-lg overflow-hidden ${isExpanded ? 'h-auto' : 'h-28'}`}
-           style={{ backgroundImage: romaBackground, backgroundSize: 'cover', backgroundRepeat: 'repeat' }}>
+      <Card className={`w-full bg-white border-blue-300 bg-opacity-90 shadow-lg overflow-hidden ${isExpanded ? 'h-auto' : 'h-24'}`}
+           style={{ backgroundImage: romaBackground }}>
         <CardHeader className="flex flex-col items-center space-y-2 p-2 bg-blue-100">
           <div className="flex items-center justify-between w-full">
             <motion.div
