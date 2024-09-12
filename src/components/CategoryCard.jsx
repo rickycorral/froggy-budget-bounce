@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
-import { Pencil, Trash2, Check, X } from "lucide-react";
+import { Pencil, Trash2, Check, X, DollarSign } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const categoryColors = {
@@ -15,6 +15,7 @@ const categoryColors = {
   Roma: "bg-pink-500",
   Otros: "bg-indigo-500",
   Medicinas: "bg-orange-500",
+  Ahorros: "bg-green-500",
 };
 
 const categoryIcons = {
@@ -26,6 +27,7 @@ const categoryIcons = {
   Roma: "🐕",
   Otros: "📦",
   Medicinas: "💊",
+  Ahorros: "💰",
 };
 
 const ExpenseItem = ({ expense, onEdit, onDelete, color }) => (
@@ -169,10 +171,13 @@ export const CategoryCard = ({
               {title}
             </CardTitle>
             <Button
-              onClick={() => setIsSettingBudget(true)}
+              onClick={() => {
+                setIsSettingBudget(true);
+                onExpand();
+              }}
               className="bg-green-500 hover:bg-green-600 text-white p-1 w-6 h-6 flex items-center justify-center"
             >
-              $
+              <DollarSign className="w-4 h-4" />
             </Button>
           </div>
           <div className="flex flex-col w-full">

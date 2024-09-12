@@ -9,7 +9,7 @@ export const Header = () => {
 
   return (
     <motion.header 
-      className="relative bg-gradient-to-r from-green-400 via-teal-500 to-blue-500 text-white p-2 rounded-lg mb-4 flex items-center shadow-lg"
+      className="relative bg-gradient-to-r from-green-400 via-green-500 to-green-600 text-white p-2 rounded-lg mb-4 flex items-center shadow-lg"
       initial={{ y: -50, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}

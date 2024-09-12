@@ -10,25 +10,23 @@ const categoryColors = {
   Roma: "#FF69B4",
   Otros: "#8dd1e1",
   Medicinas: "#FFA500",
+  Ahorros: "#00C49F",
 };
 
 export const ExpensePieChart = ({ expenses }) => {
-  const data = expenses
-    .filter((expense) => expense.type === "expense")
-    .reduce((acc, expense) => {
-      const category = expense.category === "Transporte" ? "Uber" : expense.category;
-      const existingCategory = acc.find((item) => item.name === category);
-      if (existingCategory) {
-        existingCategory.value += parseFloat(expense.amount);
-      } else {
-        acc.push({ name: category, value: parseFloat(expense.amount) });
-      }
-      return acc;
-    }, []);
+  const data = expenses.reduce((acc, expense) => {
+    const category = expense.type === "savings" ? "Ahorros" : expense.category;
+    const existingCategory = acc.find((item) => item.name === category);
+    if (existingCategory) {
+      existingCategory.value += parseFloat(expense.amount);
+    } else {
+      acc.push({ name: category, value: parseFloat(expense.amount) });
+    }
+    return acc;
+  }, []);
 
   return (
     <div className="h-48 w-full bg-white bg-opacity-95 rounded-lg shadow-lg p-2 mb-4">
-      <h2 className="text-lg font-bold text-center mb-1 text-gray-800">Distribución de Gastos</h2>
       <div className="flex flex-col items-center">
         <ResponsiveContainer width="100%" height={120}>
           <PieChart>

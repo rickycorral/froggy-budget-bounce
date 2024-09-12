@@ -4,8 +4,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { motion, AnimatePresence } from "framer-motion";
-import { DollarSign, TrendingUp, TrendingDown, Wallet, Sparkles, Sun, Moon } from 'lucide-react';
-import { FaFrog } from 'react-icons/fa';  // Import the frog icon from Font Awesome
+import { DollarSign, TrendingUp, TrendingDown, Wallet, Sparkles } from 'lucide-react';
+import { FaFrog } from 'react-icons/fa';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const months = [
@@ -32,7 +32,7 @@ export const IncomeCard = ({ onSave, currentIncome, totalExpenses, totalSavings,
       whileHover={{ scale: 1.02 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
     >
-      <Card className="bg-gradient-to-br from-green-400 to-blue-500 shadow-lg p-2 overflow-hidden relative rounded-xl">
+      <Card className="bg-gradient-to-br from-green-400 to-green-600 shadow-lg p-2 overflow-hidden relative rounded-xl">
         <motion.div
           className="absolute inset-0 opacity-20"
           animate={{
@@ -149,8 +149,8 @@ export const IncomeCard = ({ onSave, currentIncome, totalExpenses, totalSavings,
             repeat: Infinity,
             repeatType: "loop",
             ease: "easeInOut",
-            times: [0, 0.4, 1],  // Distribute the animation over 40% of the total duration
-            repeatDelay: 3,  // Add a 3-second delay before repeating
+            times: [0, 0.4, 1],
+            repeatDelay: 3,
           }}
         >
           <FaFrog className="w-4 h-4" />

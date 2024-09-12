@@ -7,6 +7,7 @@ import { ExpensePieChart } from "../components/ExpensePieChart";
 import { Search } from "../components/Search";
 import { Footer } from "../components/Footer";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Filter, ArrowUpDown, Calendar } from "lucide-react";
 
 const Index = () => {
   const [monthlyData, setMonthlyData] = useState(() => {
@@ -24,6 +25,7 @@ const Index = () => {
     Ahorros: false,
     Gastos: false,
   });
+  const [filterMonth, setFilterMonth] = useState("all");
 
   useEffect(() => {
     localStorage.setItem("monthlyData", JSON.stringify(monthlyData));
@@ -36,7 +38,7 @@ const Index = () => {
   };
 
   const categories = [
-    "Escuela", "Renta", "Servicios", "Uber", "Comida", "Roma", "Otros", "Medicinas"
+    "Escuela", "Renta", "Servicios", "Uber", "Comida", "Roma", "Otros", "Medicinas", "Ahorros"
   ];
 
   const handleAddExpense = (expense) => {
@@ -105,17 +107,20 @@ const Index = () => {
     }));
   };
 
-  const filteredExpenses = currentMonthData.expenses?.filter(expense => {
-    const matchesSearch = expense.details.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = categoryFilter === "all" || expense.category === categoryFilter;
-    return matchesSearch && matchesCategory;
-  }).sort((a, b) => {
+  const filteredExpenses = Object.entries(monthlyData).flatMap(([month, data]) => 
+    data.expenses?.filter(expense => {
+      const matchesSearch = expense.details.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesCategory = categoryFilter === "all" || expense.category === categoryFilter;
+      const matchesMonth = filterMonth === "all" || month === filterMonth;
+      return matchesSearch && matchesCategory && matchesMonth;
+    }).map(expense => ({ ...expense, month })) || []
+  ).sort((a, b) => {
     if (sortOrder === "desc") {
       return parseFloat(b.amount) - parseFloat(a.amount);
     } else {
       return parseFloat(a.amount) - parseFloat(b.amount);
     }
-  }) || [];
+  });
 
   const totalSavings = currentMonthData.expenses?.filter(expense => expense.type === "savings")
     .reduce((sum, expense) => sum + parseFloat(expense.amount), 0) || 0;
@@ -155,7 +160,7 @@ const Index = () => {
         />
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 my-4">
-        {categories.map((category, index) => (
+        {categories.filter(cat => cat !== "Ahorros").map((category, index) => (
           <CategoryCard
             key={index}
             title={category}
@@ -175,10 +180,11 @@ const Index = () => {
         <div className="flex space-x-2">
           <Select value={categoryFilter} onValueChange={setCategoryFilter}>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="Filtrar por categoría" />
+              <Filter className="w-4 h-4 mr-2" />
+              <SelectValue placeholder="Categoría" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">Todas las categorías</SelectItem>
+              <SelectItem value="all">Todas</SelectItem>
               {categories.map((cat) => (
                 <SelectItem key={cat} value={cat}>{cat}</SelectItem>
               ))}
@@ -186,11 +192,24 @@ const Index = () => {
           </Select>
           <Select value={sortOrder} onValueChange={setSortOrder}>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="Ordenar por monto" />
+              <ArrowUpDown className="w-4 h-4 mr-2" />
+              <SelectValue placeholder="Ordenar" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="desc">Mayor a menor</SelectItem>
               <SelectItem value="asc">Menor a mayor</SelectItem>
+            </SelectContent>
+          </Select>
+          <Select value={filterMonth} onValueChange={setFilterMonth}>
+            <SelectTrigger className="w-full">
+              <Calendar className="w-4 h-4 mr-2" />
+              <SelectValue placeholder="Mes" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Todos los meses</SelectItem>
+              {Object.keys(monthlyData).map((month) => (
+                <SelectItem key={month} value={month}>{month}</SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
@@ -199,10 +218,12 @@ const Index = () => {
         <table className="w-full max-w-2xl mx-auto bg-white border border-gray-300 shadow-sm rounded-lg overflow-hidden">
           <thead className="bg-gray-100">
             <tr>
+              
               <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Detalles</th>
               <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Categoría</th>
               <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Monto</th>
               <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mes</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
@@ -212,6 +233,7 @@ const Index = () => {
                 <td className="px-4 py-2 whitespace-nowrap text-sm">{expense.category || "Ahorros"}</td>
                 <td className="px-4 py-2 whitespace-nowrap text-sm">${expense.amount}</td>
                 <td className="px-4 py-2 whitespace-nowrap text-sm">{expense.date}</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm">{expense.month}</td>
               </tr>
             ))}
           </tbody>
