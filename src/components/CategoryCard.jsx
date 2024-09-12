@@ -38,8 +38,15 @@ export const CategoryCard = ({
   };
 
   const handleUpdateBudget = () => {
-    onUpdateBudget(newBudget);
+    if (onUpdateBudget) {
+      onUpdateBudget(newBudget);
+    }
     setIsEditingBudget(false);
+  };
+
+  const handleBudgetClick = () => {
+    setIsEditingBudget(true);
+    onExpand();
   };
 
   if (title === "Roma") {
@@ -72,10 +79,10 @@ export const CategoryCard = ({
             <Button
               size="icon"
               variant="ghost"
-              className="h-6 w-6 p-0"
-              onClick={() => setIsEditingBudget(true)}
+              className="h-6 w-6 p-0 bg-green-500 rounded-full"
+              onClick={handleBudgetClick}
             >
-              <DollarSign className="h-4 w-4" />
+              <DollarSign className="h-4 w-4 text-white" />
             </Button>
           </div>
           <div className="flex flex-col w-full">

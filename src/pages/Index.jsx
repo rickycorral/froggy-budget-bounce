@@ -46,7 +46,8 @@ const Index = () => {
   const currentMonthData = monthlyData[selectedMonth] || {
     income: "",
     expenses: [],
-    incomeHistory: []
+    incomeHistory: [],
+    categoryBudgets: {}
   };
 
   const categories = [
@@ -107,6 +108,19 @@ const Index = () => {
     setExpandedCards(prev => ({
       ...prev,
       [cardName]: !prev[cardName]
+    }));
+  };
+
+  const handleUpdateCategoryBudget = (category, newBudget) => {
+    setMonthlyData(prevData => ({
+      ...prevData,
+      [selectedMonth]: {
+        ...prevData[selectedMonth],
+        categoryBudgets: {
+          ...(prevData[selectedMonth]?.categoryBudgets || {}),
+          [category]: newBudget
+        }
+      }
     }));
   };
 
@@ -173,6 +187,8 @@ const Index = () => {
             onDelete={handleDeleteExpense}
             isExpanded={expandedCards[category]}
             onExpand={() => handleExpandCard(category)}
+            totalBudget={currentMonthData.categoryBudgets?.[category] || 0}
+            onUpdateBudget={(newBudget) => handleUpdateCategoryBudget(category, newBudget)}
           />
         ))}
       </div>

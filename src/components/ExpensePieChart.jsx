@@ -50,7 +50,7 @@ export const ExpensePieChart = ({ expenses }) => {
 
   const renderColorfulLegendText = (value, entry) => {
     const { color } = entry;
-    return <span style={{ color }}>{value}</span>;
+    return <span style={{ color, fontWeight: 'bold' }}>{value}</span>;
   };
 
   return (
@@ -80,7 +80,7 @@ export const ExpensePieChart = ({ expenses }) => {
             </Pie>
             <Tooltip 
               formatter={(value, name) => [`$${value.toFixed(2)}`, name]}
-              contentStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.8)', borderRadius: '8px' }}
+              contentStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.8)', borderRadius: '8px', fontWeight: 'bold' }}
             />
             <Legend 
               formatter={renderColorfulLegendText}
