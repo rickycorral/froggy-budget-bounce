@@ -9,6 +9,18 @@ import { Footer } from "../components/Footer";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Filter, ArrowUpDown, Calendar } from "lucide-react";
 
+const categoryColors = {
+  Escuela: "bg-blue-500",
+  Renta: "bg-purple-500",
+  Servicios: "bg-yellow-500",
+  Uber: "bg-black",
+  Comida: "bg-red-500",
+  Roma: "bg-pink-500",
+  Otros: "bg-indigo-500",
+  Medicinas: "bg-orange-500",
+  Ahorros: "bg-green-500",
+};
+
 const Index = () => {
   const [monthlyData, setMonthlyData] = useState(() => {
     const savedData = localStorage.getItem("monthlyData");
@@ -78,7 +90,11 @@ const Index = () => {
       ...prevData,
       [selectedMonth]: {
         ...prevData[selectedMonth],
-        income: newIncome
+        income: newIncome,
+        incomeHistory: [
+          ...(prevData[selectedMonth]?.incomeHistory || []),
+          { amount: newIncome, date: new Date().toISOString() }
+        ]
       }
     }));
   };
@@ -139,6 +155,7 @@ const Index = () => {
           totalSavings={totalSavings}
           selectedMonth={selectedMonth}
           onMonthChange={handleMonthChange}
+          incomeHistory={currentMonthData.incomeHistory}
         />
       </div>
       <div className="flex justify-center my-4 space-x-4">
@@ -227,7 +244,7 @@ const Index = () => {
           </thead>
           <tbody className="divide-y divide-gray-200">
             {filteredExpenses.map((expense, index) => (
-              <tr key={index} className="hover:bg-gray-50">
+              <tr key={index} className={`hover:bg-gray-50 ${categoryColors[expense.category] || 'bg-green-100'} bg-opacity-20`}>
                 <td className="px-4 py-2 whitespace-nowrap text-sm">{expense.details}</td>
                 <td className="px-4 py-2 whitespace-nowrap text-sm">{expense.category || "Ahorros"}</td>
                 <td className="px-4 py-2 whitespace-nowrap text-sm">${expense.amount}</td>

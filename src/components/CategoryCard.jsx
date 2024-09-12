@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { Pencil, Trash2, Check, X, DollarSign } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import rominaImage from '../romina.jpg';
 
 const categoryColors = {
   Escuela: "bg-blue-500",
@@ -12,7 +13,7 @@ const categoryColors = {
   Servicios: "bg-yellow-500",
   Uber: "bg-black",
   Comida: "bg-red-500",
-  Roma: "bg-pink-500",
+  Roma: "bg-blue-100",
   Otros: "bg-indigo-500",
   Medicinas: "bg-orange-500",
   Ahorros: "bg-green-500",
@@ -150,8 +151,10 @@ export const CategoryCard = ({
     setIsSettingBudget(false);
   };
 
-  const cardStyle = title === "Roma" ? "bg-blue-100 border-blue-300" : "bg-green-50 bg-opacity-80 border-green-300";
-  const headerStyle = title === "Roma" ? "bg-blue-200" : "bg-green-200";
+  const cardStyle = title === "Roma" 
+    ? "bg-white border-blue-300 bg-opacity-90" 
+    : "bg-green-50 bg-opacity-80 border-green-300";
+  const headerStyle = title === "Roma" ? "bg-blue-100" : "bg-green-200";
 
   return (
     <motion.div
@@ -231,6 +234,11 @@ export const CategoryCard = ({
                 </Button>
               </div>
             ) : null}
+            {title === "Roma" && (
+              <div className="mb-2">
+                <img src={rominaImage} alt="Romina" className="w-full h-auto rounded-lg" />
+              </div>
+            )}
             <div className="space-y-1">
               <AnimatePresence>
                 {expenses.map((expense) => (

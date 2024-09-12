@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts";
 
 const categoryColors = {
@@ -14,6 +14,8 @@ const categoryColors = {
 };
 
 export const ExpensePieChart = ({ expenses }) => {
+  const [activeIndex, setActiveIndex] = useState(null);
+
   const data = expenses.reduce((acc, expense) => {
     const category = expense.type === "savings" ? "Ahorros" : expense.category;
     const existingCategory = acc.find((item) => item.name === category);
@@ -25,7 +27,26 @@ export const ExpensePieChart = ({ expenses }) => {
     return acc;
   }, []);
 
-  const formatLabel = (entry) => `${entry.name}: $${entry.value.toFixed(2)}`;
+  const onPieEnter = (_, index) => {
+    setActiveIndex(index);
+  };
+
+  const onPieLeave = () => {
+    setActiveIndex(null);
+  };
+
+  const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
+    const RADIAN = Math.PI / 180;
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+    return (
+      <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+        {`${(percent * 100).toFixed(0)}%`}
+      </text>
+    );
+  };
 
   return (
     <div className="h-48 w-full bg-white bg-opacity-80 rounded-lg shadow-lg p-2 mb-4">
@@ -36,17 +57,26 @@ export const ExpensePieChart = ({ expenses }) => {
               data={data}
               cx="50%"
               cy="50%"
+              labelLine={false}
+              label={renderCustomizedLabel}
               outerRadius={50}
               fill="#8884d8"
               dataKey="value"
-              label={formatLabel}
-              labelLine={false}
+              onMouseEnter={onPieEnter}
+              onMouseLeave={onPieLeave}
             >
               {data.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={categoryColors[entry.name] || "#cccccc"} />
+                <Cell 
+                  key={`cell-${index}`} 
+                  fill={categoryColors[entry.name] || "#cccccc"}
+                  opacity={activeIndex === index ? 0.8 : 1}
+                />
               ))}
             </Pie>
-            <Tooltip formatter={(value) => `$${value.toFixed(2)}`} />
+            <Tooltip 
+              formatter={(value, name) => [`$${value.toFixed(2)}`, name]}
+              contentStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.8)', borderRadius: '8px' }}
+            />
           </PieChart>
         </ResponsiveContainer>
         <div className="mt-1 text-[12px] flex flex-wrap justify-center">
