@@ -9,12 +9,11 @@ import { Footer } from "../components/Footer";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Filter, ArrowUpDown, Calendar } from "lucide-react";
 import { categoryColors } from "../utils/categoryUtils";
+import { db } from "../firebase";
+import { ref, onValue, set } from "firebase/database";
 
 const Index = () => {
-  const [monthlyData, setMonthlyData] = useState(() => {
-    const savedData = localStorage.getItem("monthlyData");
-    return savedData ? JSON.parse(savedData) : {};
-  });
+  const [monthlyData, setMonthlyData] = useState({});
   const [selectedMonth, setSelectedMonth] = useState(() => {
     const currentMonth = new Date().toLocaleString('es-ES', { month: 'long' });
     return monthlyData[currentMonth] ? currentMonth : "Seleccionar Mes";
@@ -29,8 +28,21 @@ const Index = () => {
   const [filterMonth, setFilterMonth] = useState("all");
 
   useEffect(() => {
-    localStorage.setItem("monthlyData", JSON.stringify(monthlyData));
-  }, [monthlyData]);
+    const monthlyDataRef = ref(db, 'monthlyData');
+    onValue(monthlyDataRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        setMonthlyData(data);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    if (selectedMonth === "Seleccionar Mes") {
+      const currentMonth = new Date().toLocaleString('es-ES', { month: 'long' });
+      setSelectedMonth(currentMonth);
+    }
+  }, [selectedMonth]);
 
   const currentMonthData = monthlyData[selectedMonth] || {
     income: "",
@@ -44,49 +56,53 @@ const Index = () => {
   ];
 
   const handleAddExpense = (expense) => {
-    setMonthlyData(prevData => ({
-      ...prevData,
+    const updatedData = {
+      ...monthlyData,
       [selectedMonth]: {
-        ...prevData[selectedMonth],
-        expenses: [...(prevData[selectedMonth]?.expenses || []), { ...expense, id: Date.now() }]
+        ...monthlyData[selectedMonth],
+        expenses: [...(monthlyData[selectedMonth]?.expenses || []), { ...expense, id: Date.now() }]
       }
-    }));
+    };
+    set(ref(db, 'monthlyData'), updatedData);
   };
 
   const handleEditExpense = (editedExpense) => {
-    setMonthlyData(prevData => ({
-      ...prevData,
+    const updatedData = {
+      ...monthlyData,
       [selectedMonth]: {
-        ...prevData[selectedMonth],
-        expenses: prevData[selectedMonth].expenses.map(expense =>
+        ...monthlyData[selectedMonth],
+        expenses: monthlyData[selectedMonth].expenses.map(expense =>
           expense.id === editedExpense.id ? editedExpense : expense
         )
       }
-    }));
+    };
+    set(ref(db, 'monthlyData'), updatedData);
   };
 
   const handleDeleteExpense = (expenseToDelete) => {
-    setMonthlyData(prevData => ({
-      ...prevData,
+    const updatedData = {
+      ...monthlyData,
       [selectedMonth]: {
-        ...prevData[selectedMonth],
-        expenses: prevData[selectedMonth].expenses.filter(expense => expense.id !== expenseToDelete.id)
+        ...monthlyData[selectedMonth],
+        expenses: monthlyData[selectedMonth].expenses.filter(expense => expense.id !== expenseToDelete.id)
       }
-    }));
+    };
+    set(ref(db, 'monthlyData'), updatedData);
   };
 
   const handleSaveIncome = (newIncome) => {
-    setMonthlyData(prevData => ({
-      ...prevData,
+    const updatedData = {
+      ...monthlyData,
       [selectedMonth]: {
-        ...prevData[selectedMonth],
+        ...monthlyData[selectedMonth],
         income: newIncome,
         incomeHistory: [
-          ...(prevData[selectedMonth]?.incomeHistory || []),
+          ...(monthlyData[selectedMonth]?.incomeHistory || []),
           { amount: newIncome, date: new Date().toISOString() }
         ]
       }
-    }));
+    };
+    set(ref(db, 'monthlyData'), updatedData);
   };
 
   const handleMonthChange = (month) => {
@@ -101,16 +117,17 @@ const Index = () => {
   };
 
   const handleUpdateCategoryBudget = (category, newBudget) => {
-    setMonthlyData(prevData => ({
-      ...prevData,
+    const updatedData = {
+      ...monthlyData,
       [selectedMonth]: {
-        ...prevData[selectedMonth],
+        ...monthlyData[selectedMonth],
         categoryBudgets: {
-          ...(prevData[selectedMonth]?.categoryBudgets || {}),
+          ...(monthlyData[selectedMonth]?.categoryBudgets || {}),
           [category]: newBudget
         }
       }
-    }));
+    };
+    set(ref(db, 'monthlyData'), updatedData);
   };
 
   const filteredExpenses = Object.entries(monthlyData).flatMap(([month, data]) => 
