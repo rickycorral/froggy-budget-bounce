@@ -4,18 +4,14 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { motion, AnimatePresence } from "framer-motion";
-import { DollarSign, TrendingUp, TrendingDown, Wallet, Sparkles, Edit2 } from 'lucide-react';
+import { DollarSign, TrendingUp, TrendingDown, Wallet, Sparkles, Edit2, Trash2 } from 'lucide-react';
 import { FaFrog } from 'react-icons/fa';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
+import { IncomeHistory } from './IncomeHistory';
 
-const months = [
-  "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-  "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
-];
-
-export const IncomeCard = ({ onSave, currentIncome, totalExpenses, totalSavings, selectedMonth, onMonthChange, incomeHistory }) => {
+export const IncomeCard = ({ onSave, currentIncome, totalExpenses, totalSavings, selectedMonth, onMonthChange, incomeHistory, onEditIncome, onDeleteIncome }) => {
   const [income, setIncome] = useState('');
   const [isEditing, setIsEditing] = useState(false);
 
@@ -42,7 +38,7 @@ export const IncomeCard = ({ onSave, currentIncome, totalExpenses, totalSavings,
     >
       <Card className="bg-gradient-to-br from-green-400 to-green-600 shadow-lg p-2 overflow-hidden relative rounded-xl">
         <motion.div
-          className="absolute inset-0 opacity-20"
+          className="absolute inset-0 opacity-10"
           animate={{
             backgroundImage: [
               'radial-gradient(circle, #ffffff 2px, transparent 2px)',
@@ -75,7 +71,7 @@ export const IncomeCard = ({ onSave, currentIncome, totalExpenses, totalSavings,
                 </SelectValue>
               </SelectTrigger>
               <SelectContent>
-                {months.map((month) => (
+                {["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"].map((month) => (
                   <SelectItem key={month} value={month} className="text-[12px]">{month}</SelectItem>
                 ))}
               </SelectContent>
@@ -176,14 +172,11 @@ export const IncomeCard = ({ onSave, currentIncome, totalExpenses, totalSavings,
         </motion.div>
       </Card>
       {incomeHistory && incomeHistory.length > 0 && (
-        <div className="mt-2 bg-white bg-opacity-80 rounded-lg p-2 text-[10px]">
-          <h3 className="font-bold mb-1">Historial de Ingresos de este Mes:</h3>
-          {incomeHistory.map((entry, index) => (
-            <p key={index} className="text-gray-600">
-              {format(new Date(entry.date), 'dd/MM/yyyy', { locale: es })}: ${entry.amount}
-            </p>
-          ))}
-        </div>
+        <IncomeHistory
+          incomeHistory={incomeHistory}
+          onEditIncome={onEditIncome}
+          onDeleteIncome={onDeleteIncome}
+        />
       )}
     </motion.div>
   );

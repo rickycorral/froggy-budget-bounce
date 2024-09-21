@@ -9,6 +9,8 @@ import { Footer } from "../components/Footer";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Filter, ArrowUpDown, Calendar } from "lucide-react";
 import { categoryColors } from "../utils/categoryUtils";
+import { ExpenseTable } from "../components/ExpenseTable";
+import { FilterControls } from "../components/FilterControls";
 
 const Index = () => {
   const [monthlyData, setMonthlyData] = useState(() => {
@@ -96,6 +98,28 @@ const Index = () => {
     }));
   };
 
+  const handleEditIncome = (editedIncome) => {
+    setMonthlyData(prevData => ({
+      ...prevData,
+      [selectedMonth]: {
+        ...prevData[selectedMonth],
+        incomeHistory: prevData[selectedMonth].incomeHistory.map(income =>
+          income.date === editedIncome.date ? editedIncome : income
+        )
+      }
+    }));
+  };
+
+  const handleDeleteIncome = (incomeToDelete) => {
+    setMonthlyData(prevData => ({
+      ...prevData,
+      [selectedMonth]: {
+        ...prevData[selectedMonth],
+        incomeHistory: prevData[selectedMonth].incomeHistory.filter(income => income.date !== incomeToDelete.date)
+      }
+    }));
+  };
+
   const handleMonthChange = (month) => {
     setSelectedMonth(month);
   };
@@ -152,6 +176,8 @@ const Index = () => {
         selectedMonth={selectedMonth}
         onMonthChange={handleMonthChange}
         incomeHistory={currentMonthData.incomeHistory}
+        onEditIncome={handleEditIncome}
+        onDeleteIncome={handleDeleteIncome}
       />
       <div className="flex justify-center my-4 space-x-4">
         <ExpandableCard
@@ -188,64 +214,20 @@ const Index = () => {
       </div>
       <ExpensePieChart expenses={currentMonthData.expenses || []} />
       <Search onSearch={setSearchTerm} />
-      <div className="flex space-x-2 mb-4">
-        <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-          <SelectTrigger className="w-full">
-            <Filter className="w-4 h-4 mr-2" />
-            <SelectValue placeholder="Categoría" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Todas</SelectItem>
-            {categories.map((cat) => (
-              <SelectItem key={cat} value={cat}>{cat}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        <Select value={sortOrder} onValueChange={setSortOrder}>
-          <SelectTrigger className="w-full">
-            <ArrowUpDown className="w-4 h-4 mr-2" />
-            <SelectValue placeholder="Ordenar" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="desc">Mayor a menor</SelectItem>
-            <SelectItem value="asc">Menor a mayor</SelectItem>
-          </SelectContent>
-        </Select>
-        <Select value={filterMonth} onValueChange={setFilterMonth}>
-          <SelectTrigger className="w-full">
-            <Calendar className="w-4 h-4 mr-2" />
-            <SelectValue placeholder="Mes" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Todos los meses</SelectItem>
-            {Object.keys(monthlyData).map((month) => (
-              <SelectItem key={month} value={month}>{month}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-      <table className="w-full bg-white border border-gray-300 shadow-sm rounded-lg overflow-hidden">
-        <thead className="bg-gray-100">
-          <tr>
-            <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Detalles</th>
-            <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Categoría</th>
-            <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Monto</th>
-            <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
-            <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mes</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-gray-200">
-          {filteredExpenses.map((expense, index) => (
-            <tr key={index} className={`hover:bg-gray-50 ${categoryColors[expense.category] || 'bg-green-100'} bg-opacity-20`}>
-              <td className="px-4 py-2 whitespace-nowrap text-sm">{expense.details}</td>
-              <td className="px-4 py-2 whitespace-nowrap text-sm">{expense.category || "Ahorros"}</td>
-              <td className="px-4 py-2 whitespace-nowrap text-sm">${expense.amount}</td>
-              <td className="px-4 py-2 whitespace-nowrap text-sm">{expense.date}</td>
-              <td className="px-4 py-2 whitespace-nowrap text-sm">{expense.month}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <FilterControls
+        categoryFilter={categoryFilter}
+        setCategoryFilter={setCategoryFilter}
+        sortOrder={sortOrder}
+        setSortOrder={setSortOrder}
+        filterMonth={filterMonth}
+        setFilterMonth={setFilterMonth}
+        categories={categories}
+        monthlyData={monthlyData}
+      />
+      <ExpenseTable
+        filteredExpenses={filteredExpenses}
+        categoryColors={categoryColors}
+      />
       <Footer />
     </div>
   );
