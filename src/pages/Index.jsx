@@ -75,14 +75,13 @@ const Index = () => {
   const handleDeleteExpense = (expenseToDelete) => {
     setMonthlyData(prevData => {
       const updatedData = { ...prevData };
-      Object.keys(updatedData).forEach(month => {
+      const month = expenseToDelete.month;
+      if (updatedData[month]) {
         updatedData[month] = {
           ...updatedData[month],
-          expenses: updatedData[month].expenses.filter(expense => 
-            !(expense.id === expenseToDelete.id && expense.month === expenseToDelete.month)
-          )
+          expenses: updatedData[month].expenses.filter(expense => expense.id !== expenseToDelete.id)
         };
-      });
+      }
       return updatedData;
     });
   };
