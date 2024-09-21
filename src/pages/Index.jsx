@@ -6,8 +6,6 @@ import { CategoryCard } from "../components/CategoryCard";
 import { ExpensePieChart } from "../components/ExpensePieChart";
 import { Search } from "../components/Search";
 import { Footer } from "../components/Footer";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Filter, ArrowUpDown, Calendar } from "lucide-react";
 import { categoryColors } from "../utils/categoryUtils";
 import { ExpenseTable } from "../components/ExpenseTable";
 import { FilterControls } from "../components/FilterControls";
@@ -75,13 +73,18 @@ const Index = () => {
   };
 
   const handleDeleteExpense = (expenseToDelete) => {
-    setMonthlyData(prevData => ({
-      ...prevData,
-      [selectedMonth]: {
-        ...prevData[selectedMonth],
-        expenses: prevData[selectedMonth].expenses.filter(expense => expense.id !== expenseToDelete.id)
-      }
-    }));
+    setMonthlyData(prevData => {
+      const updatedData = { ...prevData };
+      Object.keys(updatedData).forEach(month => {
+        updatedData[month] = {
+          ...updatedData[month],
+          expenses: updatedData[month].expenses.filter(expense => 
+            !(expense.id === expenseToDelete.id && expense.month === expenseToDelete.month)
+          )
+        };
+      });
+      return updatedData;
+    });
   };
 
   const handleSaveIncome = (newIncome) => {
@@ -227,6 +230,7 @@ const Index = () => {
       <ExpenseTable
         filteredExpenses={filteredExpenses}
         categoryColors={categoryColors}
+        onDeleteExpense={handleDeleteExpense}
       />
       <Footer />
     </div>
